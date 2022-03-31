@@ -35,6 +35,8 @@ class _QuranScreenState extends State<QuranScreen>
   // List surahList = SuratModel() as List<Map<String, dynamic>>;
   // List<DisplayWholeQuranFiltered> displayWholeQuranFiltered = List.empty(growable: true);
   List<SurahResponse> surahList = List.empty(growable: true);
+  int index = 0;
+
   // displayWholeQuranFiltered.addAll(List<DisplayWholeQuranFiltered>.from(SuratModel.surahList.map((x) => DisplayWholeQuranFiltered.fromJson(x))));
 
   int selectedTabIndex = 0;
@@ -81,7 +83,7 @@ class _QuranScreenState extends State<QuranScreen>
     testRequestBloc.quranFetchFiltered(
       request: QuranRequest(
         langId: languageId,
-        suratId: suratId,
+        suratId: surahList[index].id,
         ayathNo: ayathNo,
         juzId: juzId,
         ayathPageNo: ayathPageNo,
@@ -113,8 +115,10 @@ class _QuranScreenState extends State<QuranScreen>
     _tabController.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
+
     return Stack(
       children: [
         Container(
@@ -165,16 +169,16 @@ class _QuranScreenState extends State<QuranScreen>
                           child: Image.asset("assets/images/quran.png"),
                         ),
                       ),
-                      // Padding(
-                      //   padding:
-                      //   const EdgeInsets.only(left: 25, right: 10, top: 25),
-                      //   child: Column(
-                      //     crossAxisAlignment: CrossAxisAlignment.start,
-                      //     children: [
-                      //       // buildQuranPageCard(index),
-                      //     ],
-                      //   ),
-                      // ),
+                      Padding(
+                        padding:
+                        const EdgeInsets.only(left: 25, right: 10, top: 25),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            buildQuranPageCard(index),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                   // Container(
@@ -283,24 +287,6 @@ class _QuranScreenState extends State<QuranScreen>
                                                     ),
 
                                                   ),
-                                                  // Stack(
-                                                  //   children: [
-                                                  //
-                                                  //     // Positioned(
-                                                  //     //   top: 17,
-                                                  //     //     left:20,
-                                                  //     //     right:0,
-                                                  //     //     bottom: 0,
-                                                  //     //     child:
-                                                  //     //     Text(surahList[index].id,style: TextStyle(fontSize: 20),),
-                                                  //     // ),
-                                                  //     Align(
-                                                  //       alignment: Alignment.centerLeft,
-                                                  //       child: Text(surahList[index].id,style: TextStyle(fontSize: 20),),
-                                                  //
-                                                  //     ),
-                                                  //   ],
-                                                  // ),
 
 
 
@@ -333,7 +319,7 @@ class _QuranScreenState extends State<QuranScreen>
                                                                 context,
                                                                 QuranArabicTranslatedPage
                                                                     .id,
-                                                                  arguments: QuranTranslatedPageArguments(surathId: index.toString(), languageId: languageId)
+                                                                  arguments: QuranTranslatedPageArguments(surathId: surahList[index].id, languageId: languageId)
                                                                );
                                                   },
                                                 );
@@ -433,10 +419,23 @@ class _QuranScreenState extends State<QuranScreen>
 
   Widget buildQuranPageCard(int index) {
     return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Last read"),
-        Text("Surah + ${displayWholeQuranFiltered![index].suratEngName}"),
-        Text(displayWholeQuranFiltered![index].suartEnglishTranslation!),
+        Text("Last read",style: kQuranPageBoxSubTitleStyle1,),
+        SizedBox(height: 20),
+        Text(surahList[index].transliteration,style: kQuranPageBoxTitleStyle1,),
+        Text(surahList[index].translation,style: kQuranPageBoxSubTitleStyle1,),
+        Divider(
+          color: Colors.white.withOpacity(1),
+          // indent: 50,
+          endIndent: 230,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 25),
+          child: Text(
+            surahList[index].totalVerses + " verses",style: kQuranPageBoxSubTitleStyle1),
+        ),
+
       ],
     );
   }

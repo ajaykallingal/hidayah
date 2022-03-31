@@ -43,3 +43,30 @@ TextStyle kQuranPageTabContentSubTitleStyle = TextStyle(
   color: tabBarContentSubTitleColor,
   // fontWeight: FontWeight.w600,
 );
+
+TextStyle kQuranPageBoxTitleStyle1 = TextStyle(
+  letterSpacing: 0,
+  fontFamily: FontFamily.sfProDisplay,
+  fontSize: 16,
+
+  color: mainThemeWhiteColor,
+  fontWeight: FontWeight.w700,
+);
+
+TextStyle kQuranPageBoxSubTitleStyle = TextStyle(
+  letterSpacing: 0,
+  fontFamily: FontFamily.sfProDisplay,
+  fontSize: 13,
+
+  color: mainThemeWhiteColor,
+  fontWeight: FontWeight.w500,
+);
+
+TextStyle kQuranPageBoxSubTitleStyle1 = TextStyle(
+  letterSpacing: 0,
+  fontFamily: FontFamily.sfProDisplay,
+  fontSize: 12,
+
+  color: mainThemeWhiteColor,
+  fontWeight: FontWeight.w500,
+);

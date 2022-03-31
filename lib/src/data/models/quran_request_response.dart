@@ -59,7 +59,7 @@ class DisplayWholeQuranFiltered {
  final String? suratEngName;
  final String? suartEnglishTranslation;
  final String suratId;
- final SuartRevelationCity? suartRevelationCity;
+ final String suartRevelationCity;
  final String suartNumberOfAyats;
  final String juzId;
  final String ayatNumberInsurat;
@@ -77,7 +77,7 @@ class DisplayWholeQuranFiltered {
     suratEngName: json["SuratEngName"] == null ? null : json["SuratEngName"],
     suartEnglishTranslation: json["SuartEnglishTranslation"] == null ? null : json["SuartEnglishTranslation"],
     suratId: json["SuratID"] == null ? null : json["SuratID"],
-    suartRevelationCity: json["SuartRevelationCity"] == null ? null : suartRevelationCityValues.map[json["SuartRevelationCity"]],
+    suartRevelationCity: json["SuartRevelationCity"] == null ? null : json["SuartRevelationCity"],
     suartNumberOfAyats: json["SuartNumberOfAyats"] == null ? null : json["SuartNumberOfAyats"],
     juzId: json["juz_id"] == null ? null : json["juz_id"],
     ayatNumberInsurat: json["AyatNumberInsurat"] == null ? null : json["AyatNumberInsurat"],
@@ -96,7 +96,7 @@ class DisplayWholeQuranFiltered {
     "SuratEngName": suratEngNameValues.reverse[suratEngName] == null ? null : suratEngNameValues.reverse[suratEngName],
     "SuartEnglishTranslation": suartEnglishTranslationValues.reverse[suartEnglishTranslation] == null ? null : suartEnglishTranslationValues.reverse[suartEnglishTranslation],
     "SuratID": suratId == null ? null : suratId,
-    "SuartRevelationCity": suartRevelationCityValues.reverse[suartRevelationCity] == null ? null : suartRevelationCityValues.reverse[suartRevelationCity],
+    "SuartRevelationCity": suartRevelationCity == null ? null : suartRevelationCity,
     "SuartNumberOfAyats": suartNumberOfAyats == null ? null : suartNumberOfAyats,
     "juz_id": juzId == null ? null : juzId,
     "AyatNumberInsurat": ayatNumberInsurat == null ? null : ayatNumberInsurat,
