@@ -15,6 +15,7 @@ import 'package:hidayah/src/ui/Authentication/personal_details/components/pick_f
 import 'package:hidayah/src/ui/home/home_screen.dart';
 
 import '../../../../main.dart';
+import '../../home/components/latLang.dart';
 import '../components/RoundedBoxWithTick.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -24,6 +25,7 @@ import 'package:geocoding/geocoding.dart';
 
 class PersonalDetailsScreen extends StatefulWidget {
   static const String id = 'personal_detail_screen';
+  // final LatLang latLang;
 
   const PersonalDetailsScreen({Key? key}) : super(key: key);
 
@@ -64,6 +66,8 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
   String Address = "Search";
 
   Position? position;
+  late LatLang lat;
+  late LatLang long;
 
   // late Position position;
 
@@ -168,6 +172,9 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
   Address = '${place.name}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
   setState(()  {
     print(Address);
+    // lat = widget.latLang;
+    // long = widget.latLang;
+
   });
 
   }
@@ -367,12 +374,13 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
                           ),
                           shape: CircleBorder(),
                           onPressed: () {
-                            Navigator.pushNamed(context, HomeScreen.id);
+                            Navigator.pushNamed(context, HomeScreen.id,
+                                // arguments: LatLang(longitude: position.longitude, latitude: position!.latitude
+                                );
+
 
                           },
-                          // _pageController.animateToPage(index,
-                          // duration: Duration(milliseconds: 300),
-                          // curve: Curves.bounceOut),
+
 
                         ),
                       ),
@@ -681,9 +689,13 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
           SizedBox(height: 30),
           TextFieldWidget(
 
+
             labelText: Address,
 
+
             isObscured: false,
+
+
             textFieldIcon: ImageIcon(AssetImage('assets/images/SEARCH.png')),
           ),
           SizedBox(height: 30,),

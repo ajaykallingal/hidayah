@@ -9,9 +9,9 @@ class TextFieldWidget extends StatelessWidget {
   final ImageIcon? textFieldIcon;
 
   // final BuildContext context;
-  bool? isObscured ;
+  bool isObscured = false ;
 
-  TextFieldWidget({required this.labelText, this.textFieldIcon,this.isObscured});
+  TextFieldWidget({required this.labelText, this.textFieldIcon,required this.isObscured});
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +25,13 @@ class TextFieldWidget extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
           enabled: true,
+            // maxLines: 5,
+
             textAlign: TextAlign.center,
-          maxLines: 4,
-          obscureText: isObscured!,
+          // maxLines: 4,4
+          obscureText: isObscured,
           decoration: InputDecoration(
+
 
             contentPadding: EdgeInsets.all(30),
             suffixIcon: Padding(

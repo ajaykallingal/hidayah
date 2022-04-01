@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hidayah/src/constants/text_style.dart';
 import 'package:hidayah/src/ui/Quran/quran_screen.dart';
 import 'package:hidayah/src/ui/dhikr/dhikr_screen.dart';
@@ -18,6 +20,7 @@ import 'package:hidayah/src/ui/more/text_style.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'components/glass_morphic_container.dart';
+import 'components/latLang.dart';
 import 'widgets/home_page_card_widget.dart';
 import 'components/round_container_with_tick.dart';
 import 'components/round_container_without_tick_widget.dart';
@@ -57,11 +60,28 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isPrayer5Checked = false;
   int selectedIndex = 0;
 
+  final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
+  final List<_PositionItem> _positionItems = <_PositionItem>[];
+  String Address = "Search";
+  // String AddressName = "name";
+  Position? position;
+
+  static const String kLocationServicesDisabledMessage =
+      'Location services are disabled.';
+  static const String kPermissionDeniedMessage = 'Permission denied.';
+  static const String kPermissionDeniedForeverMessage =
+      'Permission denied forever.';
+  static const String kPermissionGrantedMessage = 'Permission granted.';
+
+
+
   @override
   void initState() {
     // TODO: implement initState
 
     super.initState();
+    _getCurrentPosition();
+
     _controller = YoutubePlayerController(
       initialVideoId: _videoIds.first,
       flags: const YoutubePlayerFlags(
@@ -113,8 +133,66 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> _getCurrentPosition()async {
+    final hasPermission = await _handlePermission();
+
+    if(!hasPermission){
+      return;
+    }
+
+    final position = await _geolocatorPlatform.getCurrentPosition();
+    List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+    Placemark place = placemarks[0];
+    Address = '${place.name}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
+    setState(()  {
+      print(Address);
+      // lat = widget.latLang;
+      // long = widget.latLang;
+
+    });
+
+  }
+
+  Future<bool> _handlePermission() async{
+    bool serviceEnabled;
+    LocationPermission permission;
+
+
+    serviceEnabled = await _geolocatorPlatform.isLocationServiceEnabled();
+    if(!serviceEnabled) {
+      _updatePositionList(_PositionItemType.log, kLocationServicesDisabledMessage);
+      return false;
+    }
+    permission =  await _geolocatorPlatform.checkPermission();
+    if(permission ==  LocationPermission.denied){
+      permission = await _geolocatorPlatform.requestPermission();
+      if(permission == LocationPermission.denied){
+        _updatePositionList(_PositionItemType.log, kPermissionDeniedMessage);
+        return false;
+      }
+    }
+    if(permission ==  LocationPermission.deniedForever){
+      _updatePositionList(_PositionItemType.log, kPermissionDeniedForeverMessage);
+      return false;
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    _updatePositionList(_PositionItemType.log, kPermissionGrantedMessage);
+    return true;
+  }
+  void _updatePositionList(_PositionItemType type, String displayValue) {
+    _positionItems.add(_PositionItem(type, displayValue));
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    // final arguments = ModalRoute.of(context)!.settings.arguments as LatLang ;
+
+
+
     List<dynamic> _screenWidgets = <dynamic>[
       buildHomeScreenBody(context),
       DhikrScreen(),
@@ -216,8 +294,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
 // SizedBox(width: 5),
                                       Text(
-                                        'Dubai,United Arab Emirates',
+                                        Address,
                                         style: kTopLeftCornerTextStyle,
+                                        softWrap: true,
                                       ),
                                     ],
                                   ),
@@ -375,6 +454,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
+          SizedBox(height: 20),
         ],
       ),
     );
@@ -509,5 +589,15 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+enum _PositionItemType {
+  log,
+  position,
+}
 
+class _PositionItem {
+  _PositionItem(this.type, this.displayValue);
+
+  final _PositionItemType type;
+  final String displayValue;
+}
 

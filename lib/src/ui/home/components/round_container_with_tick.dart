@@ -20,7 +20,7 @@ class RoundContainerWithTick extends StatelessWidget {
         image: DecorationImage(
 
           image: new AssetImage(
-              'assets/images/TICK.png'),
+              'assets/images/checked.png'),
           fit: BoxFit.fill,
 
 

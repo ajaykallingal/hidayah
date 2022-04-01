@@ -17,14 +17,13 @@ import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 
 import '../../../data/models/surah/surah_response.dart';
 import '../../../data/models/surat_model.dart';
+
 class QuranArabicTranslatedPage extends StatefulWidget {
   static const String id = 'quran_arabic_screen';
-
 
   // final int suratId;
   // final QuranTranslatedPageArguments arguments;
   const QuranArabicTranslatedPage({Key? key}) : super(key: key);
-
 
   @override
   State<QuranArabicTranslatedPage> createState() =>
@@ -32,14 +31,13 @@ class QuranArabicTranslatedPage extends StatefulWidget {
 }
 
 class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver{
   List tabList = ["Arabic", "Translation", "Transilertaion"];
   int selectedTabIndex = 0;
   late TabController _tabController;
 
   ScrollController _scrollController = new ScrollController();
   List<SurahResponse> surahList = List.empty(growable: true);
-
 
   final String languageId = "12";
   final String suratId = "0";
@@ -55,16 +53,16 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
   bool loading = true;
   bool selectedIndex = false;
 
-
   final testRequestBloc = TestRequestBloc();
   Response? responseDetails;
   List<DisplayWholeQuranFiltered>? displayWholeQuranFiltered;
 
   AudioCache audioCache = AudioCache();
   AudioPlayer audioPlayer = AudioPlayer();
+
   // int? newSelectedIndex;
- bool callOneTime = true;
- int index = 0;
+  bool callOneTime = true;
+  int index = 0;
 
   @override
   void initState() {
@@ -74,9 +72,7 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
     _tabController =
         TabController(length: 3, vsync: this, initialIndex: selectedTabIndex);
     _tabController.addListener(() {
-      setState(() {
-
-      });
+      setState(() {});
     });
 
     // void _handleTabSelection(){
@@ -85,28 +81,25 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
     //   });
     // }
 
-
-    print("index${suratId}");
     // print("surahID${arguments.surathId}");
     // print("langId${widget.arguments.languageId}");
-    testRequestBloc.quranFetchFiltered(
-      request: QuranRequest(
-        langId: languageId,
-        suratId: suratId,
-        ayathNo: ayathNo,
-        juzId: juzId,
-        ayathPageNo: ayathPageNo,
-        ayatAutoIncrId: ayathAutoIncrId,
-        searchText: searchText,
-        limitFrom: limitFrom,
-        limitTo: limitTo,
-        voiceTypeId: voiceTypeId,
-      ),
-    );
+    // testRequestBloc.quranFetchFiltered(
+    //   request: QuranRequest(
+    //     langId: languageId,
+    //     suratId: suratId,
+    //     ayathNo: ayathNo,
+    //     juzId: juzId,
+    //     ayathPageNo: ayathPageNo,
+    //     ayatAutoIncrId: ayathAutoIncrId,
+    //     searchText: searchText,
+    //     limitFrom: limitFrom,
+    //     limitTo: limitTo,
+    //     voiceTypeId: voiceTypeId,
+    //   ),
+    // );
 
-    surahList.addAll(List<SurahResponse>.from(SuratModel.surahList.map((x) => SurahResponse.fromJson(x))));
-
-
+    surahList.addAll(List<SurahResponse>.from(
+        SuratModel.surahList.map((x) => SurahResponse.fromJson(x))));
   }
 
   @override
@@ -130,40 +123,44 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO: implement didChangeAppLifecycleState
+    super.didChangeAppLifecycleState(state);
+    if(state == AppLifecycleState.paused){
+      audioPlayer.stop();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final arguments = ModalRoute.of(context)!.settings.arguments
+        as QuranTranslatedPageArguments;
 
-    final arguments = ModalRoute.of(context)!.settings.arguments as QuranTranslatedPageArguments;
-
-    if(callOneTime){
-        print("SID:${arguments.surathId}");
-        testRequestBloc.quranFetchFiltered(
-          request: QuranRequest(
-            langId: arguments.languageId,
-            suratId: arguments.surathId,
-            ayathNo: ayathNo,
-            juzId: juzId,
-            ayathPageNo: ayathPageNo,
-            ayatAutoIncrId: ayathAutoIncrId,
-            searchText: searchText,
-            limitFrom: limitFrom,
-            limitTo: limitTo,
-            voiceTypeId: voiceTypeId,
-          ),
-        );
-      }
-    final String audioUrl = displayWholeQuranFiltered![index].fileName;
+    if (callOneTime) {
+      print("SID:${arguments.surathId}");
+      print("LID:${arguments.languageId}");
+      testRequestBloc.quranFetchFiltered(
+        request: QuranRequest(
+          langId:selectedTabIndex ==0?"1": arguments.languageId,
+          suratId: arguments.surathId,
+          ayathNo: ayathNo,
+          juzId: juzId,
+          ayathPageNo: ayathPageNo,
+          ayatAutoIncrId: ayathAutoIncrId,
+          searchText: searchText,
+          limitFrom: limitFrom,
+          limitTo: limitTo,
+          voiceTypeId: voiceTypeId,
+        ),
+      );
+    }
+    // final String audioUrl = displayWholeQuranFiltered![index].fileName;
 
     return Stack(
       children: [
         Container(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
-          width: MediaQuery
-              .of(context)
-              .size
-              .width,
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
           decoration: const BoxDecoration(
             gradient: RadialGradient(
               center: Alignment.center,
@@ -184,7 +181,7 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
         SafeArea(
           child: Material(
             type: MaterialType.transparency,
-            child: SingleChildScrollView(
+            child:loading ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle,),) : SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,18 +190,20 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                   Padding(
                     padding: const EdgeInsets.only(left: 3, top: 3),
                     child: ListTile(
-                      title:  Text(
-          'Quran',
-          style: kQuranPageHeadlineTextStyle,
-        ),
-                      leading:   IconButton(
-            onPressed: (){
-             Navigator.pushNamed(context, QuranScreen.id);
-            },
-            icon: Icon(Icons.arrow_back,color: Colors.white.withOpacity(1),),
-        ),
+                      title: Text(
+                        'Quran',
+                        style: kQuranPageHeadlineTextStyle,
+                      ),
+                      leading: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white.withOpacity(1),
+                        ),
+                      ),
                     ),
-
                   ),
                   SizedBox(height: 8),
                   Stack(
@@ -219,7 +218,7 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                       ),
                       Padding(
                         padding:
-                        const EdgeInsets.only(left: 25, right: 10, top: 25),
+                            const EdgeInsets.only(left: 25, right: 10, top: 25),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -240,7 +239,7 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                   //   ),
                   //     ),
                   DefaultTabController(
-                    initialIndex: selectedTabIndex,
+                    initialIndex: 0,
                     length: 3,
                     child: Column(
                       children: [
@@ -248,38 +247,60 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                           padding: const EdgeInsets.only(left: 15, right: 15),
                           child: Column(
                             children: [
-                              
                               Row(
                                 children: [
                                   Expanded(
                                     child: TabBar(
-
                                       labelPadding: EdgeInsets.all(2),
                                       isScrollable: false,
-
                                       physics: BouncingScrollPhysics(),
                                       controller: _tabController,
                                       indicator: BubbleTabIndicator(
-
                                         // padding: EdgeInsets.all(10),
-                                        indicatorColor: Colors.white.withOpacity(1),
+                                        indicatorColor:
+                                            Colors.white.withOpacity(1),
                                         indicatorHeight: 35,
 
                                         // insets: EdgeInsets.all(2),
                                         indicatorRadius: 50,
-                                        tabBarIndicatorSize: TabBarIndicatorSize
-                                            .tab,
+                                        tabBarIndicatorSize:
+                                            TabBarIndicatorSize.tab,
                                       ),
                                       indicatorColor: Colors.transparent,
                                       indicatorSize: TabBarIndicatorSize.tab,
                                       labelColor: mainRedShadeForTitle,
-                                      unselectedLabelColor: Colors.white.withOpacity(1),
-                                      unselectedLabelStyle: kQuranPageTabHeaderStyle,
+                                      unselectedLabelColor:
+                                          Colors.white.withOpacity(1),
+                                      unselectedLabelStyle:
+                                          kQuranPageTabHeaderStyle,
                                       onTap: (index) {
-                                        selectedTabIndex = index;
-                                      },
-                                      tabs: [
+                                        setState(() {
+                                          selectedTabIndex = index;
+                                          _tabController.animateTo(index);
 
+                                        });
+                                        testRequestBloc.quranFetchFiltered(
+                                          request: QuranRequest(
+                                            langId:selectedTabIndex ==0?"1": arguments.languageId,
+                                            suratId: arguments.surathId,
+                                            ayathNo: ayathNo,
+                                            juzId: juzId,
+                                            ayathPageNo: ayathPageNo,
+                                            ayatAutoIncrId: ayathAutoIncrId,
+                                            searchText: searchText,
+                                            limitFrom: limitFrom,
+                                            limitTo: limitTo,
+                                            voiceTypeId: voiceTypeId,
+                                          ),
+                                        );
+                                       print(selectedTabIndex);
+                                       print("tabController:${_tabController.index}");
+                                       setState(() {
+                                         loading = true;
+                                       });
+
+    },
+                                      tabs: [
                                         Tab(
                                           text: "Arabic",
                                         ),
@@ -295,87 +316,76 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                                         //       "assets/images/SETTINGS.png")),
                                         //   // text: "Arabic",
                                         // ),
-
-
                                       ],
                                     ),
                                   ),
                                   IconButton(
-                                      onPressed: (){
-                                       showModalBottomSheet(
-                                           context: context,
-                                           elevation: 5,
-                                           backgroundColor: Colors.white.withOpacity(1),
-
-                                           shape: RoundedRectangleBorder(
-                                             borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
-                                             
-                                           ),
-                                           builder: (BuildContext context){
-                                             return Container(
-                                               height: MediaQuery.of(context).size.height / 2.1,
-                                               child: Column(
-                                                 children: [
-                                                   SizedBox(height: 20),
-                                                  Text("Font Settings"),
-
-
-                                                 ],
-                                               ),
-
-                                             );
-                                           }
-                                       );
+                                      onPressed: () {
+                                        showModalBottomSheet(
+                                            context: context,
+                                            elevation: 5,
+                                            backgroundColor:
+                                                Colors.white.withOpacity(1),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  topRight:
+                                                      Radius.circular(20)),
+                                            ),
+                                            builder: (BuildContext context) {
+                                              return Container(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    2.1,
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(height: 20),
+                                                    Text("Font Settings"),
+                                                  ],
+                                                ),
+                                              );
+                                            });
                                       },
-                                      icon: ImageIcon(AssetImage("assets/images/SETTINGS.png"),color: Colors.white.withOpacity(1),)
-                                  ),
+                                      icon: ImageIcon(
+                                        AssetImage(
+                                            "assets/images/SETTINGS.png"),
+                                        color: Colors.white.withOpacity(1),
+                                      )),
                                 ],
                               ),
                               SingleChildScrollView(
                                 physics: BouncingScrollPhysics(),
                                 child: Container(
-
                                   margin: EdgeInsets.all(8),
                                   padding: EdgeInsets.all(8),
                                   decoration: BoxDecoration(
                                       color: Colors.white.withOpacity(1),
-
                                       borderRadius: BorderRadius.circular(20)),
-
-
-                                  height: MediaQuery
-                                      .of(context)
-                                      .size
-                                      .height,
-                                  width: MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width,
+                                  height: MediaQuery.of(context).size.height,
+                                  width: MediaQuery.of(context).size.width,
                                   child: TabBarView(
                                     physics: BouncingScrollPhysics(),
                                     controller: _tabController,
                                     children: [
                                       loading
                                           ? Center(
-                                        child: CircularProgressIndicator(),
-                                      )
-                                          : buildArabicTab(audioUrl),
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            )
+                                          : buildArabicTab(),
                                       loading
                                           ? Center(
-                                        child: CircularProgressIndicator(),
-                                      )
-                                          : buildTranslationTab(audioUrl),
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            )
+                                          : buildTranslationTab(),
                                       loading
                                           ? Center(
-                                        child: CircularProgressIndicator(),
-                                      )
-                                          : buildTransilerationTab(audioUrl),
-
-
-
-
-
-
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            )
+                                          : buildTransilerationTab(),
                                     ],
                                   ),
                                 ),
@@ -386,8 +396,6 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                       ],
                     ),
                   ),
-
-
                 ],
               ),
             ),
@@ -397,303 +405,243 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
     );
   }
 
-  Widget buildArabicTab(String audioUrl) {
-    return loading ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle)) :
-    ListView.builder(
-       physics: BouncingScrollPhysics(),
-      itemCount:
-      int.parse(displayWholeQuranFiltered![index].suartNumberOfAyats),
-      itemBuilder:
-          (BuildContext context, index) {
-         print(      int.parse(displayWholeQuranFiltered![index].suartNumberOfAyats),
-         );
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 8),
-          child: Container(
-            child: Column(
-              children: [
-                Container(
-                  width:
-                  MediaQuery
-                      .of(context)
-                      .size
-                      .width,
-                  height: 42,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF0F0F0)
-                        .withOpacity(1),
-                    borderRadius:
-                    BorderRadius.circular(
-                        8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment
-                        .spaceBetween,
+  Widget buildArabicTab() {
+    return loading
+        ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle))
+        : ListView.builder(
+            physics: BouncingScrollPhysics(),
+            itemCount:
+                int.parse(displayWholeQuranFiltered![index].suartNumberOfAyats),
+            itemBuilder: (BuildContext context, index) {
+              print(
+                int.parse(displayWholeQuranFiltered![index].suartNumberOfAyats),
+              );
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: Container(
+                  child: Column(
                     children: [
-                      Padding(
-                        padding:
-                        const EdgeInsets
-                            .all(7.0),
-                        child: CircleAvatar(
-                          backgroundColor:
-                          mainRedShadeForTitle,
-                          // radius: 10,
-                          child: Text(
-                              displayWholeQuranFiltered![
-                              index]
-                                  .ayatNumber,
-                              style: TextStyle(
-                                  fontSize:
-                                  12)),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 42,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF0F0F0).withOpacity(1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(7.0),
+                              child: CircleAvatar(
+                                backgroundColor: mainRedShadeForTitle,
+                                // radius: 10,
+                                child: Text(
+                                    displayWholeQuranFiltered![index]
+                                        .ayatNumber,
+                                    style: TextStyle(fontSize: 12)),
+                              ),
+                            ),
+                            IconButton(
+                              icon: ImageIcon(
+                                AssetImage("assets/images/PLAY.png"),
+                                size: 25,
+                                color: Color(0xFF5D5D5D).withOpacity(1),
+                              ),
+                              onPressed: () {
+                                // audioPlayer.stop();
+
+                                audioPlayer.play(displayWholeQuranFiltered![index].fileName, isLocal: true);
+                              },
+                            ),
+                          ],
                         ),
                       ),
-                      IconButton(
-                        icon: ImageIcon(
-                          AssetImage(
-                              "assets/images/PLAY.png"),
-                          size: 25,
-                          color: Color(
-                              0xFF5D5D5D)
-                              .withOpacity(1),
-                        ),
-                        onPressed: () {
-
-
-                          audioPlayer.stop();
-
-                          audioPlayer.play(
-                              audioUrl,
-                              isLocal: true);
-                        },
+                      SizedBox(height: 5),
+                      Row(
+                        // mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right:8),
+                              child: Text(
+                                displayWholeQuranFiltered![index].ayatText,
+                                softWrap: true,
+                                // textDirection: TextDirection.rtl,
+                                // textAlign: TextAlign.right,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        displayWholeQuranFiltered![
-                        index]
-                            .ayatText,
-                        softWrap: true,
-                        style: TextStyle(
-                            color:
-                            Colors.black),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+              );
+            },
+          );
   }
 
-  Widget buildTranslationTab(String audioUrl) {
-    return loading ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle)) :
-    ListView.builder(
-      physics: BouncingScrollPhysics(),
-      itemCount:
-      int.parse(displayWholeQuranFiltered![index].suartNumberOfAyats),
-      itemBuilder:
-          (BuildContext context, index) {
-        print(      int.parse(displayWholeQuranFiltered![index].suartNumberOfAyats),
-        );
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 8),
-          child: Container(
-            child: Column(
-              children: [
-                Container(
-                  width:
-                  MediaQuery
-                      .of(context)
-                      .size
-                      .width,
-                  height: 42,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF0F0F0)
-                        .withOpacity(1),
-                    borderRadius:
-                    BorderRadius.circular(
-                        8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment
-                        .spaceBetween,
+  Widget buildTranslationTab() {
+    return loading
+        ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle))
+        : ListView.builder(
+            physics: BouncingScrollPhysics(),
+            itemCount:
+                int.parse(displayWholeQuranFiltered![index].suartNumberOfAyats),
+            itemBuilder: (BuildContext context, index) {
+              print(
+                int.parse(displayWholeQuranFiltered![index].suartNumberOfAyats),
+              );
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: Container(
+                  child: Column(
                     children: [
-                      Padding(
-                        padding:
-                        const EdgeInsets
-                            .all(7.0),
-                        child: CircleAvatar(
-                          backgroundColor:
-                          mainRedShadeForTitle,
-                          // radius: 10,
-                          child: Text(
-                              displayWholeQuranFiltered![
-                              index]
-                                  .ayatNumber,
-                              style: TextStyle(
-                                  fontSize:
-                                  12)),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 42,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF0F0F0).withOpacity(1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(7.0),
+                              child: CircleAvatar(
+                                backgroundColor: mainRedShadeForTitle,
+                                // radius: 10,
+                                child: Text(
+                                    displayWholeQuranFiltered![index]
+                                        .ayatNumber,
+                                    style: TextStyle(fontSize: 12)),
+                              ),
+                            ),
+                            IconButton(
+                              icon: ImageIcon(
+                                AssetImage("assets/images/PLAY.png"),
+                                size: 25,
+                                color: Color(0xFF5D5D5D).withOpacity(1),
+                              ),
+                              onPressed: () {
+                                // audioPlayer.stop();
+
+                                audioPlayer.play(displayWholeQuranFiltered![index].fileName, isLocal: true);
+                              },
+                            ),
+                          ],
                         ),
                       ),
-                      IconButton(
-                        icon: ImageIcon(
-                          AssetImage(
-                              "assets/images/PLAY.png"),
-                          size: 25,
-                          color: Color(
-                              0xFF5D5D5D)
-                              .withOpacity(1),
-                        ),
-                        onPressed: () {
-
-
-                          audioPlayer.stop();
-
-                          audioPlayer.play(
-                              audioUrl,
-                              isLocal: true);
-                        },
+                      SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              displayWholeQuranFiltered![index].ayatText,
+                              softWrap: true,
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        displayWholeQuranFiltered![
-                        index]
-                            .ayatText,
-                        softWrap: true,
-                        style: TextStyle(
-                            color:
-                            Colors.black),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+              );
+            },
+          );
   }
 
-  Widget buildTransilerationTab(String audioUrl) {
-    return loading ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle)) :
-    ListView.builder(
-      physics: BouncingScrollPhysics(),
-      itemCount:
-      int.parse(displayWholeQuranFiltered![index].suartNumberOfAyats),
-      itemBuilder:
-          (BuildContext context, index) {
-        print(      int.parse(displayWholeQuranFiltered![index].suartNumberOfAyats),
-        );
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 8),
-          child: Container(
-            child: Column(
-              children: [
-                Container(
-                  width:
-                  MediaQuery
-                      .of(context)
-                      .size
-                      .width,
-                  height: 42,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF0F0F0)
-                        .withOpacity(1),
-                    borderRadius:
-                    BorderRadius.circular(
-                        8),
-                  ),
-                  child: Row(
-                    mainAxisAlignment:
-                    MainAxisAlignment
-                        .spaceBetween,
+  Widget buildTransilerationTab() {
+    return loading
+        ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle))
+        : ListView.builder(
+            physics: BouncingScrollPhysics(),
+            itemCount:
+                int.parse(displayWholeQuranFiltered![index].suartNumberOfAyats),
+            itemBuilder: (BuildContext context, index) {
+              print(
+                int.parse(displayWholeQuranFiltered![index].suartNumberOfAyats),
+              );
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: Container(
+                  child: Column(
                     children: [
-                      Padding(
-                        padding:
-                        const EdgeInsets
-                            .all(7.0),
-                        child: CircleAvatar(
-                          backgroundColor:
-                          mainRedShadeForTitle,
-                          // radius: 10,
-                          child: Text(
-                              displayWholeQuranFiltered![
-                              index]
-                                  .ayatNumber,
-                              style: TextStyle(
-                                  fontSize:
-                                  12)),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 42,
+                        decoration: BoxDecoration(
+                          color: Color(0xFFF0F0F0).withOpacity(1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(7.0),
+                              child: CircleAvatar(
+                                backgroundColor: mainRedShadeForTitle,
+                                // radius: 10,
+                                child: Text(
+                                    displayWholeQuranFiltered![index]
+                                        .ayatNumber,
+                                    style: TextStyle(fontSize: 12)),
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: ImageIcon(
+                                    AssetImage("assets/images/PLAY.png"),
+                                    size: 25,
+                                    color: Color(0xFF5D5D5D).withOpacity(1),
+                                  ),
+                                  onPressed: () {
+                                    // audioPlayer.stop();
+
+                                    audioPlayer.play(displayWholeQuranFiltered![index].fileName, isLocal: true);
+                                  },
+                                ),
+                                IconButton(
+                                  icon: ImageIcon(
+                                    AssetImage("assets/images/stop-button.png"),
+                                    size: 25,
+                                    color: Color(0xFF5D5D5D).withOpacity(1),
+                                  ),
+                                  onPressed: () {
+                                    audioPlayer.stop();
+
+                                    // audioPlayer.play(audioUrl, isLocal: true);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      IconButton(
-                        icon: ImageIcon(
-                          AssetImage(
-                              "assets/images/PLAY.png"),
-                          size: 25,
-                          color: Color(
-                              0xFF5D5D5D)
-                              .withOpacity(1),
-                        ),
-                        onPressed: () {
-
-
-                          audioPlayer.stop();
-
-                          audioPlayer.play(
-                              audioUrl,
-                              isLocal: true);
-                        },
+                      SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              displayWholeQuranFiltered![index].ayatText,
+                              softWrap: true,
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 5),
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        displayWholeQuranFiltered![
-                        index]
-                            .ayatText,
-                        softWrap: true,
-                        style: TextStyle(
-                            color:
-                            Colors.black),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
+              );
+            },
+          );
   }
-
-
-
-
-
-
-
 
   Widget buildQuranTranslatedPageCard(int index) {
     return Column(
@@ -701,8 +649,14 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
       children: [
         // Text("Last read",style: kQuranPageBoxSubTitleStyle1,),
         SizedBox(height: 20),
-        Text(displayWholeQuranFiltered![index].suratEngName!,style: kQuranPageBoxTitleStyle1,),
-        Text(displayWholeQuranFiltered![index].suartEnglishTranslation!,style: kQuranPageBoxSubTitleStyle1,),
+        Text(
+          displayWholeQuranFiltered![index].suratEngName!,
+          style: kQuranPageBoxTitleStyle1,
+        ),
+        Text(
+          displayWholeQuranFiltered![index].suartEnglishTranslation!,
+          style: kQuranPageBoxSubTitleStyle1,
+        ),
         Divider(
           color: Colors.white.withOpacity(1),
           // indent: 50,
@@ -710,10 +664,9 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
         ),
         Padding(
           padding: const EdgeInsets.only(left: 25),
-          child: Text(
-              displayWholeQuranFiltered![index].suartRevelationCity ,style: kQuranPageBoxSubTitleStyle1),
+          child: Text(displayWholeQuranFiltered![index].suartRevelationCity,
+              style: kQuranPageBoxSubTitleStyle1),
         ),
-
       ],
     );
   }

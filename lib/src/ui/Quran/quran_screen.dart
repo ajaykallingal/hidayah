@@ -328,7 +328,7 @@ class _QuranScreenState extends State<QuranScreen>
                                               controller: _scrollController,
                                               physics: BouncingScrollPhysics(),
                                             ),
-                                      ListView.builder(
+                                    loading ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle,),) :  ListView.builder(
                                         itemBuilder:
                                             (BuildContext context, index) {
                                           return ListTile(
@@ -355,7 +355,7 @@ class _QuranScreenState extends State<QuranScreen>
                                         controller: _scrollController,
                                         physics: BouncingScrollPhysics(),
                                       ),
-                                      ListView.builder(
+                                     loading ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle,),) : ListView.builder(
                                         itemBuilder:
                                             (BuildContext context, index) {
                                           return ListTile(

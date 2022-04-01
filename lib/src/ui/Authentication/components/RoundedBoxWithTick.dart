@@ -42,7 +42,7 @@ class RoundedBoxWithTick extends StatelessWidget {
                     offset: Offset(0, 1))
               ],
             ),
-            child: Center(child: Image.asset('assets/images/TICK.png',scale: 3,)),
+            child: Center(child: Image.asset('assets/images/checked.png',scale: 3,)),
           )
               : Container(
             height: 20,

@@ -89,7 +89,11 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
                         ),
                         ListTile(
                           leading:
-                          Icon(Icons.arrow_back, color: mainThemeWhiteColor),
+                              IconButton(onPressed: () {
+                                Navigator.pop(context);
+                              },
+                                icon: Icon(Icons.arrow_back,color: Colors.white.withOpacity(1),),
+                              ),
                           title: Text(
                             "",
                             style: kPrayerTimeScreenHeaderStyle,

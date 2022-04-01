@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hidayah/src/constants/text_style.dart';
+import 'package:hidayah/src/ui/Authentication/authentication_screen.dart';
 import 'package:hidayah/src/ui/Authentication/personal_details/Personal_details_screen.dart';
 
 import 'components/text_field_widget.dart';
@@ -158,7 +159,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             style: kFormFieldsTitleTextStyle,
           ),
           leading: IconButton(onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.pushNamed(context, AuthenticationScreen.id);
           },
               icon: Icon(Icons.arrow_back_sharp)
           ),

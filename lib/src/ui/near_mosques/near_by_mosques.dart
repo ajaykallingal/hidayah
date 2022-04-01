@@ -65,8 +65,8 @@ class _NearByMosquesState extends State<NearByMosques> {
                       height: 20,
                     ),
                     ListTile(
-                      leading: Icon(Icons.arrow_back,color: mainThemeWhiteColor),
-                      title: Text("Prayers",style: kPrayerTimeScreenHeaderStyle,),
+                      leading: IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back,color: mainThemeWhiteColor),),
+                      title: Text("Nearest Mosque",style: kPrayerTimeScreenHeaderStyle,),
                     ),
 
                   ],
