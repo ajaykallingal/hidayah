@@ -1,13 +1,13 @@
 
 import 'package:flutter/material.dart';
-import 'package:hidayah/src/data/models/prayer_time_response.dart';
+import 'package:hidayah/src/data/models/prayerTimes/prayer_time_response.dart';
 import 'package:hidayah/src/data/models/quran_request.dart';
 import 'package:hidayah/src/data/models/quran_request_response.dart';
 
 import '../../shared_pref/object_factory.dart';
 import '../models/common/state_model.dart';
 
-class TestRequestProvider{
+class QuranRequestProvider{
 
   ///fetch quran request
   Future<StateModel> quranFetchFiltered(QuranRequest request) async {
@@ -20,21 +20,5 @@ class TestRequestProvider{
       return StateModel<String>.error("Error Occurred");
     }
   }
-  
-  Future<StateModel?> getPrayerTimesProvider() async {
-    final response = await ObjectFactory().apiClient.getPrayerTimes();
-    print(response.toString());
-    if(response.statusCode == 200) {
-      return StateModel<PrayerTimeResponse>.success(
-        PrayerTimeResponse.fromJson(response.data)
-      );
-    } else{
-      return null;
-    }
-  }
-
-
-
-
 
 }

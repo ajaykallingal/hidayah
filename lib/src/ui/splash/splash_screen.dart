@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:hidayah/src/constants/app_theme.dart';
 import 'package:hidayah/src/constants/font_family.dart';
 import 'package:hidayah/src/ui/Authentication/authentication_screen.dart';
+import 'package:hidayah/src/ui/Authentication/sign_up_screen.dart';
 
+import '../../shared_pref/object_factory.dart';
 import '../home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -57,16 +59,98 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   }
 
   route() {
-    Navigator.pushNamed(context, AuthenticationScreen.id);
+    // Navigator.pushNamed(context, AuthenticationScreen.id);
+
+    if(mounted){
+if(ObjectFactory().prefs.isLoggedIn()!){
+  Navigator.pushNamed(context, HomeScreen.id);
+
+}else{
+  Navigator.pushNamed(context, AuthenticationScreen.id);
+
+}
+}
+
+
     // Navigator.pushNamedAndRemoveUntil(
     //     context, '/auth', (route) => false);
   }
 
   @override
   Widget build(BuildContext context) {
-    return
-       Stack(
+    // return Scaffold(body: Center(
+    //   child: Row(
+    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //     children: [
+    //       Flexible(
+    //         child: Row(
+    //           // direction: Axis.horizontal,
+    //           // runAlignment: WrapAlignment.start,
+    //           // alignment: WrapAlignment.start,
+    //           mainAxisSize: MainAxisSize.max,
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           mainAxisAlignment: MainAxisAlignment.start,
+    //           children: [
+    //             Flexible(
+    //               child: Padding(
+    //                 padding: const EdgeInsets.only(right: 4.0),
+    //                 child: Text(
+    //                   "Tata consultancy services",
+    //                   style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Colors.black,fontSize: 14),
+    //                   overflow: TextOverflow.ellipsis,
+    //                   softWrap: false,
+    //
+    //                 ),
+    //               ),
+    //             ),
+    //             Row(
+    //               mainAxisSize: MainAxisSize.min,
+    //               // crossAxisAlignment: CrossAxisAlignment.center,
+    //               children: [
+    //                 Padding(
+    //                   padding:
+    //                   const EdgeInsets.symmetric(horizontal: 4.0),
+    //                   child: Container(color: Colors.blueGrey,child: Text("event"),),
+    //                 ),
+    //                 Padding(
+    //                   padding:
+    //                   const EdgeInsets.symmetric(horizontal: 4.0),
+    //                   child: Container(color: Colors.blueGrey,child: Text("M"),),
+    //                 ),
+    //
+    //                 Padding(
+    //                   padding:
+    //                   const EdgeInsets.symmetric(horizontal: 2.0),
+    //                   child: Container(
+    //                     color: Colors.black38,
+    //                     height: 33,width: 33,),
+    //                 ),
+    //                 Padding(
+    //                   padding:
+    //                   const EdgeInsets.symmetric(horizontal: 2.0),
+    //                   child: Container(height: 33,width: 22,color: Colors.black,),
+    //                 ),
+    //                 Padding(
+    //                   padding:
+    //                   const EdgeInsets.symmetric(horizontal: 2.0),
+    //                   child: Container(height: 44,width: 44,color: Colors.black,),
+    //                 ),
+    //
+    //               ],
+    //             ),
+    //           ],
+    //         ),
+    //       ),
+    //       Text(
+    //         "+392.00(2.29%)",
+    //         style: Theme.of(context).textTheme.labelMedium,
+    //       ),
+    //     ],
+    //   ),
+    // ),);
+     return Stack(
          children: [
+
            Material(
              type: MaterialType.transparency,
              child: Container(

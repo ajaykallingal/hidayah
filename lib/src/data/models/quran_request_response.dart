@@ -45,10 +45,10 @@ class DisplayWholeQuranFiltered {
    required this.suartNumberOfAyats,
    required this.juzId,
    required this.ayatNumberInsurat,
-   required this.manzilId,
+   // required this.manzilId,
    required this.pageId,
-   required this.rukuId,
-   required this.sajdaNeededOrNot,
+   // required this.rukuId,
+   // required this.sajdaNeededOrNot,
    required this.fileName,
   });
 
@@ -63,10 +63,10 @@ class DisplayWholeQuranFiltered {
  final String suartNumberOfAyats;
  final String juzId;
  final String ayatNumberInsurat;
- final String manzilId;
+ // final String manzilId;
  final String pageId;
- final String rukuId;
-  dynamic sajdaNeededOrNot;
+ // final String rukuId;
+  // dynamic sajdaNeededOrNot;
  final String fileName;
 
   factory DisplayWholeQuranFiltered.fromJson(Map<String, dynamic> json) => DisplayWholeQuranFiltered(
@@ -81,10 +81,10 @@ class DisplayWholeQuranFiltered {
     suartNumberOfAyats: json["SuartNumberOfAyats"] == null ? null : json["SuartNumberOfAyats"],
     juzId: json["juz_id"] == null ? null : json["juz_id"],
     ayatNumberInsurat: json["AyatNumberInsurat"] == null ? null : json["AyatNumberInsurat"],
-    manzilId: json["manzil_id"] == null ? null : json["manzil_id"],
+    // manzilId: json["manzil_id"] == null ? null : json["manzil_id"],
     pageId: json["page_id"] == null ? null : json["page_id"],
-    rukuId: json["ruku_id"] == null ? null : json["ruku_id"],
-    sajdaNeededOrNot: json["SajdaNeededOrNot"] == null ? null : json["SajdaNeededOrNot"],
+    // rukuId: json["ruku_id"] == null ? null : json["ruku_id"],
+    // sajdaNeededOrNot: json["SajdaNeededOrNot"] == null ? null : json["SajdaNeededOrNot"],
     fileName: json["FileName"] == null ? null : json["FileName"],
   );
 
@@ -100,10 +100,10 @@ class DisplayWholeQuranFiltered {
     "SuartNumberOfAyats": suartNumberOfAyats == null ? null : suartNumberOfAyats,
     "juz_id": juzId == null ? null : juzId,
     "AyatNumberInsurat": ayatNumberInsurat == null ? null : ayatNumberInsurat,
-    "manzil_id": manzilId == null ? null : manzilId,
+    // "manzil_id": manzilId == null ? null : manzilId,
     "page_id": pageId == null ? null : pageId,
-    "ruku_id": rukuId == null ? null : rukuId,
-    "SajdaNeededOrNot": sajdaNeededOrNot == null ? null : sajdaNeededOrNot,
+    // "ruku_id": rukuId == null ? null : rukuId,
+    // "SajdaNeededOrNot": sajdaNeededOrNot == null ? null : sajdaNeededOrNot,
     "FileName": fileName == null ? null : fileName,
   };
 }

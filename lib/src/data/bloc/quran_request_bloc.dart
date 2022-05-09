@@ -7,7 +7,7 @@ import 'package:hidayah/src/data/models/quran_request.dart';
 import 'package:hidayah/src/data/models/quran_request_response.dart';
 import 'package:hidayah/src/shared_pref/object_factory.dart';
 
-class TestRequestBloc {
+class QuranRequestBloc {
   bool _isDispose = false;
 
 
@@ -21,13 +21,13 @@ class TestRequestBloc {
   StreamSink<QuranRequestResponse> get quranFetchSCSink => _quranFetchFilteredSC.sink;
   Stream<QuranRequestResponse> get quranFetchSCStreamListener => _quranFetchFilteredSC.stream;
 
-  /// stream for daily surat
-  final _displayDailySuratSC = StreamController<bool>.broadcast();
-  StreamSink<bool> get fetchDailySuratSCSink => _displayDailySuratSC.sink;
-  Stream<bool> get fetchDailySCStream => _displayDailySuratSC.stream;
+  // /// stream for daily surat
+  // final _displayDailySuratSC = StreamController<bool>.broadcast();
+  // StreamSink<bool> get fetchDailySuratSCSink => _displayDailySuratSC.sink;
+  // Stream<bool> get fetchDailySCStream => _displayDailySuratSC.stream;
 
 
-  TestRequestBloc();
+  QuranRequestBloc();
 
   /// quran screen
 

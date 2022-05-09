@@ -1,10 +1,13 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:hidayah/src/data/models/dua/dua_category_response.dart';
+import 'package:hidayah/src/ui/duas/components/view_all_dua_screen_arguments.dart';
 import 'package:hidayah/src/ui/duas/view_all_duas_screen.dart';
 
 import '../../constants/text_style.dart';
-import '../../data/bloc/test_request_bloc.dart';
+import '../../data/bloc/dua_category_bloc.dart';
+import '../../data/bloc/quran_request_bloc.dart';
 import '../../data/models/quran_request.dart';
 import '../../data/models/quran_request_response.dart';
 import '../Quran/components/search_bar_widget.dart';
@@ -44,48 +47,35 @@ class _DuasScreenState extends State<DuasScreen> with SingleTickerProviderStateM
   bool loading = true;
   int index = 0;
 
-  final testRequestBloc = TestRequestBloc();
-  Response? responseDetails;
-  List<DisplayWholeQuranFiltered>? displayWholeQuranFiltered;
+  final duaCategoryBloc = DuaCategoryBloc();
+   List? duaCategoryResposnse;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+      duaCategoryBloc.fetchDuaCategory();
 
     _tabController = TabController(
-        length: 2, vsync: this, initialIndex: selectedTabIndex);
+        length: 1, vsync: this, initialIndex: selectedTabIndex);
     _tabController.addListener(() {
       setState(() {
         print(_tabController.index);
       });
     });
-
-    testRequestBloc.quranFetchFiltered(
-      request: QuranRequest(
-        langId: languageId,
-        suratId: index.toString(),
-        ayathNo: ayathNo,
-        juzId: juzId,
-        ayathPageNo: ayathPageNo,
-        ayatAutoIncrId: ayathAutoIncrId,
-        searchText: searchText,
-        limitFrom: limitFrom,
-        limitTo: limitTo,
-        voiceTypeId: voiceTypeId,
-      ),
-    );
   }
 
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    testRequestBloc.quranFetchSCStreamListener.listen((event) {
-      setState(() {
-        loading = false;
-        displayWholeQuranFiltered = event.displayWholeQuranFiltered;
-      });
-    });
+
+duaCategoryBloc.duaCategoryFetchStreamListener.listen((event) {
+  setState(() {
+    loading = false;
+    duaCategoryResposnse = event.response;
+  });
+});
+
     super.didChangeDependencies();
   }
 
@@ -135,19 +125,19 @@ class _DuasScreenState extends State<DuasScreen> with SingleTickerProviderStateM
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SearchBarWidget(),
+                  // SearchBarWidget(),
                   Padding(
-                    padding: const EdgeInsets.only(left: 28, top: 10),
+                    padding: const EdgeInsets.only(left: 28, top: 20),
                     child: Text(
                       'Duas',
                       style: kQuranPageHeadlineTextStyle,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
 
 
                   DefaultTabController(
-                    length: 2,
+                    length: 1,
 
                     child: Column(
                       children: [
@@ -184,9 +174,9 @@ class _DuasScreenState extends State<DuasScreen> with SingleTickerProviderStateM
                                       text: "Categories",
 
                                     ),
-                                    Tab(
-                                      text: "Favourites",
-                                    ),
+                                    // Tab(
+                                    //   text: "Favourites",
+                                    // ),
 
 
 
@@ -196,85 +186,111 @@ class _DuasScreenState extends State<DuasScreen> with SingleTickerProviderStateM
 
                                 ),
 
-                                Container(
-                                  margin: EdgeInsets.all(8),
-                                  padding: EdgeInsets.all(10),
-                                  height: 450,
-                                  width: MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width,
-                                  child: TabBarView(
+                                StreamBuilder<DuaCategoryResponse>(
+                                  stream: duaCategoryBloc.duaCategoryFetchStreamListener,
+                                  builder: (context, snapshot) {
+                                    print(snapshot.data.toString());
+                                    if(snapshot.data == null|| !snapshot.hasData){
+                                      return Center(child: CircularProgressIndicator(color: mainRedShadeForText,),);
+                                    }else if(snapshot.hasError){
+                                      print(snapshot.error.toString());
+                                    }
 
-                                    controller: _tabController,
-                                    children: [
+                                      return Container(
+                                      margin: EdgeInsets.all(8),
+                                      padding: EdgeInsets.all(10),
+                                      height: 450,
+                                      width: MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width,
+                                      child: TabBarView(
 
-                                      loading
+                                        controller: _tabController,
+                                        children: [
 
-                                          ? Center(
-                                        child: CircularProgressIndicator(),)
-                                          : ListView.builder(
-                                        itemBuilder:
-                                            (BuildContext context, index) {
+                                          loading
 
-
-
-                                          return
-                                            ListTile(
-                                            title: Text(
-                                              displayWholeQuranFiltered![index].suratEngName!,
-                                              // displayWholeQuranFiltered![index]
-                                              //     .suratEngName! ,
-                                              softWrap: true,
-                                              style:
-                                              kQuranPageTabContentTitleStyle,
-                                            ),
-                                            leading: CircleAvatar(
-                                              backgroundImage: AssetImage("assets/images/dua.png"),
-                                            ),
-                                            subtitle: Text(
-                                              displayWholeQuranFiltered![index]
-                                                  .suartEnglishTranslation!,
-                                              // softWrap: true,
-                                              style:
-                                              kQuranPageTabContentSubTitleStyle,
-                                            ),
+                                              ? Center(
+                                            child: CircularProgressIndicator(),)
+                                              :
+                                          ListView.separated(
+                                            itemCount: snapshot.data!.response!.length,
+                                            itemBuilder:
+                                                (BuildContext context, index) {
 
 
 
-                                            onTap: () {
-                                            print(index.toString());
-                                            Navigator.pushNamed(context, ViewAllDuasScreen.id);
+                                              return
+                                                ListTile(
+                                                title: Text(
+                                                  snapshot.data!.response![index].duaCatName,
+
+                                                  softWrap: true,
+                                                  style:
+                                                  kQuranPageTabContentTitleStyle,
+                                                ),
+                                                leading: CircleAvatar(
+                                                  child: Text(snapshot.data!.response![index].duaCatId ),
+                                                  // Stack(
+                                                  //   children: [
+                                                  //     Image.asset("assets/images/duaimage.jpg"),
+                                                  //     Text(snapshot.data!.response![index].duaCatId ),
+                                                  //   ],
+                                                  // ),
+                                                  radius: 30,
+                                                  backgroundColor: Colors.transparent,
+                                                  backgroundImage: AssetImage("assets/images/duaimage.jpg"),
+                                                ),
+                                                // subtitle: Text(
+                                                //   snapshot.data!.response![index].duaCatId,
+                                                //   // softWrap: true,
+                                                //   style:
+                                                //   kQuranPageTabContentSubTitleStyle,
+                                                // ),
+
+
+
+                                                onTap: () {
+                                                print(index.toString());
+
+                                                Navigator.pushNamed(context, ViewAllDuasScreen.id,
+                                                  arguments: ViewAllDuaScreenArguments(catId: snapshot.data!.response![index].duaCatId),
+                                                );
+                                                },
+                                              );
                                             },
-                                          );
-                                        },
-                                        itemCount: displayWholeQuranFiltered!.length,
-                                        scrollDirection: Axis.vertical,
-                                        controller: _scrollController,
-                                        physics: BouncingScrollPhysics(),
+
+                                            scrollDirection: Axis.vertical,
+                                            controller: _scrollController,
+                                            physics: BouncingScrollPhysics(),
+                                            separatorBuilder: (BuildContext context, int index)=> Divider(),
+                                          ),
+                                          // ListView.builder(
+                                          //   itemBuilder:
+                                          //       (BuildContext context, index) {
+                                          //     return ListTile(
+                                          //       title: Text(
+                                          //         "data",
+                                          //         style:
+                                          //         TextStyle(color: Colors.black),
+                                          //       ),
+                                          //
+                                          //
+                                          //     );
+                                          //   },
+                                          //   itemCount: 10,
+                                          //   scrollDirection: Axis.vertical,
+                                          //   // controller: _scrollController,
+                                          //   physics: BouncingScrollPhysics(),
+                                          // ),
+
+
+                                        ],
                                       ),
-                                      ListView.builder(
-                                        itemBuilder:
-                                            (BuildContext context, index) {
-                                          return ListTile(
-                                            title: Text(
-                                              "data",
-                                              style:
-                                              TextStyle(color: Colors.black),
-                                            ),
+                                    );
+                                    }
 
-
-                                          );
-                                        },
-                                        itemCount: 10,
-                                        scrollDirection: Axis.vertical,
-                                        // controller: _scrollController,
-                                        physics: BouncingScrollPhysics(),
-                                      ),
-
-
-                                    ],
-                                  ),
                                 ),
                               ],
                             ),

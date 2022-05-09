@@ -3,7 +3,12 @@ import 'package:hidayah/src/constants/text_style.dart';
 import 'package:hidayah/src/ui/more/text_style.dart';
 import 'package:hidayah/src/ui/more/widgets/more_screen_list_tile_widget.dart';
 import 'package:hidayah/src/ui/near_mosques/near_by_mosques.dart';
+import 'package:hidayah/src/ui/prayer_times/prayer_time_screen_arguments.dart';
 import 'package:hidayah/src/ui/prayer_times/prayer_times_screen.dart';
+import 'package:hidayah/src/ui/qibla%20compass/qibla_compass.dart';
+import 'package:hidayah/src/ui/qibla%20compass/qibla_compass_widget.dart';
+
+import '../notes/notes_screen.dart';
 
 class MoreScreen extends StatefulWidget {
   static const String id = 'more_screen';
@@ -15,6 +20,7 @@ class MoreScreen extends StatefulWidget {
 }
 
 class _MoreScreenState extends State<MoreScreen> {
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -78,15 +84,47 @@ class _MoreScreenState extends State<MoreScreen> {
                               Navigator.pushNamed(context, PrayerTimesScreen.id);
                             },
                           ),
+                          // SizedBox(height: 10),
+                          // InkWell(
+                          //   child: MoreScreenListTileWidget(
+                          //     iconPath: 'assets/images/NEAREST MOSQUE.png',
+                          //     title: "Nearest Mosques",
+                          //     subTitle: "Search nearest mosques around you.",
+                          //   ),
+                          //   onTap: (){
+                          //     Navigator.pushNamed(context, NearByMosques.id);
+                          //   },
+                          // ),
                           SizedBox(height: 10),
+
                           InkWell(
                             child: MoreScreenListTileWidget(
-                              iconPath: 'assets/images/NEAREST MOSQUE.png',
-                              title: "Nearest Mosques",
-                              subTitle: "Search nearest mosques around you.",
+                              title: 'Notes',
+                              subTitle:
+                              'Notes',
+                              iconPath: 'assets/images/NOTES.png',
                             ),
-                            onTap: (){
-                              Navigator.pushNamed(context, NearByMosques.id);
+                            onTap: () {
+                              setState(() {
+                                Navigator.pushNamed(context, NotesScreen.id);
+
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10),
+
+                          InkWell(
+                            child: MoreScreenListTileWidget(
+                              title: 'Qibla Compass',
+                              subTitle:
+                              'Show accurate qibla\ndirection from your location.',
+                              iconPath: 'assets/images/QIBLA_COMPASS.png',
+                            ),
+                            onTap: () {
+                              setState(() {
+                                Navigator.pushNamed(context, QiblaCompassWidget.id);
+
+                              });
                             },
                           ),
                           // MoreScreenListTileWidget(iconPath: iconPath, title: title, subTitle: subTitle)

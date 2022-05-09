@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hidayah/src/constants/app_state.dart';
+import 'package:hidayah/src/shared_pref/object_factory.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'my_app.dart';
 
@@ -40,9 +42,9 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterL
 
  
 
-//   final SharedPreferences sharedPreferences =
-// await SharedPreferences.getInstance();
-//   ObjectFactory().setPrefs(sharedPreferences);
+  final SharedPreferences sharedPreferences =
+await SharedPreferences.getInstance();
+  ObjectFactory().setPrefs(sharedPreferences);
 
 /// setting pref
 

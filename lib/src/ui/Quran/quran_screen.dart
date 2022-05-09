@@ -10,12 +10,13 @@ import 'package:hidayah/src/constants/text_style.dart';
 import 'package:hidayah/src/data/models/quran_request.dart';
 import 'package:hidayah/src/data/models/surah/surah_response.dart';
 import 'package:hidayah/src/data/models/surat_model.dart';
+import 'package:hidayah/src/shared_pref/object_factory.dart';
 import 'package:hidayah/src/ui/Quran/components/quran_arabic_translated_page.dart';
 import 'package:hidayah/src/ui/Quran/components/quran_translated_page_arguments.dart';
 import 'package:hidayah/src/ui/Quran/widgets/tab_bar_view_content.dart';
 import 'package:hidayah/src/ui/home/components/glass_morphic_container.dart';
 
-import '../../data/bloc/test_request_bloc.dart';
+import '../../data/bloc/quran_request_bloc.dart';
 import '../../data/models/quran_request_response.dart';
 import 'components/search_bar_widget.dart';
 import 'components/textStyle.dart';
@@ -31,19 +32,18 @@ class QuranScreen extends StatefulWidget {
 
 class _QuranScreenState extends State<QuranScreen>
     with SingleTickerProviderStateMixin {
-  List tabList = ["Surah", "Jus", "Favourites"];
+  List tabList = ["Surah"];
   // List surahList = SuratModel() as List<Map<String, dynamic>>;
   // List<DisplayWholeQuranFiltered> displayWholeQuranFiltered = List.empty(growable: true);
   List<SurahResponse> surahList = List.empty(growable: true);
   int index = 0;
 
   // displayWholeQuranFiltered.addAll(List<DisplayWholeQuranFiltered>.from(SuratModel.surahList.map((x) => DisplayWholeQuranFiltered.fromJson(x))));
-
   int selectedTabIndex = 0;
   late TabController _tabController;
   ScrollController _scrollController = new ScrollController();
 
-  final String languageId = "12";
+  final String languageId = ObjectFactory().prefs.getUserData()!.response!.userSelectedLanguageId.toString();
   final String suratId = "1";
   final String ayathNo = "0";
   final String juzId = "0";
@@ -56,7 +56,7 @@ class _QuranScreenState extends State<QuranScreen>
 
   bool loading = true;
 
-  final testRequestBloc = TestRequestBloc();
+  final quranRequestBloc = QuranRequestBloc();
   Response? responseDetails;
   List<DisplayWholeQuranFiltered>? displayWholeQuranFiltered;
   int? _isFavSelectedIndex;
@@ -80,7 +80,7 @@ class _QuranScreenState extends State<QuranScreen>
       });
     });
 
-    testRequestBloc.quranFetchFiltered(
+    quranRequestBloc.quranFetchFiltered(
       request: QuranRequest(
         langId: languageId,
         suratId: surahList[index].id,
@@ -99,7 +99,7 @@ class _QuranScreenState extends State<QuranScreen>
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    testRequestBloc.quranFetchSCStreamListener.listen((event) {
+    quranRequestBloc.quranFetchSCStreamListener.listen((event) {
       setState(() {
         loading = false;
         displayWholeQuranFiltered = event.displayWholeQuranFiltered;
@@ -150,7 +150,7 @@ class _QuranScreenState extends State<QuranScreen>
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 2),
-                  SearchBarWidget(),
+                  // SearchBarWidget(),
                   Padding(
                     padding: const EdgeInsets.only(left: 28, top: 5),
                     child: Text(
@@ -292,10 +292,7 @@ class _QuranScreenState extends State<QuranScreen>
 
                                                     // color: mainRedShadeForTitle,
 
-                                                  trailing: IconButton(onPressed: (){},
-                                                      icon: _isFavSelectedIndex != null && _isFavSelectedIndex == suratId ?
-                                                      Icon(Icons.favorite) : Icon(Icons.favorite_border),
-                                                  ),
+
 
                                                   // ImageIcon(
                                                   //   AssetImage(
@@ -328,60 +325,60 @@ class _QuranScreenState extends State<QuranScreen>
                                               controller: _scrollController,
                                               physics: BouncingScrollPhysics(),
                                             ),
-                                    loading ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle,),) :  ListView.builder(
-                                        itemBuilder:
-                                            (BuildContext context, index) {
-                                          return ListTile(
-                                            title: Text(
-                                              "data",
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                            leading: ImageIcon(
-                                              AssetImage(
-                                                  "assets/images/READ_QURAN.png"),
-                                              color: mainRedShadeForTitle,
-                                            ),
-                                            trailing: ImageIcon(
-                                              AssetImage(
-                                                "assets/images/HEART_STROKE.png",
-                                              ),
-                                              color: mainRedShadeForTitle,
-                                            ),
-                                          );
-                                        },
-                                        itemCount: 10,
-                                        scrollDirection: Axis.vertical,
-                                        controller: _scrollController,
-                                        physics: BouncingScrollPhysics(),
-                                      ),
-                                     loading ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle,),) : ListView.builder(
-                                        itemBuilder:
-                                            (BuildContext context, index) {
-                                          return ListTile(
-                                            title: Text(
-                                              "data",
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                            leading: ImageIcon(
-                                              AssetImage(
-                                                  "assets/images/READ_QURAN.png"),
-                                              color: mainRedShadeForTitle,
-                                            ),
-                                            trailing: ImageIcon(
-                                              AssetImage(
-                                                "assets/images/HEART_STROKE.png",
-                                              ),
-                                              color: mainRedShadeForTitle,
-                                            ),
-                                          );
-                                        },
-                                        itemCount: 10,
-                                        scrollDirection: Axis.vertical,
-                                        controller: _scrollController,
-                                        physics: BouncingScrollPhysics(),
-                                      ),
+                                    // loading ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle,),) :  ListView.builder(
+                                    //     itemBuilder:
+                                    //         (BuildContext context, index) {
+                                    //       return ListTile(
+                                    //         title: Text(
+                                    //           "data",
+                                    //           style: TextStyle(
+                                    //               color: Colors.black),
+                                    //         ),
+                                    //         leading: ImageIcon(
+                                    //           AssetImage(
+                                    //               "assets/images/READ_QURAN.png"),
+                                    //           color: mainRedShadeForTitle,
+                                    //         ),
+                                    //         trailing: ImageIcon(
+                                    //           AssetImage(
+                                    //             "assets/images/HEART_STROKE.png",
+                                    //           ),
+                                    //           color: mainRedShadeForTitle,
+                                    //         ),
+                                    //       );
+                                    //     },
+                                    //     itemCount: 10,
+                                    //     scrollDirection: Axis.vertical,
+                                    //     controller: _scrollController,
+                                    //     physics: BouncingScrollPhysics(),
+                                    //   ),
+                                    //  loading ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle,),) : ListView.builder(
+                                    //     itemBuilder:
+                                    //         (BuildContext context, index) {
+                                    //       return ListTile(
+                                    //         title: Text(
+                                    //           "data",
+                                    //           style: TextStyle(
+                                    //               color: Colors.black),
+                                    //         ),
+                                    //         leading: ImageIcon(
+                                    //           AssetImage(
+                                    //               "assets/images/READ_QURAN.png"),
+                                    //           color: mainRedShadeForTitle,
+                                    //         ),
+                                    //         trailing: ImageIcon(
+                                    //           AssetImage(
+                                    //             "assets/images/HEART_STROKE.png",
+                                    //           ),
+                                    //           color: mainRedShadeForTitle,
+                                    //         ),
+                                    //       );
+                                    //     },
+                                    //     itemCount: 10,
+                                    //     scrollDirection: Axis.vertical,
+                                    //     controller: _scrollController,
+                                    //     physics: BouncingScrollPhysics(),
+                                    //   ),
                                     ],
                                   ),
                                 ),

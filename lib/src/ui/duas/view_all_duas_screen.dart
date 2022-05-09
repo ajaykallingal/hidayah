@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hidayah/src/data/bloc/dua_sub_category_bloc.dart';
+import 'package:hidayah/src/data/models/dua/dua_category_response.dart';
+import 'package:hidayah/src/data/models/dua_sub_category/dua_sub_category_request.dart';
+import 'package:hidayah/src/data/models/dua_sub_category/dua_sub_category_response.dart';
+import 'package:hidayah/src/ui/duas/components/view_all_dua_screen_arguments.dart';
+import 'package:hidayah/src/ui/duas/components/view_dua_detailed_screen_arguments.dart';
+import 'package:hidayah/src/ui/duas/view_dua_detailed_screen.dart';
 
 import '../../constants/text_style.dart';
 import '../Quran/components/search_bar_widget.dart';
 import '../Quran/components/textStyle.dart';
+import '../prayer_times/text_style.dart';
 
 class ViewAllDuasScreen extends StatefulWidget {
   static const String id = 'view_all_duas_screen';
+
 
   const ViewAllDuasScreen({Key? key}) : super(key: key);
 
@@ -14,8 +23,40 @@ class ViewAllDuasScreen extends StatefulWidget {
 }
 
 class _ViewAllDuasScreenState extends State<ViewAllDuasScreen> {
+ bool callOneTime = true;
+  bool loading = true;
+  final duaSubCategoryBloc = DuaSubCategoryBloc();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // duaSubCategoryBloc.fetchDuaSubCategory(
+    //     request: DuaSubCategoryRequest(catId: "1"),
+    // );
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+
+    duaSubCategoryBloc.duaSubCategorySCStreamListener.listen((event) {
+     loading = false;
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as ViewAllDuaScreenArguments;
+
+
+      duaSubCategoryBloc.fetchDuaSubCategory(
+          request: DuaSubCategoryRequest(catId: args.catId),
+      );
+
     return Stack(
       children: [
         Container(
@@ -46,20 +87,28 @@ class _ViewAllDuasScreenState extends State<ViewAllDuasScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SearchBarWidget(),
+                  // SearchBarWidget(),
                   Padding(
                     padding: const EdgeInsets.only(left: 28, top: 10),
-                    child: Text(
-                      'All Duas',
-                      style: kQuranPageHeadlineTextStyle,
+                    child:  ListTile(
+                      horizontalTitleGap: 50,
+                      leading: IconButton(onPressed: (){
+                        Navigator.pop(context);
+                      }, icon: Icon(Icons.arrow_back,color: Colors.white),),
+                      title: Text("All Dua",style: kPrayerTimeScreenHeaderStyle,),
                     ),
                   ),
                   SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.only(left:10,right: 10),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(1),
+                    child:
+                         StreamBuilder<DuaSubCategoryResponse>(
+                           stream: duaSubCategoryBloc.duaSubCategorySCStreamListener,
+                           builder: (context, snapshot) {
+                             return
+                                Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(1),
 
                         borderRadius: BorderRadius.circular(20),
                       ),
@@ -67,28 +116,46 @@ class _ViewAllDuasScreenState extends State<ViewAllDuasScreen> {
                       padding: EdgeInsets.all(10),
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
-                      child: ListView.builder(
-                        itemBuilder: (BuildContext context, index) {
-                          return ListTile(
-                            title: Text(
-                              "data",
-                              style: TextStyle(color: Colors.black),
-                            ),
+                      child: loading ? Center(child: CircularProgressIndicator(color: mainRedShadeForText,),) :
+                      ListView.builder(
+                          itemCount: snapshot.data!.response!.length,
+                          itemBuilder: (BuildContext context, index) {
+                            if(snapshot.data == null || !snapshot.hasData){
+                              return Center(child: CircularProgressIndicator(color: mainRedShadeForText,));
+                            }else {
+                              return ListTile(
+                                title: Text(
+                                  snapshot.data!.response![index].duaSubCatName,
+                                  style: TextStyle(color: Colors.black),
+                                ),
 
-                            trailing: IconButton(onPressed: (){},
-                              icon: Icon(Icons.arrow_forward_ios,color: mainRedShadeForTitle,size: 15,),
-                              padding: EdgeInsets.zero,
-                            )
+                                        trailing: IconButton(onPressed: (){
+                                          Navigator.of(context).pushNamed(ViewDuaDetailedScreen.id,arguments: ViewDuaDetailedScreenArguments(subCatId: snapshot.data!.response![index].duaSubCatId));
 
-                          );
-                        },
-                        itemCount: 10,
-                        scrollDirection: Axis.vertical,
-                        // controller: _scrollController,
-                        physics: BouncingScrollPhysics(),
-                      ),
-                    ),
-                  ),
+                                        },
+                                          icon: Icon(Icons.arrow_forward_ios,color: mainRedShadeForTitle,size: 15,),
+                                          padding: EdgeInsets.zero,
+                                        ),
+                                
+                                onTap: (){
+                                  Navigator.of(context).pushNamed(ViewDuaDetailedScreen.id,arguments: ViewDuaDetailedScreenArguments(subCatId: snapshot.data!.response![index].duaSubCatId));
+                                },
+
+                                      );
+                            }
+                                    },
+                                    scrollDirection: Axis.vertical,
+                                    // controller: _scrollController,
+                                    physics: BouncingScrollPhysics(),
+                                  ),
+
+                              );
+                           }
+                         ),
+                        ),
+
+
+
                 ],
               ),
             ),

@@ -44,11 +44,23 @@ TextStyle kHomePageCardTitleTextStyle = TextStyle(
   color: Colors.black.withOpacity(1.0),
   fontWeight: FontWeight.w600,
 );
+TextStyle kDhikrScreenStyle = TextStyle(
+  fontFamily: FontFamily.sfProDisplay,
+  fontSize: 18,
+  color: Colors.white.withOpacity(1.0),
+  fontWeight: FontWeight.w600,
+);
 TextStyle kHomePageCard1TextStyle1 = TextStyle(
   fontFamily: FontFamily.sfProDisplay,
   fontSize: 15,
   color: kCardGreyShadeForText,
   fontWeight: FontWeight.w700,
+);
+TextStyle kHomePageCard1GoalsStyle = TextStyle(
+  fontFamily: FontFamily.sfProDisplay,
+  fontSize: 15,
+  color: kCardGreyShadeForText,
+  fontWeight: FontWeight.w500,
 );
 TextStyle kHomePageCard1TextStyle2 = TextStyle(
   fontFamily: FontFamily.sfProDisplay,
@@ -121,7 +133,7 @@ TextStyle kHomePageCard6TextStyle2 = TextStyle(
 );
 TextStyle kHomePageCard7TextStyle1 = TextStyle(
   fontFamily: FontFamily.sfProDisplay,
-  fontSize: 11,
+  fontSize: 13,
   // fontStyle: FontStyle.italic,
   color: kCardGreyShadeForText,
   // fontWeight: FontWeight.w500,

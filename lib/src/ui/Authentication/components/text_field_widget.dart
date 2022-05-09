@@ -1,17 +1,22 @@
 
 
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:hidayah/src/constants/text_style.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final String? labelText;
   final ImageIcon? textFieldIcon;
+  final TextEditingController textEditingController;
+  // final bool readOnly;
+  // final
 
   // final BuildContext context;
   bool isObscured = false ;
 
-  TextFieldWidget({required this.labelText, this.textFieldIcon,required this.isObscured});
+  TextFieldWidget({required this.labelText, this.textFieldIcon,required this.isObscured,required this.textEditingController,});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +29,19 @@ class TextFieldWidget extends StatelessWidget {
         height: 40,
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
+          cursorColor: Colors.black,
+          style: TextStyle(color: Colors.black),
+          onSaved: (value){
+            textEditingController.text = value!;
+          },
           enabled: true,
+          validator: (value){
+            textEditingController.text = value!;
+            if(textEditingController.text.isEmpty){
+              return "Email and Password is required!";
+            }
+          },
+            controller: textEditingController,
             // maxLines: 5,
 
             textAlign: TextAlign.center,

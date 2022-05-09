@@ -22,9 +22,9 @@ class ObjectFactory{
 
   /// initialisation of objects
 
-  Prefs _prefs = Prefs();
-  ApiClient _apiClient = ApiClient();
-  Repository _repository = Repository();
+  final Prefs _prefs = Prefs();
+  final ApiClient _apiClient = ApiClient();
+  final Repository _repository = Repository();
 
 ///
 /// Getters of Objects

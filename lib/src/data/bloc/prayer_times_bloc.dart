@@ -3,38 +3,54 @@
 import 'dart:async';
 
 import 'package:hidayah/src/data/models/common/state_model.dart';
-import 'package:hidayah/src/data/models/prayer_time_response.dart';
+import 'package:hidayah/src/data/models/prayerTimes/prayer_time_request.dart';
+import 'package:hidayah/src/data/models/prayerTimes/prayer_time_response.dart';
 import 'package:hidayah/src/shared_pref/object_factory.dart';
 
 import '../../constants/strings.dart';
 
-class PrayerTimeBloc{
+class PrayerTimeBloc {
 
-  StreamController<bool> _loading = new StreamController<bool>.broadcast();
   bool _isDisposed = false;
 
-  StreamController<Datum> _getPrayerTimes =
-      new StreamController<Datum>.broadcast();
+  ///Stream for loader
+  final _loadingSC = StreamController<bool>.broadcast();
+
+  StreamSink<bool> get loadingSink => _loadingSC.sink;
+
+  Stream<bool> get loadingStream => _loadingSC.stream;
 
   ///Stream to fetch all prayer times
-  Stream<Datum?> get viewAllPrayerTimesResponse =>
-      _getPrayerTimes.stream;
-  Stream<bool> get loadingListener => _loading.stream;
-  StreamSink<bool> get loadingSink => _loading.sink;
+  final _fetchPrayerTimesSC = StreamController<
+      GetPrayerTimesReponse>.broadcast();
 
-  getAllPrayerTimes()async{
-    if(_isDisposed){
+  StreamSink<GetPrayerTimesReponse> get prayerTimesFetchSCSink =>
+      _fetchPrayerTimesSC.sink;
+
+  Stream<GetPrayerTimesReponse> get prayerTimesFetchSCStreamListener =>
+      _fetchPrayerTimesSC.stream;
+
+
+
+  PrayerTimeBloc();
+
+
+  getAllPrayerTimes({required GetPrayerTimesRequest request}) async {
+    if (_isDisposed) {
       return;
-
     }
     loadingSink.add(true);
-    StateModel? state = await ObjectFactory().repository.getPrayerTimes();
-    if(state is SuccessState) {
-      _getPrayerTimes.sink.add(state.value as Datum);
+    StateModel? state = await ObjectFactory().repository.getAllPrayerTimes(
+        request);
 
-    }else if(state is ErrorState) {
-      _getPrayerTimes.sink.addError(Strings.SOME_ERROR_OCCURRED);
+    if (state is SuccessState) {
+      if (!_fetchPrayerTimesSC.isClosed) {
+        prayerTimesFetchSCSink.add(state.value as GetPrayerTimesReponse);
+      }
+    } else if (state is ErrorState) {
+      prayerTimesFetchSCSink.addError(Strings.SOME_ERROR_OCCURRED);
     }
+
     loadingSink.add(false);
   }
 }

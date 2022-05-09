@@ -4,7 +4,9 @@ import 'package:hidayah/src/constants/text_style.dart';
 class PersonalDetailTextFieldWidget extends StatelessWidget {
   final String? labelText;
   final bool? isObscured;
-  const PersonalDetailTextFieldWidget({Key? key,this.labelText,this.isObscured}) : super(key: key);
+  final TextEditingController textEditingController;
+  final TextInputType keyboardType;
+  const PersonalDetailTextFieldWidget({Key? key,this.labelText,this.isObscured,required this.textEditingController,required this.keyboardType}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +17,9 @@ class PersonalDetailTextFieldWidget extends StatelessWidget {
       height: 40,
       width: MediaQuery.of(context).size.width,
       child: TextFormField(
+        style: TextStyle(color: Colors.black54),
+        keyboardType: keyboardType,
+        controller: textEditingController,
         enabled: true,
         // textAlign: TextAlign.center,
         obscureText: isObscured!,
