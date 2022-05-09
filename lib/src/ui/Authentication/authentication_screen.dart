@@ -32,6 +32,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   String userId = "0";
   String status = "";
   LoginResponse? loginResponse;
+  bool isShowPassword = true;
 
   // void navigationPage() {
   //   if (mounted) {
@@ -101,172 +102,174 @@ resizeToAvoidBottomInset: true,
                 image: AssetImage('assets/images/bg_pattern.png'),
               ),
             ),
-            child: SingleChildScrollView(
-              child: Stack(
-                children: [
-                  // SizedBox(height: 200),
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 25),
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: Container(
-                          height: 141,
-                          width: 172,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/logo_white.png'),
+            child: SafeArea(
+              child: SingleChildScrollView(
+                child: Stack(
+                  children: [
+                    // SizedBox(height: 200),
+                    Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      // crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 25),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            height: 141,
+                            width: 172,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/logo_white.png'),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            height: 370,
-                            width: 324,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              // color: Colors.white.withOpacity(1.0),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Stack(
+                          children: [
+                            Container(
+                              height: 370,
+                              width: 324,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                // color: Colors.white.withOpacity(1.0),
+                              ),
                             ),
-                          ),
-                          Container(
-                            height: 340,
-                            width: 324,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white.withOpacity(1.0),
-                            ),
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: buildLoginForm(),
-                                ),
-
-                                // Row(
-                                //   mainAxisAlignment: MainAxisAlignment.end,
-                                //   children: [
-                                //     Padding(
-                                //       padding:
-                                //           const EdgeInsets.only(right: 15, top: 0),
-                                //       child: buildForgotPassword(),
-                                //     ),
-                                //   ],
-                                // ),
-                                SizedBox(height: 15 ),
-                                buildDontHaveAccount(),
-
-                              ],
-                            ),
-                          ),
-
-                          Positioned(
-                            top: 280,
-                            left: 230,
-                            // bottom: MediaQuery.of(context).size.height * 4,
-                            // right: MediaQuery.of(context).size.width / 1.9,
-                            // bottom: 65,
-                            child: Stack(
-                              children: [
-                                Container(
-                                  height: 81,
-                                  width: 81,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white.withOpacity(1.0),
-                                    // color: Colors.red.withOpacity(1.0),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Color(0xffE9EAFE),
-                                        offset: Offset(
-                                          0.0,
-                                          2.0,
-                                        ),
-                                        blurRadius: 10.0,
-                                        spreadRadius: 0.0,
-                                      ),
-                                    ],
+                            Container(
+                              height: 340,
+                              width: 324,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white.withOpacity(1.0),
+                              ),
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 10,
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(13.0),
-                                    child: Container(
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        gradient: RadialGradient(
-                                          center: Alignment.center,
-                                          colors: [
-                                            Color(0xffE80000),
-                                            Color(0xff382424),
-                                          ],
-                                          radius: 1.0,
-                                          focal: Alignment.bottomRight,
-                                          // focalRadius: 1.0,
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: buildLoginForm(),
+                                  ),
+
+                                  // Row(
+                                  //   mainAxisAlignment: MainAxisAlignment.end,
+                                  //   children: [
+                                  //     Padding(
+                                  //       padding:
+                                  //           const EdgeInsets.only(right: 15, top: 0),
+                                  //       child: buildForgotPassword(),
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  SizedBox(height: 15 ),
+                                  buildDontHaveAccount(),
+
+                                ],
+                              ),
+                            ),
+
+                            Positioned(
+                              top: 280,
+                              left: 230,
+                              // bottom: MediaQuery.of(context).size.height * 4,
+                              // right: MediaQuery.of(context).size.width / 1.9,
+                              // bottom: 65,
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    height: 81,
+                                    width: 81,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.white.withOpacity(1.0),
+                                      // color: Colors.red.withOpacity(1.0),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Color(0xffE9EAFE),
+                                          offset: Offset(
+                                            0.0,
+                                            2.0,
+                                          ),
+                                          blurRadius: 10.0,
+                                          spreadRadius: 0.0,
                                         ),
-                                      ),
-                                      child: RawMaterialButton(
-                                        elevation: 2,
-
-                                        // fillColor: Colors.redAccent,
-                                        child: const ImageIcon(
-                                          AssetImage('assets/images/RIGHT_ARROW.png'),
-                                          color: Colors.white,
-                                          size: 12,
+                                      ],
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(13.0),
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          gradient: RadialGradient(
+                                            center: Alignment.center,
+                                            colors: [
+                                              Color(0xffE80000),
+                                              Color(0xff382424),
+                                            ],
+                                            radius: 1.0,
+                                            focal: Alignment.bottomRight,
+                                            // focalRadius: 1.0,
+                                          ),
                                         ),
-                                        shape: CircleBorder(),
-                                        onPressed: () {
-                                          print(status.toString());
-                                          if (EmailValidator.validate(emailTextEditingController.text )) {
-                                            showToastShort(
-                                                "Please provide a valid email");
-                                          }
-                                          if (passwordTextEditingController
-                                              .text.isEmpty) {
-                                            showToastShort("Invalid Password!");
-                                          }
-                                          if (!loading) {
-                                            setState(() {
-                                              loading = true;
-                                            });
-                                            loginWithEmailBloc.loginWithEmailAndPassword(
-                                              request: LoginWithEmailRequest(
-                                                  userEmail:
-                                                  emailTextEditingController.text,
-                                                  userPassword:
-                                                  passwordTextEditingController.text),
-                                            );
+                                        child: RawMaterialButton(
+                                          elevation: 2,
 
-                                          }
+                                          // fillColor: Colors.redAccent,
+                                          child: const ImageIcon(
+                                            AssetImage('assets/images/RIGHT_ARROW.png'),
+                                            color: Colors.white,
+                                            size: 12,
+                                          ),
+                                          shape: CircleBorder(),
+                                          onPressed: () {
+                                            print(status.toString());
+                                            if (EmailValidator.validate(emailTextEditingController.text )) {
+                                              showToastShort(
+                                                  "Please provide a valid email");
+                                            }
+                                            if (passwordTextEditingController
+                                                .text.isEmpty) {
+                                              showToastShort("Invalid Password!");
+                                            }
+                                            if (!loading) {
+                                              setState(() {
+                                                loading = true;
+                                              });
+                                              loginWithEmailBloc.loginWithEmailAndPassword(
+                                                request: LoginWithEmailRequest(
+                                                    userEmail:
+                                                    emailTextEditingController.text,
+                                                    userPassword:
+                                                    passwordTextEditingController.text),
+                                              );
 
-                                          print(
-                                              "${emailTextEditingController.text + passwordTextEditingController.text}");
+                                            }
+
+                                            print(
+                                                "${emailTextEditingController.text + passwordTextEditingController.text}");
 
 
-                                          // navigationPage();
-                                        },
+                                            // navigationPage();
+                                          },
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                          ],
+                        ),
+                      ],
+                    ),
 
 
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -336,14 +339,21 @@ resizeToAvoidBottomInset: true,
         SizedBox(height: 20),
         TextFieldWidget(
           // context: context,
-          isObscured: true,
+          isObscured: isShowPassword ? true : false,
           labelText: 'Password',
           textEditingController: passwordTextEditingController,
           textFieldIcon:
-              ImageIcon(AssetImage('assets/images/PASSWORD_ICON.png'),
-                  color: Color(
-                    0xffD10005,
-                  )),
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isShowPassword = !isShowPassword;
+                  });
+                },
+                child: ImageIcon(AssetImage('assets/images/PASSWORD_ICON.png'),
+                    color: Color(
+                      0xffD10005,
+                    )),
+              ),
         ),
 
       ],

@@ -27,6 +27,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final signUpBloc = PersonalDetailsBloc();
   bool loading = false;
+  bool isShowPassword = true;
   String userId = "0";
 
   @override
@@ -92,6 +93,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 10),
                         Stack(
 
                           children: [
@@ -253,7 +255,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           SizedBox(height: 20),
           TextFieldWidget(
             // context: context,
-            isObscured: true,
+            isObscured: false,
             labelText: 'EmailAddress',
             textFieldIcon: ImageIcon(AssetImage('assets/images/MAIL_ICON.png'),
                 color: Color(
@@ -263,13 +265,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
           SizedBox(height: 20),
           TextFieldWidget(
-            isObscured: true,
+            isObscured: isShowPassword ? true : false,
             textFieldIcon:
-                ImageIcon(AssetImage('assets/images/PASSWORD_ICON.png'),
-                    color: Color(
-                      0xffD10005,
-                    )),
+                GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      isShowPassword = !isShowPassword;
+                    });
+                  },
+                  child: ImageIcon(AssetImage('assets/images/PASSWORD_ICON.png'),
+
+                      color: Color(
+                        0xffD10005,
+                      )),
+                ),
             labelText: 'Password',
+
             textEditingController: passwordController,
           ),
           // SizedBox(height: 20),

@@ -187,7 +187,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
           ObjectFactory().prefs.setIsLoggedIn(true);
           ObjectFactory().prefs.saveUserData(event);
           Navigator.pushNamed(context, HomeScreen.id,
-              arguments: LatLong(latitude: position!.latitude, longitude: position!.longitude)
+              // arguments: LatLong(latitude: position!.latitude, longitude: position!.longitude)
           );
 
 
