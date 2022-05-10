@@ -21,7 +21,7 @@ class NotesScreen extends StatefulWidget {
 class _NotesScreenState extends State<NotesScreen> {
   final userNotesBloc = UserNotesShowBloc();
   // final deleteUserNotes = DeleteN
-  bool loading = true;
+  bool loading = false;
   List<ResponseOfNote>? noteResponse = List.empty(growable: true);
   final String userId = "0";
 
@@ -80,151 +80,173 @@ class _NotesScreenState extends State<NotesScreen> {
           ),
         ),
         SafeArea(
-          child: loading ? Center(child: CircularProgressIndicator(color: Colors.white,),) : Stack(
+          child: loading ?
+          const Center(child:  CircularProgressIndicator(color: Colors.white,),) :
+          Stack(
             children: [
               Material(
                 type: MaterialType.transparency,
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: Colors.white.withOpacity(1),
-                        ),
-                      ),
-                      title: Text(
-                        "Notes",
-                        style: kPrayerTimeScreenHeaderStyle,
-                      ),
-                    ),
-                    noteResponse!.isEmpty || loading
-                        ?
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Container(
-                        color: Colors.white,
-                        height: 560,
-                        width: MediaQuery.of(context).size.width,
-                        child: Column(
+                child:
 
-                          children: [
-                            SizedBox(height: 200),
-                            Container(
-                              height: 90,
-                              width: 90,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.contain,
-                                    image: AssetImage("assets/images/no note.png"),
-                                ),
-                              ),
-
-                            ),
-                            Text("There is no note available!\nTap the add new notes icon.",style: TextStyle(color: Colors.black),),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 190,right: 10),
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: CircleBorder(),
-                                    elevation: 8,
-                                    primary: mainRedShadeForTitle,
-                                    fixedSize: Size(50, 50),
-                                  ),
-                                    onPressed: (){
-                                    Navigator.pushNamed(context, AddNewNotes.id);
-                                    },
-                                    child: ImageIcon(AssetImage("assets/images/new note.png"))
-                                ),
-                              ),
-                            )
-
-                          ],
-                        ),
-                        )
-
-
-                    ) :
-
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
+                Column(
+                      children: [
+                        ListTile(
+                          leading: IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: Icon(
+                              Icons.arrow_back,
                               color: Colors.white.withOpacity(1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            height: 560,
-                            width: MediaQuery.of(context).size.width,
-                            child: Stack(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10),
-                                  child: ListView.builder(
-                                    itemCount: noteResponse!.length,
-                                    itemBuilder: (BuildContext context, index) {
-                                      return ListTile(
-                                        horizontalTitleGap: 30,
-
-                                        title: Text(
-                                          noteResponse![index].notes,
-                                          softWrap: true,
-                                          style: kQuranPageTabContentTitleStyle,
-                                        ),
-
-                                        leading: Container(
-                                          constraints: BoxConstraints(
-                                              maxWidth: 50, maxHeight: 50),
-                                          decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  // alignment: Alignment.centerLeft,
-
-                                                  fit: BoxFit.contain,
-                                                  image: AssetImage(
-                                                      "assets/images/list_tile_leading.png"))),
-                                        ),
-
-                                        // color: mainRedShadeForTitle,
-                                      );
-                                    },
-                                    scrollDirection: Axis.vertical,
-                                    // controller: _scrollController,
-                                    physics: BouncingScrollPhysics(),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          shape: CircleBorder(),
-                                          elevation: 8,
-                                          primary: mainRedShadeForTitle,
-                                          fixedSize: Size(50, 50),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pushNamed(context, AddNewNotes.id);
-
-                                        },
-                                        child: ImageIcon(AssetImage(
-                                            "assets/images/new note.png"))),
-                                  ),
-                                ),
-                              ],
                             ),
                           ),
-                        ],
-                      ),
+                          title: Text(
+                            "Notes",
+                            style: kPrayerTimeScreenHeaderStyle,
+                          ),
+                        ),
+                        noteResponse!.isEmpty
+                            ?
+                        Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Container(
+                            color: Colors.white,
+                            height: 560,
+                            width: MediaQuery.of(context).size.width,
+                            child: StreamBuilder<NotesResponse>(
+                              stream: userNotesBloc.notesFetchSCStreamListener,
+                              builder: (context, snapshot) {
+                                if(!snapshot.hasData || snapshot.data == null) {
+                                  return Column(
+
+                                  children: [
+                                    SizedBox(height: 200),
+                                    Container(
+                                      height: 90,
+                                      width: 90,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          fit: BoxFit.contain,
+                                            image: AssetImage("assets/images/no note.png"),
+                                        ),
+                                      ),
+
+                                    ),
+                                    Text("There is no note available!\nTap the add new notes icon.",style: TextStyle(color: Colors.black),),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 190,right: 10),
+                                      child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            shape: CircleBorder(),
+                                            elevation: 8,
+                                            primary: mainRedShadeForTitle,
+                                            fixedSize: Size(50, 50),
+                                          ),
+                                            onPressed: (){
+                                            Navigator.pushNamed(context, AddNewNotes.id);
+                                            },
+                                            child: ImageIcon(AssetImage("assets/images/new note.png"))
+                                        ),
+                                      ),
+                                    )
+
+                                  ],
+                                );
+
+                                }
+                                else{
+                                  return   Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(1),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        height: 560,
+                                        width: MediaQuery.of(context).size.width,
+                                        child: Stack(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(top: 10),
+                                              child: StreamBuilder<NotesResponse>(
+                                                  stream: userNotesBloc.notesFetchSCStreamListener,
+                                                  builder: (context, snapshot) {
+                                                    return ListView.builder(
+                                                      itemCount: snapshot.data!.responseOfNotes!.length,
+                                                      itemBuilder: (BuildContext context, index) {
+                                                        return ListTile(
+                                                          horizontalTitleGap: 30,
+
+                                                          title: Text(
+                                                            snapshot.data!.responseOfNotes![index].notes,
+                                                            softWrap: true,
+                                                            style: kQuranPageTabContentTitleStyle,
+                                                          ),
+
+                                                          leading: Container(
+                                                            constraints: const BoxConstraints(
+                                                                maxWidth: 50, maxHeight: 50),
+                                                            decoration: const BoxDecoration(
+                                                                image: DecorationImage(
+                                                                  // alignment: Alignment.centerLeft,
+
+                                                                    fit: BoxFit.contain,
+                                                                    image: AssetImage(
+                                                                        "assets/images/list_tile_leading.png"))),
+                                                          ),
+
+                                                          // color: mainRedShadeForTitle,
+                                                        );
+                                                      },
+                                                      scrollDirection: Axis.vertical,
+                                                      // controller: _scrollController,
+                                                      physics: BouncingScrollPhysics(),
+                                                    );
+                                                  }
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(right: 10),
+                                              child: Align(
+                                                alignment: Alignment.bottomRight,
+                                                child: ElevatedButton(
+                                                    style: ElevatedButton.styleFrom(
+                                                      shape: CircleBorder(),
+                                                      elevation: 8,
+                                                      primary: mainRedShadeForTitle,
+                                                      fixedSize: Size(50, 50),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.pushNamed(context, AddNewNotes.id);
+
+                                                    },
+                                                    child: ImageIcon(AssetImage(
+                                                        "assets/images/new note.png"))),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }
+
+                              }
+
+                            ),
+                            )
+
+
+                        ) : Container(),
+
+
+                      ],
+
                     ),
-                  ],
-                ),
+
+
               ),
             ],
           ),

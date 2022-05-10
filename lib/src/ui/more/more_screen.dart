@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hidayah/src/constants/text_style.dart';
+import 'package:hidayah/src/ui/Authentication/personal_details/daily_goal_screen.dart';
 import 'package:hidayah/src/ui/more/text_style.dart';
 import 'package:hidayah/src/ui/more/widgets/more_screen_list_tile_widget.dart';
 import 'package:hidayah/src/ui/near_mosques/near_by_mosques.dart';
@@ -8,6 +9,7 @@ import 'package:hidayah/src/ui/prayer_times/prayer_times_screen.dart';
 import 'package:hidayah/src/ui/qibla%20compass/qibla_compass.dart';
 import 'package:hidayah/src/ui/qibla%20compass/qibla_compass_widget.dart';
 
+import '../daily_goals/daily_goals_screen.dart';
 import '../notes/notes_screen.dart';
 
 class MoreScreen extends StatefulWidget {
@@ -123,6 +125,22 @@ class _MoreScreenState extends State<MoreScreen> {
                             onTap: () {
                               setState(() {
                                 Navigator.pushNamed(context, QiblaCompassWidget.id);
+
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10),
+
+                          InkWell(
+                            child: MoreScreenListTileWidget(
+                              title: 'Goals',
+                              subTitle:
+                              'You can always change these later.',
+                              iconPath: 'assets/images/to-do-list.png',
+                            ),
+                            onTap: () {
+                              setState(() {
+                                Navigator.pushNamed(context, DailyGoalsScreen.id);
 
                               });
                             },

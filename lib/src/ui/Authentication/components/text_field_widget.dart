@@ -48,7 +48,7 @@ class TextFieldWidget extends StatelessWidget {
           controller: textEditingController,
           // maxLines: 5,
 
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.left,
           // maxLines: 4,4
           obscureText: isObscured,
           decoration: InputDecoration(

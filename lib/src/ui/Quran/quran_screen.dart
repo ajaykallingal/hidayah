@@ -325,60 +325,7 @@ class _QuranScreenState extends State<QuranScreen>
                                               controller: _scrollController,
                                               physics: BouncingScrollPhysics(),
                                             ),
-                                    // loading ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle,),) :  ListView.builder(
-                                    //     itemBuilder:
-                                    //         (BuildContext context, index) {
-                                    //       return ListTile(
-                                    //         title: Text(
-                                    //           "data",
-                                    //           style: TextStyle(
-                                    //               color: Colors.black),
-                                    //         ),
-                                    //         leading: ImageIcon(
-                                    //           AssetImage(
-                                    //               "assets/images/READ_QURAN.png"),
-                                    //           color: mainRedShadeForTitle,
-                                    //         ),
-                                    //         trailing: ImageIcon(
-                                    //           AssetImage(
-                                    //             "assets/images/HEART_STROKE.png",
-                                    //           ),
-                                    //           color: mainRedShadeForTitle,
-                                    //         ),
-                                    //       );
-                                    //     },
-                                    //     itemCount: 10,
-                                    //     scrollDirection: Axis.vertical,
-                                    //     controller: _scrollController,
-                                    //     physics: BouncingScrollPhysics(),
-                                    //   ),
-                                    //  loading ? Center(child: CircularProgressIndicator(color: mainRedShadeForTitle,),) : ListView.builder(
-                                    //     itemBuilder:
-                                    //         (BuildContext context, index) {
-                                    //       return ListTile(
-                                    //         title: Text(
-                                    //           "data",
-                                    //           style: TextStyle(
-                                    //               color: Colors.black),
-                                    //         ),
-                                    //         leading: ImageIcon(
-                                    //           AssetImage(
-                                    //               "assets/images/READ_QURAN.png"),
-                                    //           color: mainRedShadeForTitle,
-                                    //         ),
-                                    //         trailing: ImageIcon(
-                                    //           AssetImage(
-                                    //             "assets/images/HEART_STROKE.png",
-                                    //           ),
-                                    //           color: mainRedShadeForTitle,
-                                    //         ),
-                                    //       );
-                                    //     },
-                                    //     itemCount: 10,
-                                    //     scrollDirection: Axis.vertical,
-                                    //     controller: _scrollController,
-                                    //     physics: BouncingScrollPhysics(),
-                                    //   ),
+
                                     ],
                                   ),
                                 ),
@@ -390,21 +337,7 @@ class _QuranScreenState extends State<QuranScreen>
                     ),
                   ),
 
-                  //       child:
-                  //       Column(
-                  //         children: [
 
-                  //
-                  //   },
-                  //   ),
-                  //
-                  // ),
-                  //
-                  //       ],
-                  //     ),
-                  //   ),
-                  //
-                  // ),
                 ],
               ),
             ),

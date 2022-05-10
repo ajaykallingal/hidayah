@@ -34,7 +34,7 @@ class QuranArabicTranslatedPage extends StatefulWidget {
 
 class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver{
-  List tabList = ["Arabic", "Translation", "Transilertaion"];
+  List tabList = ["Arabic", "Translation"];
   int selectedTabIndex = 0;
   late TabController _tabController;
 
@@ -73,7 +73,7 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
     super.initState();
 
     _tabController =
-        TabController(length: 3, vsync: this, initialIndex: selectedTabIndex);
+        TabController(length: 2, vsync: this, initialIndex: selectedTabIndex);
     _tabController.addListener(() {
       setState(() {});
     });
@@ -243,7 +243,7 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                   //     ),
                   DefaultTabController(
                     initialIndex: 0,
-                    length: 3,
+                    length: 2,
                     child: Column(
                       children: [
                         Padding(
@@ -304,7 +304,7 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                                        });
 
     },
-                                      tabs: [
+                                      tabs: const [
                                         Tab(
                                           text: "Arabic",
                                         ),
@@ -312,9 +312,7 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                                         Tab(
                                           text: "Translation",
                                         ),
-                                        Tab(
-                                          text: "Transileration",
-                                        ),
+
                                         // Tab(
                                         //   icon: ImageIcon(AssetImage(
                                         //       "assets/images/SETTINGS.png")),
@@ -347,7 +345,7 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
 
                                            buildArabicTab(),
                                      buildTranslationTab(),
-                                     buildTransilerationTab(),
+                                     // buildTransilerationTab(),
                                     ],
                                   ),
                                 ),
@@ -408,7 +406,7 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                                 // radius: 10,
                                 child: Text(
                                     displayWholeQuranFiltered![index]
-                                        .ayatNumber,
+                                        .ayatNumberInsurat,
                                     style: TextStyle(fontSize: 12)),
                               ),
                             ),

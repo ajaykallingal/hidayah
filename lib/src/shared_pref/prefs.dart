@@ -58,5 +58,11 @@ class Prefs{
     return result;
   }
 
+  /// for clearing the data in preference
+  void clearPrefs() async {
+    final pref = await SharedPreferences.getInstance();
+    await pref.clear();
+  }
+
 
 }

@@ -10,11 +10,13 @@ import 'package:hidayah/src/constants/text_style.dart';
 import 'package:hidayah/src/ui/Authentication/authentication_screen.dart';
 import 'package:hidayah/src/ui/Authentication/personal_details/Personal_details_screen.dart';
 import 'package:hidayah/src/ui/Authentication/personal_details/components/latLong.dart';
+import 'package:hidayah/src/ui/Authentication/personal_details/daily_goal_screen.dart';
 import 'package:hidayah/src/ui/Authentication/sign_up_screen.dart';
 import 'package:hidayah/src/ui/Quran/components/quran_arabic_translated_page.dart';
 import 'package:hidayah/src/ui/Quran/components/quran_translated_page_arguments.dart';
 import 'package:hidayah/src/ui/Quran/quran_screen.dart';
 import 'package:hidayah/src/ui/calendar/calendar_screen.dart';
+import 'package:hidayah/src/ui/daily_goals/daily_goals_screen.dart';
 import 'package:hidayah/src/ui/duas/duas_screen.dart';
 import 'package:hidayah/src/ui/duas/view_all_duas_screen.dart';
 import 'package:hidayah/src/ui/duas/view_dua_detailed_screen.dart';
@@ -105,6 +107,8 @@ Widget buildMaterialApp(BuildContext context) {
         NotesScreen.id : (context) => NotesScreen(),
         AddNewNotes.id : (context) => AddNewNotes(),
         QiblaCompassWidget.id : (context) => QiblaCompassWidget(),
+        DailyGoalsScreen.id : (context) => DailyGoalsScreen(),
+
 
 
       },

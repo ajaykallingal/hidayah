@@ -155,16 +155,6 @@ resizeToAvoidBottomInset: true,
                                     child: buildLoginForm(),
                                   ),
 
-                                  // Row(
-                                  //   mainAxisAlignment: MainAxisAlignment.end,
-                                  //   children: [
-                                  //     Padding(
-                                  //       padding:
-                                  //           const EdgeInsets.only(right: 15, top: 0),
-                                  //       child: buildForgotPassword(),
-                                  //     ),
-                                  //   ],
-                                  // ),
                                   SizedBox(height: 15 ),
                                   buildDontHaveAccount(),
 

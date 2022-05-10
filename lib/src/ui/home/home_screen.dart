@@ -22,6 +22,7 @@ import 'package:hidayah/src/ui/home/widgets/upcoming_events_widget.dart';
 import 'package:hidayah/src/ui/more/more_screen.dart';
 import 'package:hidayah/src/ui/more/text_style.dart';
 import 'package:intl/intl.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../data/bloc/auth_bloc.dart';
 import '../../data/bloc/prayer_times_bloc.dart';
@@ -29,6 +30,7 @@ import '../../data/bloc/youtube_videos_bloc.dart';
 import '../../data/models/prayerTimes/prayer_time_request.dart';
 import '../../data/models/prayerTimes/prayer_time_response.dart';
 import '../../data/models/youtube_videos/youtube_videos_response.dart';
+import '../Authentication/authentication_screen.dart';
 import 'components/glass_morphic_container.dart';
 import 'components/latLang.dart';
 import 'widgets/home_page_card_widget.dart';
@@ -244,15 +246,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
     List<dynamic> _screenWidgets = <dynamic>[
       buildHomeScreenBody(context),
-      loading?Center(child: CircularProgressIndicator(color: Colors.white,),) :
+      loading?const Center(child: CircularProgressIndicator(color: Colors.white,),) :
       const DhikrScreen(),
-      loading?Center(child: CircularProgressIndicator(color: Colors.white,),):
+      loading?const Center(child: CircularProgressIndicator(color: Colors.white,),):
       const QuranScreen(),
-      loading?Center(child: CircularProgressIndicator(color: Colors.white,),) :
+      loading?const Center(child: CircularProgressIndicator(color: Colors.white,),) :
       const DuasScreen(),
-      loading?Center(child: CircularProgressIndicator(color: Colors.white,),) :
+      loading?const Center(child: CircularProgressIndicator(color: Colors.white,),) :
       const MoreScreen(),
-      loading?Center(child: CircularProgressIndicator(color: Colors.white,),) :
+      loading?const Center(child: CircularProgressIndicator(color: Colors.white,),) :
       const CalendarScreen(),
 
 
@@ -309,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 15,right: 15,top: 20),
+                  padding: const EdgeInsets.only(left: 15,right: 15,top: 10),
                   child: Container(
                     height: 150,
                     width: MediaQuery.of(context).size.width,
@@ -320,20 +322,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.end,
 
                           children: [
-                            // Padding(
-                            //   padding: const EdgeInsets.only(left: 8,top: 8),
-                            //   child:
-                              // GlassMorphicContainer(
-                              //   icon: const AssetImage('assets/images/SETTINGS.png'),
-                              // ),
-                            // ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 8,top: 0),
+                              child:
+                              GlassMorphicContainer(
+                                child: IconButton(
+
+                                    onPressed: () {
+                                  buildLogoutPopUp(context);
+                                }, icon: Image.asset("assets/images/logout.png",color: Colors.white,)),
+                              ),
+                            ),
                             // GlassMorphicContainer(
-                            //   icon: const AssetImage(
+                            //   icon: AssetImage(
                             //       'assets/images/NOTIFICATION.png'),
                             // ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 8),
                         Container(
 // color: Colors.green,
                           child: Row(
@@ -413,6 +419,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         physics: const BouncingScrollPhysics(),
                         child: Column(
                           children: [
+                            SizedBox(height: 10),
                             buildHomePagecard1(),
                             const SizedBox(height: 10),
                             buildHomePageCard2(),
@@ -453,25 +460,25 @@ class _HomeScreenState extends State<HomeScreen> {
               unselectedItemColor: kCardGreyShadeForText,
               selectedItemColor: mainRedShadeForTitle,
               type: BottomNavigationBarType.fixed,
-              items: [
-                const BottomNavigationBarItem(
-                    icon: const ImageIcon(
+              items: const [
+                BottomNavigationBarItem(
+                    icon: ImageIcon(
                         AssetImage('assets/images/SURAH FILL.png')),
                     label: "Home"),
-                const BottomNavigationBarItem(
+                BottomNavigationBarItem(
                     icon: ImageIcon(AssetImage('assets/images/DIKR NAV.png')),
                     label: "Dhikr"),
-                const BottomNavigationBarItem(
+                BottomNavigationBarItem(
                     icon:
-                        const ImageIcon(AssetImage('assets/images/QURAN NAV.png')),
+                        ImageIcon(AssetImage('assets/images/QURAN NAV.png')),
                     label: "Quran"),
-                const BottomNavigationBarItem(
+                BottomNavigationBarItem(
                     icon: ImageIcon(AssetImage('assets/images/DUAS NAV.png')),
                     label: "Duas"),
-                const BottomNavigationBarItem(
+                BottomNavigationBarItem(
                     icon: ImageIcon(AssetImage('assets/images/MORE NAV.png')),
                     label: "More"),
-                const BottomNavigationBarItem(
+                BottomNavigationBarItem(
                     icon:
                     ImageIcon(AssetImage('assets/images/CALENDER NAV.png')),
                     label: "Today"),
@@ -498,31 +505,7 @@ class _HomeScreenState extends State<HomeScreen> {
             endIndent: 0,
           ),
           const SizedBox(height: 9),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              // Text(
-              //   'Prayers',
-              //   style: kHomePageCard1TextStyle1,
-              // ),
-              // const SizedBox(width: 10),
-              // buildInkWellWithToggleTick1(),
-              // const SizedBox(width: 10),
-              // buildInkWellWithToggleTick2(),
-              // const SizedBox(width: 10),
-              // buildInkWellWithToggleTick3(),
-              // const SizedBox(width: 10),
-              // buildInkWellWithToggleTick4(),
-              // const SizedBox(width: 10),
-              // buildInkWellWithToggleTick5(),
-              // const SizedBox(width: 10),
-              // Text(
-              //   '2 out of 5',
-              //   style: kHomePageCard1PrayernamesTextStyle,
-              // ),
-            ],
-          ),
+
           // const SizedBox(height: 15),
           Text("Make sure you meet your daily goals!",style: kHomePageCard1TextStyle1,),
           // const SizedBox(height: 5),
@@ -799,7 +782,64 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future buildLogoutPopUp(BuildContext context) async {
+    await Alert(
+      padding: EdgeInsets.only(top: 15),
+      // image: ImageIcon(
+      //   AssetImage(Assets.success),
+      //   size: 95,
+      //   color: Color(0xff68CE78).withOpacity(1.0),
+      // ),
+      closeIcon: Container(),
 
+      context: context,
+      // type: AlertType.success,
+      // title: "RFLUTTER ALERT",
+      desc: "Do you want to Logout?",
+      style: AlertStyle(
+          isOverlayTapDismiss: false,
+          alertElevation: 1.0,
+          alertPadding: EdgeInsets.symmetric(vertical: 200, horizontal: 50),
+          overlayColor: Colors.transparent.withOpacity(0.4),
+          constraints: BoxConstraints(maxHeight: 80, maxWidth: 324),
+          // alertPadding: EdgeInsets.only(top: 30),
+          alertBorder: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(23),
+            side: BorderSide(
+              color: Colors.white10,
+            ),
+          ),
+          // alertBorder: Border(top: BorderSide(color: Colors.white)),
+          descStyle: kHomePageCardTitleTextStyle),
+      buttons: [
+        DialogButton(
+          height: 36.0,
+          radius: BorderRadius.circular(12),
+          child: Text(
+            "Cancel",
+            style: kHomePageLogOutStyle,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+          width: 95,
+          color: mainRedShadeForTitle
+        ),
+        DialogButton(
+          height: 36.0,
+          radius: BorderRadius.circular(12),
+          child: Text(
+            "Logout",
+            style: kHomePageLogOutStyle,
+          ),
+          onPressed: () {
+            ObjectFactory().prefs.clearPrefs();
+            Navigator.pushNamed(context, AuthenticationScreen.id);
+          },
+          width: 95,
+          color: mainRedShadeForTitle
+        ),
+      ],
+    ).show();
+  }
 
 
 

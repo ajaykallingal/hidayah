@@ -81,6 +81,12 @@ TextStyle kHomePageCard3RichTextStyle1 = TextStyle(
   color: kCardGreyShadeForText,
   fontWeight: FontWeight.w500,
 );
+TextStyle kHomePageLogOutStyle = TextStyle(
+  fontFamily: FontFamily.sfProDisplay,
+  fontSize: 18,
+  color: Colors.white,
+  fontWeight: FontWeight.w500,
+);
 
 TextStyle kHomePageCard3RichTextStyle2 = TextStyle(
   fontFamily: FontFamily.sfProDisplay,
