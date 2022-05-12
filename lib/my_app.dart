@@ -71,6 +71,7 @@ Widget buildMaterialApp(BuildContext context) {
     builder: (context, appState, child) {
   return  MaterialApp(
 
+
     debugShowCheckedModeBanner: false,
     title: 'HiDAYAH',
     theme: AppTheme.lightTheme,

@@ -102,6 +102,7 @@ class _AddNewNotesState extends State<AddNewNotes> {
                                 FocusScope.of(context).unfocus();
                                 TextEditingController().clear();
                                 Navigator.pop(context);
+
                               });
                             },
                             child: Text("Done",style: TextStyle(color: Colors.white),),

@@ -3,6 +3,7 @@
 import 'package:hidayah/src/data/models/Hadith/hadith_of_the_day_response.dart';
 import 'package:hidayah/src/data/models/common/state_model.dart';
 import 'package:hidayah/src/data/models/dailyQuotes/daily_quotes_response.dart';
+import 'package:hidayah/src/data/models/delete_notes/delete_notes_request.dart';
 import 'package:hidayah/src/data/models/dua/dua_category_response.dart';
 import 'package:hidayah/src/data/models/dua_sub_category/dua_sub_category_response.dart';
 import 'package:hidayah/src/data/models/new_notes/new_notes_request.dart';
@@ -12,6 +13,7 @@ import 'package:hidayah/src/data/models/prayerTimes/prayer_time_response.dart';
 import 'package:hidayah/src/data/models/quran_request.dart';
 import 'package:hidayah/src/data/provider/auth_api_provider.dart';
 import 'package:hidayah/src/data/provider/calendar_event_api_provider.dart';
+import 'package:hidayah/src/data/provider/delete_notes_api_provider.dart';
 import 'package:hidayah/src/data/provider/dua_category_api_provider.dart';
 import 'package:hidayah/src/data/provider/dua_detailed_api_provider.dart';
 import 'package:hidayah/src/data/provider/get_daily_quotes_provider.dart';
@@ -48,6 +50,7 @@ class Repository{
   final showAllDuaApiProvider = ShowAllDuaApiProvider();
   final youtubeVideosApiProvider = YoutubeVideosApiProvider();
   final calendarEventsApiProvider = CalendarEventApiProvider();
+  final deleteNotesApiProvider = DeleteNotesApiProvider();
 
 
   /// test request provider
@@ -97,6 +100,9 @@ class Repository{
   ///New notes
   Future<StateModel?>insertNewNotes(NewNotesRequest request) =>
       insertNewNotesApiProvider.insertNewNotes(request);
+
+  Future<StateModel?>deleteNotes(DeleteNotesRequest request) =>
+      deleteNotesApiProvider.deleteNotes(request);
 
   ///Youtube videos
   Future<StateModel?>fetchYouTubeVideos() =>

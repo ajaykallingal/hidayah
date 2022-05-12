@@ -17,7 +17,7 @@ class DeleteNotesRequest {
   final String notesId;
 
   factory DeleteNotesRequest.fromJson(Map<String, dynamic> json) => DeleteNotesRequest(
-    notesId: json["notesID"] == null ? null : json["notesID"],
+    notesId: json["notesID"] == null ? "" : json["notesID"],
   );
 
   Map<String, dynamic> toJson() => {

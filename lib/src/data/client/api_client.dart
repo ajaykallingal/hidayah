@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:hidayah/src/data/models/delete_notes/delete_notes_request.dart';
 import 'package:hidayah/src/data/models/dua_detailed/dua_detailed_request.dart';
 import 'package:hidayah/src/data/models/dua_sub_category/dua_sub_category_request.dart';
 import 'package:hidayah/src/data/models/login/login_with_email_request.dart';
@@ -132,8 +133,8 @@ return dio.post(Urls.LoginWithEmail,data: request);
   }
 
   ///delete notes
-  Future<Response> deleteNotes( request){
-    return dio.post(Urls.InsertNewNotes,data: request);
+  Future<Response> deleteNotes(DeleteNotesRequest request){
+    return dio.post(Urls.DeleteNotes,data: request);
   }
   ///Youtube videos
   Future<Response>fetchYouTubeVideos(){
