@@ -120,6 +120,8 @@ flutter:
            weight: 200
          - asset: assets/fonts/sf_pro/SF-Pro-Display-Thin.otf
            weight: 100
+         - asset: assets/fonts/helveticaneue.ttf
+           weight: 400
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

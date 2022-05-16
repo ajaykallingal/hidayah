@@ -70,3 +70,12 @@ TextStyle kQuranPageBoxSubTitleStyle1 = TextStyle(
   color: mainThemeWhiteColor,
   fontWeight: FontWeight.w500,
 );
+
+TextStyle kQuranPageArabicTabStyle = TextStyle(
+  letterSpacing: 0,
+  fontFamily: FontFamily.helveticaNeue,
+  fontSize: 20,
+
+  color: Colors.black.withOpacity(1),
+  fontWeight: FontWeight.w400,
+);

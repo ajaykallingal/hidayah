@@ -12,6 +12,7 @@ import 'package:hidayah/src/ui/Authentication/personal_details/Personal_details_
 import 'package:hidayah/src/ui/Authentication/personal_details/components/latLong.dart';
 import 'package:hidayah/src/ui/Authentication/personal_details/daily_goal_screen.dart';
 import 'package:hidayah/src/ui/Authentication/sign_up_screen.dart';
+import 'package:hidayah/src/ui/Quran/components/my_audio_player.dart';
 import 'package:hidayah/src/ui/Quran/components/quran_arabic_translated_page.dart';
 import 'package:hidayah/src/ui/Quran/components/quran_translated_page_arguments.dart';
 import 'package:hidayah/src/ui/Quran/quran_screen.dart';
@@ -69,53 +70,56 @@ Widget buildMaterialApp(BuildContext context) {
 
   return Consumer<AppState>(
     builder: (context, appState, child) {
-  return  MaterialApp(
+  return  ChangeNotifierProvider(
+    create: (_)=>MyAudioPlayer(),
+    child: MaterialApp(
 
 
-    debugShowCheckedModeBanner: false,
-    title: 'HiDAYAH',
-    theme: AppTheme.lightTheme,
-    themeMode: ThemeMode.light,
+      debugShowCheckedModeBanner: false,
+      title: 'HiDAYAH',
+      theme: AppTheme.lightTheme,
+      themeMode: ThemeMode.light,
 
 
-    builder: (context , child) {
-    final mediaQueryData = MediaQuery.of(context);
+      builder: (context , child) {
+      final mediaQueryData = MediaQuery.of(context);
 
-      return MediaQuery(
+        return MediaQuery(
 
-          data: mediaQueryData.copyWith(textScaleFactor:  0.85,alwaysUse24HourFormat: false),
-          child: child!,
-      );
-
-    },
-    initialRoute: SplashScreen.id,
-      routes: {
-            SplashScreen.id : (context) => SplashScreen(),
-            // SplashScreen.id : (context) => TableEventsExample(),
-            AuthenticationScreen.id : (context) => AuthenticationScreen(),
-        SignUpScreen.id : (context) => SignUpScreen(),
-        PersonalDetailsScreen.id : (context) => PersonalDetailsScreen(),
-        HomeScreen.id : (context) => HomeScreen(),
-        QuranScreen.id : (context) => QuranScreen(),
-        QuranArabicTranslatedPage.id : (context) => QuranArabicTranslatedPage(),
-        DuasScreen.id : (context) => DuasScreen(),
-        ViewAllDuasScreen.id : (context) => ViewAllDuasScreen(),
-        MoreScreen.id : (context) => MoreScreen(),
-        PrayerTimesScreen.id : (context) => PrayerTimesScreen(),
-        NearByMosques.id : (context) => NearByMosques(),
-        CalendarScreen.id : (context) => CalendarScreen(),
-        ViewDuaDetailedScreen.id : (context) => ViewDuaDetailedScreen(),
-        NotesScreen.id : (context) => NotesScreen(),
-        AddNewNotes.id : (context) => AddNewNotes(),
-        QiblaCompassWidget.id : (context) => QiblaCompassWidget(),
-        DailyGoalsScreen.id : (context) => DailyGoalsScreen(),
-
-
+            data: mediaQueryData.copyWith(textScaleFactor:  0.85,alwaysUse24HourFormat: false),
+            child: child!,
+        );
 
       },
-    // onGenerateRoute: RouteGenerator.generateRoute,
+      initialRoute: SplashScreen.id,
+        routes: {
+              SplashScreen.id : (context) => SplashScreen(),
+              // SplashScreen.id : (context) => TableEventsExample(),
+              AuthenticationScreen.id : (context) => AuthenticationScreen(),
+          SignUpScreen.id : (context) => SignUpScreen(),
+          PersonalDetailsScreen.id : (context) => PersonalDetailsScreen(),
+          HomeScreen.id : (context) => HomeScreen(),
+          QuranScreen.id : (context) => QuranScreen(),
+          QuranArabicTranslatedPage.id : (context) => QuranArabicTranslatedPage(),
+          DuasScreen.id : (context) => DuasScreen(),
+          ViewAllDuasScreen.id : (context) => ViewAllDuasScreen(),
+          MoreScreen.id : (context) => MoreScreen(),
+          PrayerTimesScreen.id : (context) => PrayerTimesScreen(),
+          NearByMosques.id : (context) => NearByMosques(),
+          CalendarScreen.id : (context) => CalendarScreen(),
+          ViewDuaDetailedScreen.id : (context) => ViewDuaDetailedScreen(),
+          NotesScreen.id : (context) => NotesScreen(),
+          AddNewNotes.id : (context) => AddNewNotes(),
+          QiblaCompassWidget.id : (context) => QiblaCompassWidget(),
+          DailyGoalsScreen.id : (context) => DailyGoalsScreen(),
 
 
+
+        },
+      // onGenerateRoute: RouteGenerator.generateRoute,
+
+
+    ),
   );
     },
   );
