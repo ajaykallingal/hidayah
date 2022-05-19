@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hidayah/src/ui/home/home_screen.dart';
 import 'package:hidayah/src/ui/more/more_screen.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -317,31 +318,36 @@ class _DailyGoalsScreenState extends State<DailyGoalsScreen> {
               style: kHomePageLogOutStyle,
             ),
             onPressed: () {
-              personalDetailsBloc.fetchPersonalDetails(
-                request: PersonalDetailsRequest(
-                  userId: ObjectFactory().prefs.getUserData()!.response!.userId,
-                  userEmail: ObjectFactory().prefs.getUserData()!.response!.userEmail,
-                  userFullName: ObjectFactory().prefs.getUserData()!.response!.userFullName,
-                  userPassword: ObjectFactory().prefs.getUserData()!.response!.userPassword,
-                  userDob: ObjectFactory().prefs.getUserData()!.response!.userDob,
-                  userSelectedLanguageId: ObjectFactory().prefs.getUserData()!.response!.userSelectedLanguageId,
-                  userGender:  ObjectFactory().prefs.getUserData()!.response!.userGender,
-                  userMaritialStatus: ObjectFactory().prefs.getUserData()!.response!.userMaritialStatus,
-                  userGoalPrayFive: isPrayerChecked == true ? "1" : "0",
-                  userGoalReadTwentyAyaDaily: isReadAyahChecked == true ? "1" : "0",
-                  userGoalSayThreeDua: isSayDuaChecked == true ? "1" : "0",
-                  userGoalPrayWitrNight: isPrayWitrChecked == true ? "1" : "0",
-                  userGoalGiveCharity: isGiveCharityChecked == true ? "1" : "0",
-                  userFavPrayerTime:  "0",
-                  userFavQbila: "0",
-                  userFavNarMosque:  "0",
-                  userFavQuran:  "0",
-                  userFavDua:  "0",
-                  userZakah:  "0",),);
+
+
+
 
 
               setState(() {
                 loading = true;
+                Navigator.popAndPushNamed(context, HomeScreen.id).then((value) => {
+                personalDetailsBloc.fetchPersonalDetails(
+                request: PersonalDetailsRequest(
+                userId: ObjectFactory().prefs.getUserData()!.response!.userId,
+                userEmail: ObjectFactory().prefs.getUserData()!.response!.userEmail,
+                userFullName: ObjectFactory().prefs.getUserData()!.response!.userFullName,
+                userPassword: ObjectFactory().prefs.getUserData()!.response!.userPassword,
+                userDob: ObjectFactory().prefs.getUserData()!.response!.userDob,
+                userSelectedLanguageId: ObjectFactory().prefs.getUserData()!.response!.userSelectedLanguageId,
+                userGender:  ObjectFactory().prefs.getUserData()!.response!.userGender,
+                userMaritialStatus: ObjectFactory().prefs.getUserData()!.response!.userMaritialStatus,
+                userGoalPrayFive: isPrayerChecked == true ? "1" : "0",
+                userGoalReadTwentyAyaDaily: isReadAyahChecked == true ? "1" : "0",
+                userGoalSayThreeDua: isSayDuaChecked == true ? "1" : "0",
+                userGoalPrayWitrNight: isPrayWitrChecked == true ? "1" : "0",
+                userGoalGiveCharity: isGiveCharityChecked == true ? "1" : "0",
+                userFavPrayerTime:  "0",
+                userFavQbila: "0",
+                userFavNarMosque:  "0",
+                userFavQuran:  "0",
+                userFavDua:  "0",
+                userZakah:  "0",),),
+                } );
 
                 // Navigator.pushNamed(
                 //     context, HomeScreen.id,arguments: HomeScreenArguments(userId: args.userId));

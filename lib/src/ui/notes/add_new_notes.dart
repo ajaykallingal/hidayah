@@ -4,14 +4,13 @@ import 'package:hidayah/src/data/bloc/new_notes_bloc.dart';
 import 'package:hidayah/src/data/models/new_notes/new_notes_request.dart';
 import 'package:hidayah/src/shared_pref/object_factory.dart';
 import 'package:hidayah/src/ui/home/textStyle/text_style.dart';
+import 'package:hidayah/src/ui/notes/notes_screen.dart';
 
 import '../prayer_times/text_style.dart';
-
 
 class AddNewNotes extends StatefulWidget {
   const AddNewNotes({Key? key}) : super(key: key);
   static const String id = 'new_notes_screen';
-
 
   @override
   State<AddNewNotes> createState() => _AddNewNotesState();
@@ -31,14 +30,11 @@ class _AddNewNotesState extends State<AddNewNotes> {
     });
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
-    return  Material(
+    return Material(
       type: MaterialType.transparency,
-      child:   Stack(
+      child: Stack(
         children: [
           Container(
             height: MediaQuery.of(context).size.height,
@@ -60,20 +56,16 @@ class _AddNewNotesState extends State<AddNewNotes> {
               ),
             ),
           ),
-
-
           SafeArea(
             child: Stack(
               children: [
                 Material(
                   type: MaterialType.transparency,
-                  child:  Column(
+                  child: Column(
                     children: [
                       SizedBox(
                         height: 90,
                       ),
-
-
                     ],
                   ),
                 ),
@@ -85,27 +77,51 @@ class _AddNewNotesState extends State<AddNewNotes> {
                         height: 20,
                       ),
                       ListTile(
-                        leading: IconButton(onPressed: (){
-                          Navigator.pop(context);
-                        },
-                          icon: Icon(Icons.arrow_back,color: Colors.white),),
-                        title: Text("New notes",style: kPrayerTimeScreenHeaderStyle,),
+                        leading: IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(Icons.arrow_back, color: Colors.white),
+                        ),
+                        title: Text(
+                          "New notes",
+                          style: kPrayerTimeScreenHeaderStyle,
+                        ),
                         trailing: TextButton(
-                            onPressed: (){
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            TextEditingController().clear();
+                            Navigator.popAndPushNamed(context, NotesScreen.id,)
+                                .then((value) => {
+                              insertNewNotesBloc.fetchUserNotes(
+                                request: NewNotesRequest(
+                                    notesId: "0",
+                                    userId: ObjectFactory()
+                                        .prefs
+                                        .getUserId()
+                                        .toString(),
+                                    notes: notesTextEditingController.text),
+                              ),
+                            } );
 
-                              insertNewNotesBloc.fetchUserNotes(request: NewNotesRequest(
-                                  notesId: "0",
-                                  userId: ObjectFactory().prefs.getUserId().toString(),
-                                  notes: notesTextEditingController.text),
-                              );
-                              setState(() {
-                                FocusScope.of(context).unfocus();
-                                TextEditingController().clear();
-                                Navigator.pop(context);
-
-                              });
-                            },
-                            child: Text("Done",style: TextStyle(color: Colors.white),),
+                            // insertNewNotesBloc.fetchUserNotes(
+                            //   request: NewNotesRequest(
+                            //       notesId: "0",
+                            //       userId: ObjectFactory()
+                            //           .prefs
+                            //           .getUserId()
+                            //           .toString(),
+                            //       notes: notesTextEditingController.text),
+                            // );
+                            // setState(() {
+                            //       Navigator.pop(context);
+                            //   // Navigator.pushNamed(context, NotesScreen.id).whenComplete(() => null)
+                            // });
+                          },
+                          child: Text(
+                            "Done",
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
 
@@ -118,27 +134,27 @@ class _AddNewNotesState extends State<AddNewNotes> {
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.white.withOpacity(1),
                           ),
-                          height: 500,
+                          height: 560,
                           width: MediaQuery.of(context).size.width,
                           child: TextField(
+                            
+
                             style: TextStyle(color: Colors.black),
                             // focusNode: FocusNode(),
 
                             controller: notesTextEditingController,
-                            maxLines: 99999,
+                            maxLines: 9999,
                             keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.all(20),
                               hintStyle: TextStyle(color: Colors.black),
                               hintText: "Type in your new notes",
-                                // constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width,maxHeight: 500)
+                              // constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width,maxHeight: 500)
                             ),
                             scrollPadding: EdgeInsets.all(20),
-
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
