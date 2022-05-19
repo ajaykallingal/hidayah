@@ -17,6 +17,7 @@ class Prefs{
   static const String? _USER_ID = "user_id";
   static const String? _USER_DATA = "user_data";
   static const String? _IS_LOGGED_IN = "is_logged_in";
+  static const String? _DHIKR_COUNT = "dhikr_count";
 
 
   Prefs();
@@ -62,6 +63,11 @@ class Prefs{
   void clearPrefs() async {
     final pref = await SharedPreferences.getInstance();
     await pref.clear();
+  }
+
+  ///  save user dhikrcount
+  void setUserDhikrCount({String? userDhikrCount}) {
+    _sharedPreferences!.setString(_DHIKR_COUNT!, userDhikrCount!);
   }
 
 

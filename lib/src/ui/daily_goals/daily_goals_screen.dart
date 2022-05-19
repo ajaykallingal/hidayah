@@ -5,6 +5,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../constants/text_style.dart';
 import '../../data/bloc/personal_details_bloc.dart';
+import '../../data/models/login/login_with_email_response.dart';
 import '../../data/models/personal_details/personal_details_request.dart';
 import '../../shared_pref/object_factory.dart';
 import '../Authentication/personal_details/components/rounded_textField_with_radioButton.dart';
@@ -33,7 +34,7 @@ class _DailyGoalsScreenState extends State<DailyGoalsScreen> {
   String userDataGoals3 = "0";
   String userDataGoals4 = "0";
   String userDataGoals5 = "0";
-
+  LoginResponse? response;
 
   @override
   void didChangeDependencies() {
@@ -45,7 +46,7 @@ class _DailyGoalsScreenState extends State<DailyGoalsScreen> {
           // ObjectFactory().prefs.setIsLoggedIn(true);
           ObjectFactory().prefs.saveUserData(event);
 
-          Navigator.pop(context);
+          Navigator.pushNamedAndRemoveUntil(context, HomeScreen.id, (route) => false);
 
           loading = false;
         });
@@ -319,13 +320,9 @@ class _DailyGoalsScreenState extends State<DailyGoalsScreen> {
             ),
             onPressed: () {
 
-
-
-
-
               setState(() {
-                loading = true;
-                Navigator.popAndPushNamed(context, HomeScreen.id).then((value) => {
+
+
                 personalDetailsBloc.fetchPersonalDetails(
                 request: PersonalDetailsRequest(
                 userId: ObjectFactory().prefs.getUserData()!.response!.userId,
@@ -346,8 +343,10 @@ class _DailyGoalsScreenState extends State<DailyGoalsScreen> {
                 userFavNarMosque:  "0",
                 userFavQuran:  "0",
                 userFavDua:  "0",
-                userZakah:  "0",),),
-                } );
+                userZakah:  "0",),);
+
+                loading = true;
+
 
                 // Navigator.pushNamed(
                 //     context, HomeScreen.id,arguments: HomeScreenArguments(userId: args.userId));

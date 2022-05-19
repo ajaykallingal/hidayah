@@ -95,7 +95,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
     animation = CurvedAnimation(parent: animationController, curve: Curves.easeInExpo );
     animation.addListener(() => this.setState(() {}));
     animationController.forward();
-    animation1 = CurvedAnimation(parent: animationController, curve: Curves.easeOut );
+    animation1 = CurvedAnimation(parent: animationController, curve: Curves.easeOutExpo);
     animation1.addListener(() => this.setState(() {}));
 
   }
@@ -347,13 +347,13 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
                                     SizedBox(height: 20),
                                     ImageIcon(
                                       AssetImage("assets/images/SUNSET.png"),
-                                      size: animation1.value * 26,
+                                      size: animation1.value / 26,
                                       color: mainThemeWhiteColor,
                                     ),
                                     Text("sunset",
                                         style: KDividedLeftSideTextStyle2),
                                     Text(prayerTime!.sunset,
-                                        style: KDividedLeftSideTextStyle2)
+                                        style: KDividedLeftSideTextStyle2),
                                   ],
                                 ),
                                 VerticalDivider(

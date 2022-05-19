@@ -65,69 +65,69 @@ class _DhikrScreenState extends State<DhikrScreen> {
             type: MaterialType.transparency,
             child: Stack(
               children: [
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15),
-                  child: ClipRRect(
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                      child: Container(
-                        height: 160,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.6),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 10),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.end,
-                            //   children: [
-                            //     Padding(
-                            //       padding: const EdgeInsets.only(
-                            //         right: 20,
-                            //       ),
-                            //       child: Text("arabic"),
-                            //     )
-                            //   ],
-                            // ),
-                            SizedBox(height: 50),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: AnimatedTextKit(
-                                    animatedTexts: [
-                                      TypewriterAnimatedText(
-
-                                        'Allahu Akbar..',
-                                        cursor: "",
-                                        curve: Curves.linear,
-
-                                        textStyle: kDhikrScreenStyle,
-                                        speed: const Duration(milliseconds: 200),
-                                      ),
-                                    ],
-
-                                    // totalRepeatCount: 10,
-                                    pause: const Duration(milliseconds: 1000),
-                                    displayFullTextOnTap: true,
-                                    stopPauseOnTap: true,
-                                    // isRepeatingAnimation: true,
-
-                                    repeatForever: true,
-                                  )
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // SizedBox(height: 10),
+                // Padding(
+                //   padding: const EdgeInsets.only(left: 15, right: 15),
+                //   child: ClipRRect(
+                //     child: BackdropFilter(
+                //       filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                //       child: Container(
+                //         height: 160,
+                //         width: MediaQuery.of(context).size.width,
+                //         decoration: BoxDecoration(
+                //           color: Colors.black.withOpacity(0.6),
+                //           borderRadius: BorderRadius.circular(10),
+                //         ),
+                //         child: Column(
+                //           children: [
+                //             SizedBox(height: 10),
+                //             // Row(
+                //             //   mainAxisAlignment: MainAxisAlignment.end,
+                //             //   children: [
+                //             //     Padding(
+                //             //       padding: const EdgeInsets.only(
+                //             //         right: 20,
+                //             //       ),
+                //             //       child: Text("arabic"),
+                //             //     )
+                //             //   ],
+                //             // ),
+                //             SizedBox(height: 50),
+                //             Row(
+                //               mainAxisAlignment: MainAxisAlignment.start,
+                //               children: [
+                //                 Padding(
+                //                   padding: const EdgeInsets.only(left: 10),
+                //                   child: AnimatedTextKit(
+                //                     animatedTexts: [
+                //                       TypewriterAnimatedText(
+                //
+                //                         'Allahu Akbar..',
+                //                         cursor: "",
+                //                         curve: Curves.linear,
+                //
+                //                         textStyle: kDhikrScreenStyle,
+                //                         speed: const Duration(milliseconds: 200),
+                //                       ),
+                //                     ],
+                //
+                //                     // totalRepeatCount: 10,
+                //                     pause: const Duration(milliseconds: 1000),
+                //                     displayFullTextOnTap: true,
+                //                     stopPauseOnTap: true,
+                //                     // isRepeatingAnimation: true,
+                //
+                //                     repeatForever: true,
+                //                   )
+                //                 ),
+                //               ],
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 SizedBox(height: 30),
                 Align(
                   alignment: Alignment.center,
@@ -238,35 +238,35 @@ class _DhikrScreenState extends State<DhikrScreen> {
                         },
                         splashColor: mainRedShadeForText,
                       ),
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            toggleSwitch = !toggleSwitch;
-                          });
-                        },
-                        child: ClipRRect(
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                            child: Container(
-                              height: 60,
-                              width: 130,
-                              decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(0.3),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                child: RichText(
-
-                                    text: TextSpan(text: "Sound: ",style: TextStyle(color: mainRedShadeForText),
-                                        children: [
-                                  TextSpan(text: toggleSwitch ? "ON" : "OFF",style: TextStyle(color: mainRedShadeForTitle))
-                                ])),
-                              )
-
-                            ),
-                          ),
-                        ),
-                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     setState(() {
+                      //       toggleSwitch = !toggleSwitch;
+                      //     });
+                      //   },
+                      //   child: ClipRRect(
+                      //     child: BackdropFilter(
+                      //       filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                      //       child: Container(
+                      //         height: 60,
+                      //         width: 130,
+                      //         decoration: BoxDecoration(
+                      //           color: Colors.grey.withOpacity(0.3),
+                      //           borderRadius: BorderRadius.circular(10),
+                      //         ),
+                      //         child: Center(
+                      //           child: RichText(
+                      //
+                      //               text: TextSpan(text: "Sound: ",style: TextStyle(color: mainRedShadeForText),
+                      //                   children: [
+                      //             TextSpan(text: toggleSwitch ? "ON" : "OFF",style: TextStyle(color: mainRedShadeForTitle))
+                      //           ])),
+                      //         )
+                      //
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

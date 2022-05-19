@@ -140,7 +140,7 @@ class _MoreScreenState extends State<MoreScreen> {
                             ),
                             onTap: () {
                               setState(() {
-                                Navigator.pushNamed(context, DailyGoalsScreen.id);
+                                Navigator.pushNamed(context, DailyGoalsScreen.id).then((value) => null);
 
                               });
                             },

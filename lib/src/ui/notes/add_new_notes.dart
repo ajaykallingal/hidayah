@@ -26,7 +26,14 @@ class _AddNewNotesState extends State<AddNewNotes> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     insertNewNotesBloc.insertNewNotesSCStreamListener.listen((event) {
-      loading = false;
+      setState(() {
+
+        Navigator.pushNamedAndRemoveUntil(context, NotesScreen.id, (route) => false);
+
+
+        loading = false;
+
+      });
     });
   }
 
@@ -91,8 +98,7 @@ class _AddNewNotesState extends State<AddNewNotes> {
                           onPressed: () {
                             FocusScope.of(context).unfocus();
                             TextEditingController().clear();
-                            Navigator.popAndPushNamed(context, NotesScreen.id,)
-                                .then((value) => {
+
                               insertNewNotesBloc.fetchUserNotes(
                                 request: NewNotesRequest(
                                     notesId: "0",
@@ -101,8 +107,8 @@ class _AddNewNotesState extends State<AddNewNotes> {
                                         .getUserId()
                                         .toString(),
                                     notes: notesTextEditingController.text),
-                              ),
-                            } );
+                              );
+
 
                             // insertNewNotesBloc.fetchUserNotes(
                             //   request: NewNotesRequest(
