@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,7 +17,6 @@ class DhikrScreen extends StatefulWidget {
 }
 
 class _DhikrScreenState extends State<DhikrScreen> {
-  late final AudioCache _audioCache;
   final String tapAudio = "iPhone typing on keyboard (78E463D-MSH).mp3";
   
   int _counter = 0;
@@ -45,9 +43,7 @@ class _DhikrScreenState extends State<DhikrScreen> {
   @override
   void initState() {
     // TODO: implement initState
-    _audioCache = AudioCache(
-      fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP),
-    );
+
     super.initState();
     count = _counter.toInt();
   }

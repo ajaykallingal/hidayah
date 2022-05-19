@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:hidayah/src/data/models/dua/dua_category_response.dart';
@@ -27,8 +26,7 @@ class _DuasScreenState extends State<DuasScreen> with SingleTickerProviderStateM
   int selectedTabIndex = 0;
   ScrollController _scrollController = new ScrollController();
 
-  AudioCache audioCache = AudioCache();
-  AudioPlayer advancedPlayer = AudioPlayer();
+
   String? localFilePath;
   String? localAudioCacheURI;
 

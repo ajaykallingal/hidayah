@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hidayah/src/constants/font_family.dart';
 import 'package:hidayah/src/ui/Quran/components/my_audio_player.dart';
+import 'package:hidayah/src/ui/Quran/components/page_manager.dart';
 import 'package:hidayah/src/ui/Quran/components/quran_translated_page_arguments.dart';
 import 'package:hidayah/src/ui/Quran/components/search_bar_widget.dart';
 import 'package:hidayah/src/ui/Quran/components/textStyle.dart';
@@ -22,6 +24,7 @@ import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 
 import '../../../data/models/surah/surah_response.dart';
 import '../../../data/models/surat_model.dart';
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 
 class QuranArabicTranslatedPage extends StatefulWidget {
   static const String id = 'quran_arabic_screen';
@@ -62,9 +65,9 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
   Response? responseDetails;
   List<DisplayWholeQuranFiltered>? displayWholeQuranFiltered;
 
-  AudioCache audioCache = AudioCache();
-  late final AudioPlayer audioPlayer;
-  late final StreamSubscription progressSubscription;
+  // AudioCache audioCache = AudioCache();
+  // late final AudioPlayer audioPlayer;
+  // late final StreamSubscription progressSubscription;
 
   bool callOneTime = true;
   int index = 0;
@@ -81,18 +84,20 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
   //   audioPlayer = await AudioCache().play(fileName)
   // }
 
-  late final Duration totalDuration;
-  late final Duration position;
-  late final String audioState;
+  // late final Duration totalDuration;
+  // late final Duration position;
+  // late final String audioState;
+  late final PageManager _pageManager;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
-    audioCache.loadedFiles;
-    audioPlayer.setReleaseMode(ReleaseMode.STOP);
+    _pageManager = PageManager();
+///audioplayers package
+    // audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
+    // audioCache.loadedFiles;
+    // audioPlayer.setReleaseMode(ReleaseMode.STOP);
 // audioPlayer!.onPlayerCompletion.listen((event) {
 //   setState(() {
 //     if()
@@ -147,8 +152,10 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
   @override
   void dispose() {
     // TODO: implement dispose
-    super.dispose();
     _tabController.dispose();
+    _pageManager.dispose();
+    super.dispose();
+
   }
 
   @override
@@ -156,7 +163,7 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
     // TODO: implement didChangeAppLifecycleState
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.paused) {
-      audioPlayer.stop();
+      _pageManager.stop();
     }
   }
 
@@ -372,36 +379,39 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                                       )
                                     : SingleChildScrollView(
                                         physics: BouncingScrollPhysics(),
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.all(8),
-                                              padding: EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                  color: Colors.white
-                                                      .withOpacity(1),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          20)),
-                                              height: MediaQuery.of(context)
-                                                  .size
-                                                  .height,
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: TabBarView(
-                                                // dragStartBehavior: DragStartBehavior.start,
-                                                physics:
-                                                    NeverScrollableScrollPhysics(),
-                                                controller: _tabController,
-                                                children: [
-                                                  buildArabicTab(),
-                                                  buildTranslationTab(),
-                                                  // buildTransilerationTab(),
-                                                ],
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 10,right: 10),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.all(8),
+                                                padding: EdgeInsets.all(8),
+                                                decoration: BoxDecoration(
+                                                    color: Colors.white
+                                                        .withOpacity(1),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20)),
+                                                height: MediaQuery.of(context)
+                                                    .size
+                                                    .height,
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                child: TabBarView(
+                                                  // dragStartBehavior: DragStartBehavior.start,
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  controller: _tabController,
+                                                  children: [
+                                                    buildArabicTab(),
+                                                    buildTranslationTab(),
+                                                    // buildTransilerationTab(),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                               ],
@@ -689,57 +699,34 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                     ),
                     SizedBox(height: 5),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: Consumer<MyAudioPlayer>(
-                              builder: (_, myAudioPlayer, child) =>
-                                  GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    showAudioPlayer = !showAudioPlayer;
-                                    isPlaying = false;
-                                  });
-                                  myAudioPlayer.setUrl(displayWholeQuranFiltered![index]
-                                      .fileName);
-                                  myAudioPlayer.playerState == "Playing"
-                                      ? myAudioPlayer.pauseAudio()
-                                      : myAudioPlayer.playAudio(
-                                    displayWholeQuranFiltered![index]
-                                        .fileName,
-                                  );
-                                  nextTrack(displayWholeQuranFiltered![index].fileName, index);
-                                  // if (showAudioPlayer == true) {
-                                  //    audioPlayer.play(
-                                  // displayWholeQuranFiltered![index]
-                                  //     .fileName,
-                                  // isLocal: true);
-                                  //
-                                  // }
-                                  // if (showAudioPlayer == false) {
-                                  //  audioPlayer.stop();
-                                  // }
+                        Flexible(
+                          child: GestureDetector(
+                            onTap:(){
+                              _pageManager.setUrl(displayWholeQuranFiltered![index].fileName);
+                              setState(() {
+                                showAudioPlayer = true;
+                              });
 
+                              _pageManager.play(displayWholeQuranFiltered![index].fileName);
 
-                                  // myAudioPlayer.playerState == " Stopped" ?
-                                  //     myAudioPlayer.playAudio(displayWholeQuranFiltered![index + 1]
-                                  //         .fileName ) : myAudioPlayer.pauseAudio();
-                                },
-                                child: Text(
-                                  displayWholeQuranFiltered![index].ayatText,
-                                  softWrap: true,
-                                  textDirection: TextDirection.rtl,
-                                  // textAlign: TextAlign.right,
-                                  style: kQuranPageArabicTabStyle,
-                                ),
+                            },
+                            child: Align(
+
+                              child: Text(
+                                displayWholeQuranFiltered![index].ayatText,
+                                softWrap: true,
+                                textAlign: TextAlign.right,
+                                textDirection: TextDirection.rtl,
+                                style: kQuranPageArabicTabStyle,
                               ),
+                              alignment: Alignment.centerRight,
                             ),
                           ),
                         ),
                       ],
                     ),
+
                   ],
                 ),
               ),
@@ -748,6 +735,119 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
         ),
       ],
     );
+  }
+
+  List<Widget> createAudioPlayer(){
+    return [
+      Container(
+        height: 70,
+        width: MediaQuery.of(context).size.width,
+        // decoration: BoxDecoration(
+        //   borderRadius: BorderRadius.circular(10),
+        // ),
+        child: Column(
+          // mainAxisSize: MainAxisSize.max,
+
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // IconButton(
+                //     iconSize: 30,
+                //     onPressed: (){
+                //       _pageManager.play(displayWholeQuranFiltered![index-1].fileName);
+                //     },
+                //     icon: const Icon(Icons.skip_previous_sharp)
+                // ),
+                ValueListenableBuilder<ButtonState>(
+                    valueListenable:  _pageManager.buttonNotifier,
+                    builder: (_,value,__) {
+                      switch (value){
+                        case ButtonState.loading:
+                          return Row(
+                            children: [
+                              Center(
+                                child: Container(
+                                  margin: const EdgeInsets.all(8),
+                                  width: 25.0,
+                                  height: 25.0,
+                                  child: CircularProgressIndicator(color: mainRedShadeForTitle,),
+                                ),
+                              ),
+                            ],
+                          );
+                        case ButtonState.paused:
+                          return IconButton(
+                            iconSize: 40,
+                            color: mainRedShadeForTitle,
+                            onPressed: (){
+                              _pageManager.play(displayWholeQuranFiltered![index].fileName);
+
+                            },
+                            icon: Icon(Icons.play_circle_fill_outlined),
+                          );
+                        case ButtonState.playing:
+                          return IconButton(
+                            iconSize: 40,
+                            color: mainRedShadeForTitle,
+                              onPressed: (){
+                                _pageManager.pause;
+
+                              },
+                              icon: Icon(Icons.pause_circle_filled_outlined)
+                          );
+
+
+
+                      }
+                    }
+
+                ),
+                // IconButton(
+                //   iconSize: 30,
+                //     onPressed: (){
+                //     _pageManager.seekToNext();
+                //     },
+                //     icon: Icon(Icons.skip_next_sharp,)
+                // ),
+              ],
+
+            ),
+            // SizedBox(height: 10),
+            // Spacer(),
+            Flexible(
+              child: ValueListenableBuilder<ProgressBarState>(
+                  valueListenable: _pageManager.progressNotifier,
+                  builder: (_,value,__){
+                    return ProgressBar(
+
+                      barHeight: 3,
+
+                      progressBarColor: mainRedShadeForTitle,
+                      bufferedBarColor: mainRedShadeForText,
+                      thumbColor: mainRedShadeForTitle,
+                      thumbRadius: 6,
+                      progress: value.current,
+                      total: value.total,
+                      buffered: value.buffered,
+                      onSeek: _pageManager.seek,
+                      timeLabelTextStyle: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 10,
+                          fontWeight: FontWeight.w300,
+                          fontFamily: FontFamily.sfProDisplay
+                      ),
+
+                    );
+                  }
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    ];
   }
 
   Widget buildTranslationTab() {
@@ -861,147 +961,125 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
     );
   }
 
-  List<Widget> createAudioPlayer() {
-    return [
-      ClipRRect(
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(10), topLeft: Radius.circular(10)),
-        child: Container(
-          height: 60,
-          width: MediaQuery.of(context).size.width,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(10), topLeft: Radius.circular(10)),
-          ),
-          child: Column(
-            children: [
-              Flexible(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 0, top: 0),
-                        child: Consumer<MyAudioPlayer>(
-                          builder: (_, myAudioPlayer, child) => IconButton(
-                            iconSize: 40,
-                            padding: EdgeInsets.zero,
-                            onPressed: () {
-                              // myAudioPlayer.playerState == "Playing"
-                              //     ? myAudioPlayer.pauseAudio()
-                              //     : myAudioPlayer.playAudio(
-                              //         displayWholeQuranFiltered![index]
-                              //             .fileName,
-                              //       );
-                              // myAudioPlayer.releaseModeAudio();
+  // List<Widget> createAudioPlayer() {
+  //   return [
+  //     ClipRRect(
+  //       borderRadius: BorderRadius.only(
+  //           topRight: Radius.circular(10), topLeft: Radius.circular(10)),
+  //       child: Container(
+  //         height: 60,
+  //         width: MediaQuery.of(context).size.width,
+  //         decoration: const BoxDecoration(
+  //           borderRadius: BorderRadius.only(
+  //               topRight: Radius.circular(10), topLeft: Radius.circular(10)),
+  //         ),
+  //         child: Column(
+  //           children: [
+  //             Flexible(
+  //               child: Row(
+  //                 children: [
+  //                   Expanded(
+  //                     child: Padding(
+  //                       padding: const EdgeInsets.only(bottom: 0, top: 0),
+  //                       child: Consumer<MyAudioPlayer>(
+  //                         builder: (_, myAudioPlayer, child) => IconButton(
+  //                           iconSize: 40,
+  //                           padding: EdgeInsets.zero,
+  //                           onPressed: () {
+  //                             // myAudioPlayer.playerState == "Playing"
+  //                             //     ? myAudioPlayer.pauseAudio()
+  //                             //     : myAudioPlayer.playAudio(
+  //                             //         displayWholeQuranFiltered![index]
+  //                             //             .fileName,
+  //                             //       );
+  //                             // myAudioPlayer.releaseModeAudio();
+  //
+  //                             if (isPlaying == true &&
+  //                                 showAudioPlayer &&
+  //                                 myAudioPlayer.playerState == "Playing") {
+  //                               myAudioPlayer.pauseAudio();
+  //                               setState(() {
+  //                                 isPlaying = false;
+  //                               });
+  //                             } else if (isPlaying == false &&
+  //                                 showAudioPlayer &&
+  //                                 myAudioPlayer.playerState == "Paused") {
+  //                               myAudioPlayer.playAudio(
+  //                                 displayWholeQuranFiltered![index]
+  //                                     .fileName,
+  //                               );
+  //                               setState(() {
+  //                                 isPlaying = !isPlaying;
+  //                               });
+  //                             }
+  //                           },
+  //                           icon:
+  //                           myAudioPlayer.playerState == "Playing"
+  //                               ? Icon(Icons.play_circle_fill_rounded,
+  //                                   color: mainRedShadeForTitle)
+  //                               : Icon(
+  //                                   Icons.pause_circle_filled_rounded,
+  //                                   color: mainRedShadeForTitle,
+  //                                 ),
+  //                         ),
+  //                       ),
+  //                     ),
+  //                   ),
+  //                   // Expanded(
+  //                   //   child: IconButton(
+  //                   //       onPressed: () {},
+  //                   //       icon: Icon(Icons.play_circle_fill_rounded)),
+  //                   // ),
+  //                   // Expanded(
+  //                   //   child: IconButton(
+  //                   //       onPressed: () {},
+  //                   //       icon: Icon(Icons.play_circle_fill_rounded)),
+  //                   // ),
+  //                   // Expanded(
+  //                   //   child: IconButton(
+  //                   //       onPressed: () {},
+  //                   //       icon: Icon(Icons.play_circle_fill_rounded)),
+  //                   // ),
+  //                 ],
+  //               ),
+  //             ),
+  //             SizedBox(height: 10),
+  //             Flexible(
+  //               child: SliderTheme(
+  //                 data: const SliderThemeData(
+  //                   trackHeight: 1,
+  //                   thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5),
+  //                 ),
+  //                 child: Consumer<MyAudioPlayer>(
+  //                   builder: (_, myAudioPlayer, child) => Padding(
+  //                     padding: const EdgeInsets.all(8.0),
+  //                     child: Slider(
+  //                       value: myAudioPlayer.position == null
+  //                           ? 1.0
+  //                           : myAudioPlayer.position!.inMilliseconds.toDouble(),
+  //                       activeColor: mainRedShadeForTitle,
+  //                       inactiveColor: lightGreyShadeForText,
+  //                       onChanged: (value) {
+  //                         myAudioPlayer.seekAudio(
+  //                             Duration(milliseconds: value.toInt().round()));
+  //                       },
+  //                       min: 0.0,
+  //                       max: myAudioPlayer.totalDuration == null
+  //                           ? 20.0
+  //                           : myAudioPlayer.totalDuration!.inMilliseconds
+  //                               .toDouble(),
+  //                     ),
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   ];
+  // }
 
-                              if (isPlaying == true &&
-                                  showAudioPlayer &&
-                                  myAudioPlayer.playerState == "Playing") {
-                                myAudioPlayer.pauseAudio();
-                                setState(() {
-                                  isPlaying = false;
-                                });
-                              } else if (isPlaying == false &&
-                                  showAudioPlayer &&
-                                  myAudioPlayer.playerState == "Paused") {
-                                myAudioPlayer.playAudio(
-                                  displayWholeQuranFiltered![index]
-                                      .fileName,
-                                );
-                                setState(() {
-                                  isPlaying = !isPlaying;
-                                });
-                              }
-                            },
-                            icon:
-                            myAudioPlayer.playerState == "Playing"
-                                ? Icon(Icons.play_circle_fill_rounded,
-                                    color: mainRedShadeForTitle)
-                                : Icon(
-                                    Icons.pause_circle_filled_rounded,
-                                    color: mainRedShadeForTitle,
-                                  ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Expanded(
-                    //   child: IconButton(
-                    //       onPressed: () {},
-                    //       icon: Icon(Icons.play_circle_fill_rounded)),
-                    // ),
-                    // Expanded(
-                    //   child: IconButton(
-                    //       onPressed: () {},
-                    //       icon: Icon(Icons.play_circle_fill_rounded)),
-                    // ),
-                    // Expanded(
-                    //   child: IconButton(
-                    //       onPressed: () {},
-                    //       icon: Icon(Icons.play_circle_fill_rounded)),
-                    // ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10),
-              Flexible(
-                child: SliderTheme(
-                  data: const SliderThemeData(
-                    trackHeight: 1,
-                    thumbShape: RoundSliderThumbShape(enabledThumbRadius: 5),
-                  ),
-                  child: Consumer<MyAudioPlayer>(
-                    builder: (_, myAudioPlayer, child) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Slider(
-                        value: myAudioPlayer.position == null
-                            ? 1.0
-                            : myAudioPlayer.position!.inMilliseconds.toDouble(),
-                        activeColor: mainRedShadeForTitle,
-                        inactiveColor: lightGreyShadeForText,
-                        onChanged: (value) {
-                          myAudioPlayer.seekAudio(
-                              Duration(milliseconds: value.toInt().round()));
-                        },
-                        min: 0.0,
-                        max: myAudioPlayer.totalDuration == null
-                            ? 20.0
-                            : myAudioPlayer.totalDuration!.inMilliseconds
-                                .toDouble(),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ];
-  }
-
-  play(fileName, int currentIndex) async {
-    int result = await audioPlayer.play(fileName[currentIndex]);
-    if (result == 1) {
-      print('Success: is playing');
-    } else {
-      print('Error on audio play');
-    }
-
-    audioPlayer.onPlayerCompletion.listen((event) {
-      if(currentIndex < fileName.length-1){
-        currentIndex = currentIndex + 1;
-        nextTrack(fileName, currentIndex);
-        print("NEXT AUDIO! $currentIndex");
-      } else {
-        print("AUDIO COMPLETED PLAYING");
-      }
-    });
-  }
-
-  void nextTrack(fileName,int currentIndex){
-    play(fileName, currentIndex);
-  }
 
   // Widget buildAudioPlayer() {
   //   return Container(

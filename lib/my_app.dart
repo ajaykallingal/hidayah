@@ -70,9 +70,11 @@ Widget buildMaterialApp(BuildContext context) {
 
   return Consumer<AppState>(
     builder: (context, appState, child) {
-  return  ChangeNotifierProvider(
-    create: (_)=>MyAudioPlayer(),
-    child: MaterialApp(
+  return
+    // ChangeNotifierProvider(
+    // create: (_)=>MyAudioPlayer(),
+    // child:
+    MaterialApp(
 
 
       debugShowCheckedModeBanner: false,
@@ -119,8 +121,8 @@ Widget buildMaterialApp(BuildContext context) {
       // onGenerateRoute: RouteGenerator.generateRoute,
 
 
-    ),
-  );
+    );
+  // );
     },
   );
 }

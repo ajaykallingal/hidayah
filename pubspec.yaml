@@ -42,7 +42,7 @@ dependencies:
   connectivity_plus: ^2.2.1
   url_launcher: ^6.0.18
   bubble_tab_indicator: ^0.1.6
-  audioplayers: ^0.20.1
+#  audioplayers: ^0.20.1
   geolocator: ^7.0.3
   geocoding: ^2.0.4
   firebase_core: ^1.13.1
@@ -56,6 +56,8 @@ dependencies:
   flutter_svg: ^1.0.3
   youtube_player_iframe: ^2.2.2
   animated_text_kit: ^4.2.1
+  just_audio: ^0.9.21
+  audio_video_progress_bar: ^0.10.0
 
 dev_dependencies:
   flutter_test:

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hidayah/src/constants/text_style.dart';
+import 'package:hidayah/src/data/bloc/personal_details_bloc.dart';
 import 'package:hidayah/src/data/models/dailyQuotes/daily_quotes_response.dart';
+import 'package:hidayah/src/data/models/login/login_with_email_response.dart';
 import 'package:hidayah/src/shared_pref/object_factory.dart';
 import 'package:hidayah/src/ui/Authentication/personal_details/components/latLong.dart';
 import 'package:hidayah/src/ui/Quran/quran_screen.dart';
@@ -27,6 +29,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../data/bloc/auth_bloc.dart';
 import '../../data/bloc/prayer_times_bloc.dart';
 import '../../data/bloc/youtube_videos_bloc.dart';
+import '../../data/models/personal_details/personal_details_response.dart';
 import '../../data/models/prayerTimes/prayer_time_request.dart';
 import '../../data/models/prayerTimes/prayer_time_response.dart';
 import '../../data/models/youtube_videos/youtube_videos_response.dart';
@@ -107,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
   DateFormat formatDate = DateFormat("HH:mm");
 
   late LatLong latLong;
+  final personalDetailsBloc = PersonalDetailsBloc();
 
 
 
@@ -114,6 +118,22 @@ class _HomeScreenState extends State<HomeScreen> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
+
+
+    personalDetailsBloc.personalDetailsSCStreamListener.listen((event) {
+      if (event != null) {
+        setState(() {
+
+          // ObjectFactory().prefs.setIsLoggedIn(true);
+          ObjectFactory().prefs.saveUserData(event);
+
+          Navigator.pop(context);
+
+          loading = false;
+        });
+      }
+
+    });
     // _getCurrentPosition();
     prayerTimeBloc.prayerTimesFetchSCStreamListener.listen((event) {
       print(DateTime.now());
@@ -491,77 +511,79 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildHomePagecard1() {
     return HomePageCardWidget(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Today\'s Goals',
-            style: kHomePageCardTitleTextStyle,
-          ),
-          Divider(
-            color: const Color(0xFF707070).withOpacity(0.1),
-            indent: 0,
-            thickness: 0.8,
-            endIndent: 0,
-          ),
-          const SizedBox(height: 9),
-
-          // const SizedBox(height: 15),
-          Text("Make sure you meet your daily goals!",style: kHomePageCard1TextStyle1,),
-          // const SizedBox(height: 5),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Visibility(
-              visible:  userDataGoals1 == "1" ? true : false,
-              child:
-
-
-                Text("Pray 5 Prayers.",style: kHomePageCard1GoalsStyle,),
+      child:
+           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Today\'s Goals',
+                style: kHomePageCardTitleTextStyle,
               ),
+              Divider(
+                color: const Color(0xFF707070).withOpacity(0.1),
+                indent: 0,
+                thickness: 0.8,
+                endIndent: 0,
+              ),
+              const SizedBox(height: 9),
+
+              // const SizedBox(height: 15),
+              Text("Make sure you meet your daily goals!",style: kHomePageCard1TextStyle1,),
+              // const SizedBox(height: 5),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Visibility(
+                  visible:  userDataGoals1 == "1" ? true : false,
+                  child:
+
+
+                    Text("Pray 5 Prayers.",style: kHomePageCard1GoalsStyle,),
+                  ),
+              ),
+              const SizedBox(height: 10),
+
+
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Visibility(
+                  visible:  userDataGoals2 == "1" ? true : false,
+                  child:
+
+
+                    Text("Read 20 Ayahs of  Quran Daily.",style: kHomePageCard1GoalsStyle,),
+
+                ),
+              ),
+              const SizedBox(height: 10),
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Visibility(
+                    visible: userDataGoals3 == "1" ? true : false,
+                      child: Text("Say 3 Duas Each Day.",style: kHomePageCard1GoalsStyle,)),
+                ) ,
+              const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.only(left : 10),
+                  child: Visibility(
+                      visible: userDataGoals4 == "1" ? true : false,
+                      child: Text("Pray Witr at Night.",style: kHomePageCard1GoalsStyle,)),
+                ),
+              const SizedBox(height: 10),
+
+                Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Visibility(
+                    visible: userDataGoals5 == "1" ? true : false,
+                      child: Text("Give Charity Once a Week.",style: kHomePageCard1GoalsStyle,)),
+                ),
+              const SizedBox(height: 10),
+
+
+            ],
           ),
-          const SizedBox(height: 10),
 
-
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Visibility(
-              visible:  userDataGoals2 == "1" ? true : false,
-              child:
-
-
-                Text("Read 20 Ayahs of  Quran Daily.",style: kHomePageCard1GoalsStyle,),
-
-            ),
-          ),
-          const SizedBox(height: 10),
-
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Visibility(
-                visible: userDataGoals3 == "1" ? true : false,
-                  child: Text("Say 3 Duas Each Day.",style: kHomePageCard1GoalsStyle,)),
-            ) ,
-          const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.only(left : 10),
-              child: Visibility(
-                  visible: userDataGoals4 == "1" ? true : false,
-                  child: Text("Pray Witr at Night.",style: kHomePageCard1GoalsStyle,)),
-            ),
-          const SizedBox(height: 10),
-
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Visibility(
-                visible: userDataGoals5 == "1" ? true : false,
-                  child: Text("Give Charity Once a Week.",style: kHomePageCard1GoalsStyle,)),
-            ),
-          const SizedBox(height: 10),
-
-
-        ],
-      ),
     );
   }
 
