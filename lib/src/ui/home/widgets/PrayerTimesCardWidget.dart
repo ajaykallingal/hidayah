@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hidayah/src/constants/text_style.dart';
 import 'package:hidayah/src/data/bloc/prayer_times_bloc.dart';
 import 'package:hidayah/src/ui/prayer_times/prayer_times_screen.dart';
 import 'package:intl/intl.dart';
@@ -119,7 +120,10 @@ class _PrayerTimesCardWidgetState extends State<PrayerTimesCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return
+      loading ? Center(
+        child: CircularProgressIndicator(color: mainRedShadeForTitle,),
+      ) : Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(

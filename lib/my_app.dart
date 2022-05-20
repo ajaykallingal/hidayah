@@ -25,6 +25,7 @@ import 'package:hidayah/src/ui/home/home_screen.dart';
 import 'package:hidayah/src/ui/more/more_screen.dart';
 import 'package:hidayah/src/ui/near_mosques/near_by_mosques.dart';
 import 'package:hidayah/src/ui/notes/add_new_notes.dart';
+import 'package:hidayah/src/ui/notes/edit_note.dart';
 import 'package:hidayah/src/ui/notes/notes_screen.dart';
 import 'package:hidayah/src/ui/prayer_times/prayer_times_screen.dart';
 import 'package:hidayah/src/ui/qibla%20compass/qibla_compass.dart';
@@ -114,6 +115,7 @@ Widget buildMaterialApp(BuildContext context) {
           AddNewNotes.id : (context) => AddNewNotes(),
           QiblaCompassWidget.id : (context) => QiblaCompassWidget(),
           DailyGoalsScreen.id : (context) => DailyGoalsScreen(),
+          EditNote.id : (context) => EditNote(),
 
 
 

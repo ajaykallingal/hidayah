@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
   final List<_PositionItem> _positionItems = <_PositionItem>[];
-  String Address = "Search";
+  String Address = "Fetching your location...";
   // String AddressName = "name";
   Position? position;
 

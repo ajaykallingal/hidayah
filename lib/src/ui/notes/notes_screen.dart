@@ -8,6 +8,8 @@ import 'package:hidayah/src/data/models/notes/notes_request.dart';
 import 'package:hidayah/src/data/models/notes/notes_response.dart';
 import 'package:hidayah/src/shared_pref/object_factory.dart';
 import 'package:hidayah/src/ui/notes/add_new_notes.dart';
+import 'package:hidayah/src/ui/notes/edit_note.dart';
+import 'package:hidayah/src/ui/notes/edit_note_arguments.dart';
 
 import '../Quran/components/textStyle.dart';
 import '../prayer_times/text_style.dart';
@@ -46,15 +48,13 @@ class _NotesScreenState extends State<NotesScreen> {
     super.didChangeDependencies();
 
     userNotesBloc.notesFetchSCStreamListener.listen((event) {
-      setState(() {
-        final userId = ObjectFactory().prefs.getUserId().toString();
-        // userNotesBloc.fetchUserNotes(request: NotesRequest(userId: "5"));
-        //
+      final userId = ObjectFactory().prefs.getUserId().toString();
+      // userNotesBloc.fetchUserNotes(request: NotesRequest(userId: "5"));
+      //
 
-        noteResponse = event.responseOfNotes;
-        // userNotesBloc.fetchUserNotes(request: NotesRequest(userId: "5"));
-        loading = false;
-      });
+      noteResponse = event.responseOfNotes;
+      // userNotesBloc.fetchUserNotes(request: NotesRequest(userId: "5"));
+      loading = false;
     });
 
     deleteNoteBloc.deleteNotesSCStreamListener.listen((event) {
@@ -75,9 +75,7 @@ class _NotesScreenState extends State<NotesScreen> {
             fixedSize: Size(50, 50),
           ),
           onPressed: () {
-            Navigator.pushNamed(context, AddNewNotes.id).then((_) {
-
-            });
+            Navigator.pushNamed(context, AddNewNotes.id);
           },
           child: ImageIcon(AssetImage("assets/images/new note.png"))),
       body: Stack(
@@ -223,11 +221,21 @@ class _NotesScreenState extends State<NotesScreen> {
                                                             child: ListTile(
                                                               horizontalTitleGap:
                                                                   30,
-                                                              title: Text(
-                                                                snapshot.data!.responseOfNotes![index].notes,
-                                                                softWrap: true,
-                                                                style:
-                                                                    kQuranPageTabContentTitleStyle,
+                                                              title: GestureDetector(
+                                                                onTap: (){
+                                                                  Navigator.pushNamed(context, EditNote.id,
+                                                                    arguments: EditNoteArguments(
+                                                                        noteText: snapshot.data!.responseOfNotes![index].notes,
+                                                                      noteId: snapshot.data!.responseOfNotes![index].notesId,
+                                                                    ),
+                                                                  );
+                                                                },
+                                                                child: Text(
+                                                                  snapshot.data!.responseOfNotes![index].notes,
+                                                                  softWrap: true,
+                                                                  style:
+                                                                      kQuranPageTabContentTitleStyle,
+                                                                ),
                                                               ),
                                                             ),
                                                           );

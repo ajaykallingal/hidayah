@@ -34,7 +34,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
   Response? responseDetails;
   final GeolocatorPlatform _geolocatorPlatform = GeolocatorPlatform.instance;
   final List<_PositionItem> _positionItems = <_PositionItem>[];
-  String Address = "Search";
+  String Address = "Fetching your location...";
   Position? position;
   static const String kLocationServicesDisabledMessage =
       'Location services are disabled.';
@@ -54,6 +54,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
   DateTime? newTime;
 
   bool loading = false;
+  bool isAnimating = false;
 
   String upcomingPrayerTime = "please wait..";
   String upcomingPrayerName = "please wait..";
@@ -95,7 +96,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
     animation = CurvedAnimation(parent: animationController, curve: Curves.easeInExpo );
     animation.addListener(() => this.setState(() {}));
     animationController.forward();
-    animation1 = CurvedAnimation(parent: animationController, curve: Curves.easeOutExpo);
+    animation1 = CurvedAnimation(parent: animationController, curve: Curves.linearToEaseOut);
     animation1.addListener(() => this.setState(() {}));
 
   }
@@ -347,7 +348,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
                                     SizedBox(height: 20),
                                     ImageIcon(
                                       AssetImage("assets/images/SUNSET.png"),
-                                      size: animation1.value / 26,
+                                      size: isAnimating ? 26 : animation1.value * 26 ,
                                       color: mainThemeWhiteColor,
                                     ),
                                     Text("sunset",

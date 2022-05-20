@@ -1,48 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:hidayah/src/data/bloc/new_notes_bloc.dart';
-import 'package:hidayah/src/data/models/new_notes/new_notes_request.dart';
-import 'package:hidayah/src/shared_pref/object_factory.dart';
-import 'package:hidayah/src/ui/notes/notes_screen.dart';
 
+import '../../data/models/new_notes/new_notes_request.dart';
+import '../../shared_pref/object_factory.dart';
 import '../prayer_times/text_style.dart';
+import 'edit_note_arguments.dart';
+import 'notes_screen.dart';
 
-class AddNewNotes extends StatefulWidget {
-  const AddNewNotes({Key? key}) : super(key: key);
-  static const String id = 'new_notes_screen';
+class EditNote extends StatefulWidget {
+  static const String id = 'edit_notes_screen';
 
+  const EditNote({Key? key}) : super(key: key);
 
   @override
-  State<AddNewNotes> createState() => _AddNewNotesState();
+  State<EditNote> createState() => _EditNoteState();
 }
 
-class _AddNewNotesState extends State<AddNewNotes> {
-  TextEditingController notesTextEditingController = TextEditingController();
-  TextEditingController toEditTextController = TextEditingController();
-  final insertNewNotesBloc = NewNotesBloc();
-  bool loading = false;
+class _EditNoteState extends State<EditNote> {
+ final insertNewNotesBloc = NewNotesBloc();
+ TextEditingController editNotesController = TextEditingController();
+ bool loading = false;
+
+ @override
+ void didChangeDependencies() {
+   // TODO: implement didChangeDependencies
+   super.didChangeDependencies();
+   insertNewNotesBloc.insertNewNotesSCStreamListener.listen((event) {
+     setState(() {
+
+       Navigator.pushNamedAndRemoveUntil(context, NotesScreen.id, (route) => false);
 
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    insertNewNotesBloc.insertNewNotesSCStreamListener.listen((event) {
-      setState(() {
+       loading = false;
 
-        Navigator.pushNamedAndRemoveUntil(context, NotesScreen.id, (route) => false);
-
-
-        loading = false;
-
-      });
-    });
-  }
+     });
+   });
+ }
 
 
 
   @override
   Widget build(BuildContext context) {
+    final arguments = ModalRoute.of(context)!.settings.arguments as EditNoteArguments;
+    editNotesController = TextEditingController(text: arguments.noteText);
     return Material(
       type: MaterialType.transparency,
       child: Stack(
@@ -90,12 +90,12 @@ class _AddNewNotesState extends State<AddNewNotes> {
                       ListTile(
                         leading: IconButton(
                           onPressed: () {
-                            Navigator.of(context).maybePop();
+                            Navigator.pop(context);
                           },
                           icon: Icon(Icons.arrow_back, color: Colors.white),
                         ),
                         title: Text(
-                          "New notes",
+                          "Edit notes",
                           style: kPrayerTimeScreenHeaderStyle,
                         ),
                         trailing: TextButton(
@@ -103,15 +103,15 @@ class _AddNewNotesState extends State<AddNewNotes> {
                             FocusScope.of(context).unfocus();
                             TextEditingController().clear();
 
-                              insertNewNotesBloc.fetchUserNotes(
-                                request: NewNotesRequest(
-                                    notesId: "0",
-                                    userId: ObjectFactory()
-                                        .prefs
-                                        .getUserId()
-                                        .toString(),
-                                    notes: notesTextEditingController.text),
-                              );
+                            insertNewNotesBloc.fetchUserNotes(
+                              request: NewNotesRequest(
+                                  notesId: arguments.noteId,
+                                  userId: ObjectFactory()
+                                      .prefs
+                                      .getUserId()
+                                      .toString(),
+                                  notes: editNotesController.text),
+                            );
 
 
                             // insertNewNotesBloc.fetchUserNotes(
@@ -147,12 +147,12 @@ class _AddNewNotesState extends State<AddNewNotes> {
                           height: 560,
                           width: MediaQuery.of(context).size.width,
                           child: TextField(
-                            
+
 
                             style: TextStyle(color: Colors.black),
                             // focusNode: FocusNode(),
 
-                            controller:  notesTextEditingController,
+                            controller:  editNotesController,
                             maxLines: 9999,
                             keyboardType: TextInputType.multiline,
                             decoration:  InputDecoration(

@@ -62,8 +62,12 @@ class _QiblaCompassWidgetState extends State<QiblaCompassWidget> {
                     child:  Column(
                       children: [
                         SizedBox(
-                          height: 90,
+                          height: 70,
                         ),
+                        Align(
+
+                            alignment: Alignment.center,
+                            child: Image.asset("assets/images/nearest mosques.png",width: 250,height: 150,fit: BoxFit.cover,))
 
 
                       ],
@@ -74,7 +78,7 @@ class _QiblaCompassWidgetState extends State<QiblaCompassWidget> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         ListTile(
                           leading: IconButton(onPressed: (){
@@ -83,7 +87,7 @@ class _QiblaCompassWidgetState extends State<QiblaCompassWidget> {
                           title: Text("Qibla Compass",style: kPrayerTimeScreenHeaderStyle,),
                         ),
 
-                        SizedBox(height: 20),
+                        SizedBox(height: 50),
                         Padding(
                           padding: const EdgeInsets.all(20.0),
                           child: Container(

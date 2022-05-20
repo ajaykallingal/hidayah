@@ -121,7 +121,7 @@ class _DailyGoalsScreenState extends State<DailyGoalsScreen> {
                       height: 20,
                     ),
                     ListTile(
-                      leading: IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back,color: mainThemeWhiteColor),),
+                      leading: IconButton(onPressed: (){Navigator.pop(context);}, icon: Icon(Icons.arrow_back,color: mainThemeWhiteColor),),
                       title: Text("Daily Goals",style: kPrayerTimeScreenHeaderStyle,),
                     ),
                     SizedBox(height: 70,),
