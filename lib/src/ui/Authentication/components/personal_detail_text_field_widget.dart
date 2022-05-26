@@ -14,7 +14,7 @@ class PersonalDetailTextFieldWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
       ),
-      height: 40,
+      height: 42,
       width: MediaQuery.of(context).size.width,
       child: TextFormField(
         style: TextStyle(color: Colors.black54),

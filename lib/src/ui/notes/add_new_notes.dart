@@ -28,14 +28,8 @@ class _AddNewNotesState extends State<AddNewNotes> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     insertNewNotesBloc.insertNewNotesSCStreamListener.listen((event) {
-      setState(() {
-
-        Navigator.pushNamedAndRemoveUntil(context, NotesScreen.id, (route) => false);
-
-
-        loading = false;
-
-      });
+      Navigator.pushReplacementNamed(context, NotesScreen.id);
+      loading = false;
     });
   }
 
@@ -90,7 +84,7 @@ class _AddNewNotesState extends State<AddNewNotes> {
                       ListTile(
                         leading: IconButton(
                           onPressed: () {
-                            Navigator.of(context).maybePop();
+                            Navigator.pushReplacementNamed(context, NotesScreen.id);
                           },
                           icon: Icon(Icons.arrow_back, color: Colors.white),
                         ),
@@ -141,6 +135,7 @@ class _AddNewNotesState extends State<AddNewNotes> {
                         padding: const EdgeInsets.all(25),
                         child: Container(
                           decoration: BoxDecoration(
+
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.white.withOpacity(1),
                           ),

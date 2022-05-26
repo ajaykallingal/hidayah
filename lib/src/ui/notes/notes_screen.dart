@@ -7,6 +7,7 @@ import 'package:hidayah/src/data/models/delete_notes/delete_notes_request.dart';
 import 'package:hidayah/src/data/models/notes/notes_request.dart';
 import 'package:hidayah/src/data/models/notes/notes_response.dart';
 import 'package:hidayah/src/shared_pref/object_factory.dart';
+import 'package:hidayah/src/ui/home/home_screen.dart';
 import 'package:hidayah/src/ui/notes/add_new_notes.dart';
 import 'package:hidayah/src/ui/notes/edit_note.dart';
 import 'package:hidayah/src/ui/notes/edit_note_arguments.dart';
@@ -110,11 +111,14 @@ class _NotesScreenState extends State<NotesScreen> {
                 : Stack(
                     children: [
                       Column(
+
                         children: [
+
                           ListTile(
                             leading: IconButton(
                               onPressed: () {
-                                Navigator.pop(context);
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, HomeScreen.id, (route) => false);
                               },
                               icon: Icon(
                                 Icons.arrow_back,
@@ -130,7 +134,10 @@ class _NotesScreenState extends State<NotesScreen> {
                           Padding(
                             padding: const EdgeInsets.all(15),
                             child: Container(
-                              color: Colors.white.withOpacity(1),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
                               height: 570,
                               width: MediaQuery.of(context).size.width,
                               child: SingleChildScrollView(
@@ -159,7 +166,6 @@ class _NotesScreenState extends State<NotesScreen> {
                                             style:
                                                 TextStyle(color: Colors.black),
                                           ),
-
                                         ],
                                       );
                                     } else {
@@ -185,7 +191,10 @@ class _NotesScreenState extends State<NotesScreen> {
                                                         const EdgeInsets.only(
                                                             top: 10),
                                                     child: ListView.builder(
-                                                        itemCount: snapshot.data!.responseOfNotes!.length,
+                                                        itemCount: snapshot
+                                                            .data!
+                                                            .responseOfNotes!
+                                                            .length,
                                                         itemBuilder:
                                                             (BuildContext
                                                                     context,
@@ -221,18 +230,41 @@ class _NotesScreenState extends State<NotesScreen> {
                                                             child: ListTile(
                                                               horizontalTitleGap:
                                                                   30,
-                                                              title: GestureDetector(
-                                                                onTap: (){
-                                                                  Navigator.pushNamed(context, EditNote.id,
-                                                                    arguments: EditNoteArguments(
-                                                                        noteText: snapshot.data!.responseOfNotes![index].notes,
-                                                                      noteId: snapshot.data!.responseOfNotes![index].notesId,
+                                                              title:
+                                                                  GestureDetector(
+                                                                onTap: () {
+                                                                  Navigator
+                                                                      .pushReplacementNamed(
+                                                                    context,
+                                                                    EditNote.id,
+                                                                    arguments:
+                                                                        EditNoteArguments(
+                                                                      noteText: snapshot
+                                                                          .data!
+                                                                          .responseOfNotes![
+                                                                              index]
+                                                                          .notes,
+                                                                      noteId: snapshot
+                                                                          .data!
+                                                                          .responseOfNotes![
+                                                                              index]
+                                                                          .notesId,
                                                                     ),
-                                                                  );
+                                                                  ).then((value) => userNotesBloc.fetchUserNotes(
+                                                                      request: NotesRequest(
+                                                                          userId: ObjectFactory()
+                                                                              .prefs
+                                                                              .getUserId()
+                                                                              .toString())));
                                                                 },
                                                                 child: Text(
-                                                                  snapshot.data!.responseOfNotes![index].notes,
-                                                                  softWrap: true,
+                                                                  snapshot
+                                                                      .data!
+                                                                      .responseOfNotes![
+                                                                          index]
+                                                                      .notes,
+                                                                  softWrap:
+                                                                      true,
                                                                   style:
                                                                       kQuranPageTabContentTitleStyle,
                                                                 ),

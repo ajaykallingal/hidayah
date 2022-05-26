@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hidayah/src/constants/text_style.dart';
 import 'package:flutter_beep/flutter_beep.dart';
+import 'package:hidayah/src/shared_pref/object_factory.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home/textStyle/text_style.dart';
 
@@ -21,22 +23,32 @@ class _DhikrScreenState extends State<DhikrScreen> {
   
   int _counter = 0;
   bool toggleSwitch = false;
-  int count = 0;
+  // int count = 0;
+  String prefedCount = "0";
 
   void _incrementCounter() {
 
     setState(() {
       SystemSound.play(SystemSoundType.click);
-
+ObjectFactory().prefs.setUserDhikrCount(userDhikrCount: _counter.toString());
       _counter++;
+
     });
   }
 
   void _resetCounter() {
     setState(() {
       _counter = 0;
+      ObjectFactory().prefs.setUserDhikrCount(userDhikrCount: _counter.toString());
+
+      // ObjectFactory().prefs.setUserDhikrCount();
+
     });
   }
+
+
+
+
 
 
 
@@ -45,7 +57,15 @@ class _DhikrScreenState extends State<DhikrScreen> {
     // TODO: implement initState
 
     super.initState();
-    count = _counter.toInt();
+    // count = _counter.toInt();
+    if(ObjectFactory().prefs.getUserDhikrCount() == null){
+      _counter = 0;
+    }else{
+      _counter = int.parse(ObjectFactory().prefs.getUserDhikrCount().toString());
+    }
+
+
+
   }
 
   @override
@@ -162,6 +182,12 @@ class _DhikrScreenState extends State<DhikrScreen> {
                                      fontWeight: FontWeight.bold,
                                        fontSize: 30, color: Colors.white),
                                  ),
+                                 // Text(
+                                 //   "Your last count: ${_counter.toString()}",
+                                 //   style: TextStyle(
+                                 //       fontWeight: FontWeight.bold,
+                                 //       fontSize: 30, color: Colors.white),
+                                 // ),
                                ],
                              ),
                             ],
@@ -197,11 +223,13 @@ class _DhikrScreenState extends State<DhikrScreen> {
                             splashColor: mainRedShadeForText,
                             iconSize: 70,
                             onPressed: () {
-                              FlutterBeep.playSysSound(iOSSoundIDs.AudioToneBusy);
+                              // FlutterBeep.playSysSound(iOSSoundIDs.AudioToneBusy);
                               Feedback.forTap(context);
                               _incrementCounter();
                               Clipboard.setData(const ClipboardData());
                               HapticFeedback.heavyImpact();
+                              // ObjectFactory().prefs.setUserDhikrCount();
+                              // ObjectFactory().prefs.setUserDhikrCount(userDhikrCount: count.toString());
 
                             },
                             icon: ImageIcon(

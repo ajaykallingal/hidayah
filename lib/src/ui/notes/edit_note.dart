@@ -26,14 +26,8 @@ class _EditNoteState extends State<EditNote> {
    // TODO: implement didChangeDependencies
    super.didChangeDependencies();
    insertNewNotesBloc.insertNewNotesSCStreamListener.listen((event) {
-     setState(() {
-
-       Navigator.pushNamedAndRemoveUntil(context, NotesScreen.id, (route) => false);
-
-
-       loading = false;
-
-     });
+    Navigator.of(context).pop();
+     loading = false;
    });
  }
 

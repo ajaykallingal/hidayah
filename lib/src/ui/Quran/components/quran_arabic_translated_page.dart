@@ -282,6 +282,21 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                                   image: AssetImage("assets/images/quran.png"),
                                 ),
                               ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(arguments.surahName,style: kQuranPageBoxTitleStyle1,),
+                                    SizedBox(height: 10),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 27),
+                                      child: Text(arguments.totalVerse,style: kQuranPageBoxSubTitleStyle1,textAlign: TextAlign.center,),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                             SizedBox(height: 50),
                           ],
@@ -1104,30 +1119,30 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
   //   );
   // }
 
-  Widget buildQuranTranslatedPageCard(int index) {
+  Widget buildQuranTranslatedPageCard(String surahName) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Text("Last read",style: kQuranPageBoxSubTitleStyle1,),
         SizedBox(height: 20),
         Text(
-          displayWholeQuranFiltered![index].suratEngName!,
+          surahName,
           style: kQuranPageBoxTitleStyle1,
         ),
-        Text(
-          displayWholeQuranFiltered![index].suartEnglishTranslation!,
-          style: kQuranPageBoxSubTitleStyle1,
-        ),
-        Divider(
-          color: Colors.white.withOpacity(1),
-          // indent: 50,
-          endIndent: 230,
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 25),
-          child: Text(displayWholeQuranFiltered![index].suartRevelationCity,
-              style: kQuranPageBoxSubTitleStyle1),
-        ),
+        // Text(
+        //   displayWholeQuranFiltered![index].suartEnglishTranslation!,
+        //   style: kQuranPageBoxSubTitleStyle1,
+        // ),
+        // Divider(
+        //   color: Colors.white.withOpacity(1),
+        //   // indent: 50,
+        //   endIndent: 230,
+        // ),
+        // Padding(
+        //   padding: const EdgeInsets.only(left: 25),
+        //   child: Text(displayWholeQuranFiltered![index].suartRevelationCity,
+        //       style: kQuranPageBoxSubTitleStyle1),
+        // ),
       ],
     );
   }

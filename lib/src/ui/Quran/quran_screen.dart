@@ -33,6 +33,7 @@ class QuranScreen extends StatefulWidget {
 class _QuranScreenState extends State<QuranScreen>
     with SingleTickerProviderStateMixin {
   List tabList = ["Surah"];
+
   // List surahList = SuratModel() as List<Map<String, dynamic>>;
   // List<DisplayWholeQuranFiltered> displayWholeQuranFiltered = List.empty(growable: true);
   List<SurahResponse> surahList = List.empty(growable: true);
@@ -43,7 +44,12 @@ class _QuranScreenState extends State<QuranScreen>
   late TabController _tabController;
   ScrollController _scrollController = new ScrollController();
 
-  final String languageId = ObjectFactory().prefs.getUserData()!.response!.userSelectedLanguageId.toString();
+  final String languageId = ObjectFactory()
+      .prefs
+      .getUserData()!
+      .response!
+      .userSelectedLanguageId
+      .toString();
   final String suratId = "1";
   final String ayathNo = "0";
   final String juzId = "0";
@@ -60,6 +66,7 @@ class _QuranScreenState extends State<QuranScreen>
   Response? responseDetails;
   List<DisplayWholeQuranFiltered>? displayWholeQuranFiltered;
   int? _isFavSelectedIndex;
+
   void _onSelected(int index) {
     setState(() {
       _isFavSelectedIndex = index;
@@ -70,7 +77,8 @@ class _QuranScreenState extends State<QuranScreen>
   void initState() {
     // TODO: implement initState
     super.initState();
-    surahList.addAll(List<SurahResponse>.from(SuratModel.surahList.map((x) => SurahResponse.fromJson(x))));
+    surahList.addAll(List<SurahResponse>.from(
+        SuratModel.surahList.map((x) => SurahResponse.fromJson(x))));
     print(surahList);
     _tabController = TabController(
         length: tabList.length, vsync: this, initialIndex: selectedTabIndex);
@@ -115,10 +123,8 @@ class _QuranScreenState extends State<QuranScreen>
     _tabController.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Stack(
       children: [
         Container(
@@ -171,11 +177,34 @@ class _QuranScreenState extends State<QuranScreen>
                       ),
                       Padding(
                         padding:
-                        const EdgeInsets.only(left: 25, right: 10, top: 25),
+                            const EdgeInsets.only(left: 25, right: 10, top: 25),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            buildQuranPageCard(index),
+                            Text(
+                              "Last read",
+                              style: kQuranPageBoxSubTitleStyle1,
+                            ),
+                            SizedBox(height: 20),
+                            Text(
+                              ObjectFactory().prefs.getLastReadSurah().toString(),
+
+                              style: kQuranPageBoxTitleStyle1,
+                            ),
+                            Text(
+                              ObjectFactory().prefs.getLastReadSurahTranslation().toString(),
+                              style: kQuranPageBoxSubTitleStyle1,
+                            ),
+                            Divider(
+                              color: Colors.white.withOpacity(1),
+                              // indent: 50,
+                              endIndent: 230,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 25),
+                              child: Text(ObjectFactory().prefs.getLastReadSurahVerses().toString() + " verses",
+                                  style: kQuranPageBoxSubTitleStyle1),
+                            ),
                           ],
                         ),
                       ),
@@ -250,49 +279,56 @@ class _QuranScreenState extends State<QuranScreen>
                                                   horizontalTitleGap: 30,
 
                                                   title: Text(
-                                                    surahList[index].transliteration,
+                                                    surahList[index]
+                                                        .transliteration,
                                                     softWrap: true,
                                                     style:
                                                         kQuranPageTabContentTitleStyle,
                                                   ),
                                                   subtitle: Text(
-                                                   surahList[index].translation,
+                                                    surahList[index]
+                                                        .translation,
                                                     // softWrap: true,
                                                     style:
                                                         kQuranPageTabContentSubTitleStyle,
                                                   ),
-                                                  leading:   Container(
-                                                    constraints: BoxConstraints(maxWidth: 50,maxHeight: 50),
-                                                    decoration: BoxDecoration(image: DecorationImage(
-                                                      // alignment: Alignment.centerLeft,
+                                                  leading: Container(
+                                                    constraints: BoxConstraints(
+                                                        maxWidth: 50,
+                                                        maxHeight: 50),
+                                                    decoration: BoxDecoration(
+                                                        image: DecorationImage(
+                                                            // alignment: Alignment.centerLeft,
 
-                                                        fit: BoxFit.contain,
-
-                                                        image: AssetImage("assets/images/list_tile_leading.png")
-                                                    )),
+                                                            fit: BoxFit.contain,
+                                                            image: AssetImage(
+                                                                "assets/images/list_tile_leading.png"))),
                                                     child: Stack(
                                                       children: [
-                                                      Align(
-                                                            alignment: Alignment.center,
-                                                            child: Column(
-                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                              children: [
-                                                                Text("SURAH"),
-                                                                Text(surahList[index].id,style: TextStyle(fontSize: 20),)
-                                                              ],
-                                                            ),
-
+                                                        Align(
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text("SURAH"),
+                                                              Text(
+                                                                surahList[index]
+                                                                    .id,
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        20),
+                                                              )
+                                                            ],
                                                           ),
+                                                        ),
                                                       ],
                                                     ),
-
                                                   ),
 
-
-
-                                                    // color: mainRedShadeForTitle,
-
-
+                                                  // color: mainRedShadeForTitle,
 
                                                   // ImageIcon(
                                                   //   AssetImage(
@@ -302,6 +338,9 @@ class _QuranScreenState extends State<QuranScreen>
                                                   //       ? mainRedShadeForTitle : lightGreyShadeForText,
                                                   // ),
                                                   onTap: () {
+                                                    ObjectFactory().prefs.setLastReadSurah(lastReadSurah: surahList[index].transliteration);
+                                                    ObjectFactory().prefs.setLastReadSurahTranslation(lastReadSurahTranslation: surahList[index].translation);
+                                                    ObjectFactory().prefs.setLastReadSurahVerses(lastReadSurahVerses: surahList[index].totalVerses);
                                                     print(index);
                                                     loading
                                                         ? Center(
@@ -311,13 +350,23 @@ class _QuranScreenState extends State<QuranScreen>
                                                                   mainRedShadeForTitle,
                                                             ),
                                                           )
-                                                        : Navigator
-                                                            .pushNamed(
-                                                                context,
-                                                                QuranArabicTranslatedPage
-                                                                    .id,
-                                                                  arguments: QuranTranslatedPageArguments(surathId: surahList[index].id, languageId: languageId)
-                                                               );
+                                                        : Navigator.pushNamed(
+                                                            context,
+                                                            QuranArabicTranslatedPage
+                                                                .id,
+                                                            arguments: QuranTranslatedPageArguments(
+                                                                surathId:
+                                                                    surahList[
+                                                                            index]
+                                                                        .id,
+                                                                languageId:
+                                                                    languageId,
+                                                                surahName:
+                                                                    surahList[
+                                                                            index]
+                                                                        .transliteration,
+                                                                totalVerse: surahList[index].totalVerses ),
+                                                          );
                                                   },
                                                 );
                                               },
@@ -325,7 +374,6 @@ class _QuranScreenState extends State<QuranScreen>
                                               controller: _scrollController,
                                               physics: BouncingScrollPhysics(),
                                             ),
-
                                     ],
                                   ),
                                 ),
@@ -336,8 +384,6 @@ class _QuranScreenState extends State<QuranScreen>
                       ],
                     ),
                   ),
-
-
                 ],
               ),
             ),
@@ -349,12 +395,21 @@ class _QuranScreenState extends State<QuranScreen>
 
   Widget buildQuranPageCard(int index) {
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Last read",style: kQuranPageBoxSubTitleStyle1,),
+        Text(
+          "Last read",
+          style: kQuranPageBoxSubTitleStyle1,
+        ),
         SizedBox(height: 20),
-        Text(surahList[index].transliteration,style: kQuranPageBoxTitleStyle1,),
-        Text(surahList[index].translation,style: kQuranPageBoxSubTitleStyle1,),
+        Text(
+          surahList[index].transliteration,
+          style: kQuranPageBoxTitleStyle1,
+        ),
+        Text(
+          surahList[index].translation,
+          style: kQuranPageBoxSubTitleStyle1,
+        ),
         Divider(
           color: Colors.white.withOpacity(1),
           // indent: 50,
@@ -362,10 +417,9 @@ class _QuranScreenState extends State<QuranScreen>
         ),
         Padding(
           padding: const EdgeInsets.only(left: 25),
-          child: Text(
-            surahList[index].totalVerses + " verses",style: kQuranPageBoxSubTitleStyle1),
+          child: Text(surahList[index].totalVerses + " verses",
+              style: kQuranPageBoxSubTitleStyle1),
         ),
-
       ],
     );
   }

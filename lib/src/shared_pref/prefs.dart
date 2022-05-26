@@ -17,7 +17,12 @@ class Prefs{
   static const String? _USER_ID = "user_id";
   static const String? _USER_DATA = "user_data";
   static const String? _IS_LOGGED_IN = "is_logged_in";
-  static const String? _DHIKR_COUNT = "dhikr_count";
+  static const String _DHIKR_COUNT = "dhikr_count";
+  static const String _LASTREADSURAH = "last_read_surah";
+  static const String _LASTREADSURAHTRANSLATION = "last_read_suarah_trasnlation";
+  static const String _LASTREADSURAHVERSES = "last_read_surah_verses";
+    // "last_read_surah_translation","last_read_surah_verses"
+
 
 
   Prefs();
@@ -67,8 +72,33 @@ class Prefs{
 
   ///  save user dhikrcount
   void setUserDhikrCount({String? userDhikrCount}) {
-    _sharedPreferences!.setString(_DHIKR_COUNT!, userDhikrCount!);
+    _sharedPreferences!.setString(_DHIKR_COUNT, userDhikrCount!);
   }
+
+  ///get dhikr count
+  String? getUserDhikrCount() => _sharedPreferences!.getString(_DHIKR_COUNT);
+
+  ///  save last read surah
+  void setLastReadSurah({String? lastReadSurah}) {
+    _sharedPreferences!.setString(_LASTREADSURAH, lastReadSurah!);
+  }
+  ///get last read surah
+  String? getLastReadSurah() => _sharedPreferences!.getString(_LASTREADSURAH);
+
+
+  ///  save last read surah translation
+  void setLastReadSurahTranslation({String? lastReadSurahTranslation}) {
+    _sharedPreferences!.setString(_LASTREADSURAHTRANSLATION, lastReadSurahTranslation!);
+  }
+  ///get last read surah translation
+  String? getLastReadSurahTranslation() => _sharedPreferences!.getString(_LASTREADSURAHTRANSLATION);
+
+  ///  save last read surah verses
+  void setLastReadSurahVerses({String? lastReadSurahVerses}) {
+    _sharedPreferences!.setString(_LASTREADSURAHVERSES, lastReadSurahVerses!);
+  }
+  ///get last read surah verses
+  String? getLastReadSurahVerses() => _sharedPreferences!.getString(_LASTREADSURAHVERSES);
 
 
 }

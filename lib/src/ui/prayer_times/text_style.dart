@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hidayah/src/constants/text_style.dart';
 
 import '../../constants/font_family.dart';
 
@@ -9,7 +10,7 @@ Color tabBarHeaderInactiveTextColor = Color(0xFF747474);
 TextStyle kPrayerTimeScreenHeaderStyle = TextStyle(
   letterSpacing: 0,
   fontFamily: FontFamily.sfProDisplay,
-  fontSize: 24,
+  fontSize: 28,
   color: mainThemeWhiteColor,
   fontWeight: FontWeight.w700,
 );
@@ -18,6 +19,20 @@ TextStyle kPrayerTimeScreenSubHeaderStyle = TextStyle(
   fontFamily: FontFamily.sfProDisplay,
   fontSize: 15,
   color: mainThemeWhiteColor,
+  fontWeight: FontWeight.w600,
+);
+TextStyle kCalendarAddEventStyle = TextStyle(
+  letterSpacing: 0,
+  fontFamily: FontFamily.sfProDisplay,
+  fontSize: 15,
+  color: mainRedShadeForTitle,
+  fontWeight: FontWeight.w600,
+);
+TextStyle kCalendarAddEventButtonStyle = TextStyle(
+  letterSpacing: 0,
+  fontFamily: FontFamily.sfProDisplay,
+  fontSize: 12,
+  color: mainRedShadeForTitle,
   fontWeight: FontWeight.w600,
 );
 TextStyle KDividedLeftSideTextStyle1 = TextStyle(

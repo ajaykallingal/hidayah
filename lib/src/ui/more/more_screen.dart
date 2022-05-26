@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hidayah/src/constants/text_style.dart';
-import 'package:hidayah/src/ui/Authentication/personal_details/daily_goal_screen.dart';
 import 'package:hidayah/src/ui/more/text_style.dart';
 import 'package:hidayah/src/ui/more/widgets/more_screen_list_tile_widget.dart';
-import 'package:hidayah/src/ui/near_mosques/near_by_mosques.dart';
-import 'package:hidayah/src/ui/prayer_times/prayer_time_screen_arguments.dart';
 import 'package:hidayah/src/ui/prayer_times/prayer_times_screen.dart';
-import 'package:hidayah/src/ui/qibla%20compass/qibla_compass.dart';
 import 'package:hidayah/src/ui/qibla%20compass/qibla_compass_widget.dart';
 
 import '../daily_goals/daily_goals_screen.dart';
@@ -107,10 +102,8 @@ class _MoreScreenState extends State<MoreScreen> {
                               iconPath: 'assets/images/NOTES.png',
                             ),
                             onTap: () {
-                              setState(() {
-                                Navigator.pushNamed(context, NotesScreen.id);
+                              Navigator.pushNamed(context, NotesScreen.id);
 
-                              });
                             },
                           ),
                           SizedBox(height: 10),
@@ -123,10 +116,8 @@ class _MoreScreenState extends State<MoreScreen> {
                               iconPath: 'assets/images/QIBLA_COMPASS.png',
                             ),
                             onTap: () {
-                              setState(() {
-                                Navigator.pushNamed(context, QiblaCompassWidget.id);
+                              Navigator.pushNamed(context, QiblaCompassWidget.id);
 
-                              });
                             },
                           ),
                           SizedBox(height: 10),
@@ -139,10 +130,8 @@ class _MoreScreenState extends State<MoreScreen> {
                               iconPath: 'assets/images/to-do-list.png',
                             ),
                             onTap: () {
-                              setState(() {
-                                Navigator.pushNamed(context, DailyGoalsScreen.id).then((value) => null);
+                              Navigator.pushNamed(context, DailyGoalsScreen.id).then((value) => null);
 
-                              });
                             },
                           ),
                           // MoreScreenListTileWidget(iconPath: iconPath, title: title, subTitle: subTitle)

@@ -20,9 +20,9 @@ class PrayerTimesCardWidget extends StatefulWidget {
 
 class _PrayerTimesCardWidgetState extends State<PrayerTimesCardWidget> {
   Times? prayerTime;
-  String upcomingPrayerTime = "please wait..";
-  String upcomingPrayerName = "please wait..";
-  String timeToNextPrayer = "please wait..";
+  String upcomingPrayerTime = "";
+  String upcomingPrayerName = "";
+  String timeToNextPrayer = "";
   DateFormat formatDate = DateFormat("HH:mm");
   final prayerTimeBloc = PrayerTimeBloc();
   bool loading  = false;

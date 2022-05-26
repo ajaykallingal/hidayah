@@ -52,7 +52,7 @@ class _Daily_Duas_widgetState extends State<Daily_Duas_widget> {
 
     // final args = ModalRoute.of(context)!.settings.arguments as ViewDuaDetailedScreenArguments;
     duaDetailedBloc.fetchDuaDetailed(
-      request: DuaDetailedRequest(subCatId: rng.nextInt(10).toString()),
+      request: DuaDetailedRequest(subCatId: rng.nextInt(8).toString()),
     );
 
     return Column(

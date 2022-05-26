@@ -63,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     if(mounted){
 if(ObjectFactory().prefs.isLoggedIn()!){
-  Navigator.pushNamed(context, HomeScreen.id);
+  Navigator.pushNamedAndRemoveUntil(context, HomeScreen.id,(route) => false,);
 
 }else{
   Navigator.pushNamed(context, AuthenticationScreen.id);

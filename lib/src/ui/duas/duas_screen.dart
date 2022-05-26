@@ -11,6 +11,8 @@ import '../../data/models/quran_request.dart';
 import '../../data/models/quran_request_response.dart';
 import '../Quran/components/search_bar_widget.dart';
 import '../Quran/components/textStyle.dart';
+import '../more/widgets/more_screen_list_tile_widget.dart';
+import 'components/more_screen_list_tile_widget.dart';
 
 class DuasScreen extends StatefulWidget {
   static const String id = 'duas_screen';
@@ -44,6 +46,7 @@ class _DuasScreenState extends State<DuasScreen> with SingleTickerProviderStateM
 
   bool loading = true;
   int index = 0;
+  bool oneTime = true;
 
   final duaCategoryBloc = DuaCategoryBloc();
    List? duaCategoryResposnse;
@@ -52,7 +55,6 @@ class _DuasScreenState extends State<DuasScreen> with SingleTickerProviderStateM
   void initState() {
     // TODO: implement initState
     super.initState();
-      duaCategoryBloc.fetchDuaCategory();
 
     _tabController = TabController(
         length: 1, vsync: this, initialIndex: selectedTabIndex);
@@ -67,9 +69,12 @@ class _DuasScreenState extends State<DuasScreen> with SingleTickerProviderStateM
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
 
-duaCategoryBloc.duaCategoryFetchStreamListener.listen((event) {
+
+    duaCategoryBloc.duaCategoryFetchStreamListener.listen((event) {
+
   setState(() {
     loading = false;
+    oneTime = false;
     duaCategoryResposnse = event.response;
   });
 });
@@ -82,11 +87,17 @@ duaCategoryBloc.duaCategoryFetchStreamListener.listen((event) {
     // TODO: implement dispose
     super.dispose();
     _tabController.dispose();
+
   }
 
 
   @override
   Widget build(BuildContext context) {
+    if(oneTime){
+      duaCategoryBloc.fetchDuaCategory();
+
+    }
+
     return Stack(
       children: [
         Container(
@@ -213,50 +224,75 @@ duaCategoryBloc.duaCategoryFetchStreamListener.listen((event) {
                                             child: CircularProgressIndicator(),)
                                               :
                                           ListView.separated(
+                                            shrinkWrap: true,
+
                                             itemCount: snapshot.data!.response!.length,
                                             itemBuilder:
                                                 (BuildContext context, index) {
-
-
-
                                               return
-                                                ListTile(
-                                                title: Text(
-                                                  snapshot.data!.response![index].duaCatName,
+                                                InkWell(
+                                                  child: TileWidgetForDuas(
+                                                    title:
+                                                        snapshot.data!.response![index].duaCatName,
 
-                                                  softWrap: true,
-                                                  style:
-                                                  kQuranPageTabContentTitleStyle,
-                                                ),
-                                                leading: CircleAvatar(
-                                                  child: Text(snapshot.data!.response![index].duaCatId ),
-                                                  // Stack(
-                                                  //   children: [
-                                                  //     Image.asset("assets/images/duaimage.jpg"),
-                                                  //     Text(snapshot.data!.response![index].duaCatId ),
-                                                  //   ],
-                                                  // ),
-                                                  radius: 30,
-                                                  backgroundColor: Colors.transparent,
-                                                  backgroundImage: AssetImage("assets/images/duaimage.jpg"),
-                                                ),
-                                                // subtitle: Text(
-                                                //   snapshot.data!.response![index].duaCatId,
-                                                //   // softWrap: true,
-                                                //   style:
-                                                //   kQuranPageTabContentSubTitleStyle,
-                                                // ),
+                                                        // softWrap: true,
+                                                        // style:
+                                                        // kQuranPageTabContentTitleStyle,
 
+                                                    // subTitle:
+                                                    // 'Show accurate qibla\ndirection from your location.',
+                                                    // iconPath: 'assets/images/QIBLA_COMPASS.png',
+                                                  ),
+                                                  onTap: () {
 
+                                                        Navigator.pushNamed(context, ViewAllDuasScreen.id,
+                                                            arguments: ViewAllDuaScreenArguments(catId: snapshot.data!.response![index].duaCatId),
 
-                                                onTap: () {
-                                                print(index.toString());
+                                                          );
 
-                                                Navigator.pushNamed(context, ViewAllDuasScreen.id,
-                                                  arguments: ViewAllDuaScreenArguments(catId: snapshot.data!.response![index].duaCatId),
+                                                  },
                                                 );
-                                                },
-                                              );
+                                              //   ListTile(
+                                              //     contentPadding: EdgeInsets.zero,
+                                              //   title: Padding(
+                                              //     padding: const EdgeInsets.all(10),
+                                              //     child: Text(
+                                              //       snapshot.data!.response![index].duaCatName,
+                                              //
+                                              //       softWrap: true,
+                                              //       style:
+                                              //       kQuranPageTabContentTitleStyle,
+                                              //     ),
+                                              //   ),
+                                              //   // leading: CircleAvatar(
+                                              //   //   child: Text(snapshot.data!.response![index].duaCatId ),
+                                              //   //   // Stack(
+                                              //   //   //   children: [
+                                              //   //   //     Image.asset("assets/images/duaimage.jpg"),
+                                              //   //   //     Text(snapshot.data!.response![index].duaCatId ),
+                                              //   //   //   ],
+                                              //   //   // ),
+                                              //   //   radius: 30,
+                                              //   //   backgroundColor: Colors.transparent,
+                                              //   //   backgroundImage: AssetImage("assets/images/duaimage.jpg"),
+                                              //   // ),
+                                              //   // subtitle: Text(
+                                              //   //   snapshot.data!.response![index].duaCatId,
+                                              //   //   // softWrap: true,
+                                              //   //   style:
+                                              //   //   kQuranPageTabContentSubTitleStyle,
+                                              //   // ),
+                                              //
+                                              //
+                                              //
+                                              //   onTap: () {
+                                              //   print(index.toString());
+                                              //
+                                              //   Navigator.pushNamed(context, ViewAllDuasScreen.id,
+                                              //     arguments: ViewAllDuaScreenArguments(catId: snapshot.data!.response![index].duaCatId),
+                                              //   );
+                                              //   },
+                                              // );
                                             },
 
                                             scrollDirection: Axis.vertical,

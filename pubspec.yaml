@@ -58,6 +58,7 @@ dependencies:
   animated_text_kit: ^4.2.1
   just_audio: ^0.9.21
   audio_video_progress_bar: ^0.10.0
+  flutter_datetime_picker: ^1.5.1
 
 dev_dependencies:
   flutter_test:

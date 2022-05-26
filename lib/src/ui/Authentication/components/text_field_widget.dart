@@ -30,9 +30,10 @@ class TextFieldWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
         ),
-        height: 40,
+        height: 42,
         width: MediaQuery.of(context).size.width,
         child: TextFormField(
+          maxLines: 1 ,
           cursorColor: Colors.black,
           style: TextStyle(color: Colors.black),
           onSaved: (value) {
@@ -52,7 +53,9 @@ class TextFieldWidget extends StatelessWidget {
           // maxLines: 4,4
           obscureText: isObscured,
           decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(30),
+
+            isDense: true,
+            contentPadding: EdgeInsets.all(9),
             suffixIcon: Padding(
               padding: EdgeInsets.all(14.0),
               child: GestureDetector(

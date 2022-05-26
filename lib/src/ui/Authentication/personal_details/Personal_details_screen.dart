@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hidayah/src/constants/font_family.dart';
 import 'package:hidayah/src/constants/text_style.dart';
@@ -19,6 +20,7 @@ import 'package:hidayah/src/ui/Authentication/personal_details/components/pick_f
 import 'package:hidayah/src/ui/Authentication/personal_details/components/pick_fav_grid_model.dart';
 import 'package:hidayah/src/ui/home/home_screen.dart';
 import 'package:hidayah/src/ui/home/home_screen_arguments.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../main.dart';
 import '../../../data/bloc/auth_bloc.dart';
@@ -56,7 +58,7 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
 
   String maritalStatus = "0";
   String languageId = "1";
-
+  String dobDropdown = "DOB";
   bool genderSelectedMale = false;
   bool genderSelectedFemale = false;
   bool maritalStatusSingle = false;
@@ -309,183 +311,185 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
               ),
             ),
             child: SingleChildScrollView(
-              child: Stack(
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Align(
+              child: SafeArea(
+                child: Stack(
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Align(
 
-                        child: Container(
-                          height: 141,
-                          width: 172,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/logo_white.png'),
+                          child: Container(
+                            height: 141,
+                            width: 172,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage('assets/images/logo_white.png'),
+                              ),
                             ),
                           ),
+                          alignment: Alignment.topCenter,
                         ),
-                        alignment: Alignment.topCenter,
-                      ),
-                      Stack(
-                        children: [
-                          Container(
-                            height: 510,
-                            width: 324,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadiusDirectional.circular(10),
-                              // color: Colors.white.withOpacity(1.0),
+                        Stack(
+                          children: [
+                            Container(
+                              height: 510,
+                              width: 324,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadiusDirectional.circular(10),
+                                // color: Colors.white.withOpacity(1.0),
+                              ),
                             ),
-                          ),
-                          Container(
-                            height: 470,
-                            width: 324,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadiusDirectional.circular(10),
-                              color: Colors.white.withOpacity(1.0),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.bottomCenter,
-                                    child: PageView(
-                                      controller: _pageController,
-                                      scrollDirection: Axis.horizontal,
+                            Container(
+                              height: 470,
+                              width: 324,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadiusDirectional.circular(10),
+                                color: Colors.white.withOpacity(1.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: PageView(
+                                        controller: _pageController,
+                                        scrollDirection: Axis.horizontal,
+                                        children: [
+                                          page1Widget(context,args.fullName),
+                                          page2Widget(),
+                                          page3Widget(),
+                                          page4Widget(),
+                                        ],
+                                      ),
+                                    ),
+                                    Column(
                                       children: [
-                                        page1Widget(context,args.fullName),
-                                        page2Widget(),
-                                        page3Widget(),
-                                        page4Widget(),
+                                        Center(
+                                          child: SmoothPageIndicator(
+                                            controller: _pageController,
+                                            count: 4,
+                                            effect: JumpingDotEffect(
+                                              jumpScale: 2,
+                                              activeDotColor: mainRedShadeForTitle,
+                                              dotHeight: 6,
+                                              dotWidth: 6,
+                                            ),
+                                            onDotClicked: (index) =>
+                                                _pageController.animateToPage(index,
+                                                    duration: Duration(milliseconds: 300),
+                                                    curve: Curves.bounceOut),
+                                          ),
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  Column(
-                                    children: [
-                                      Center(
-                                        child: SmoothPageIndicator(
-                                          controller: _pageController,
-                                          count: 4,
-                                          effect: JumpingDotEffect(
-                                            jumpScale: 2,
-                                            activeDotColor: mainRedShadeForTitle,
-                                            dotHeight: 6,
-                                            dotWidth: 6,
-                                          ),
-                                          onDotClicked: (index) =>
-                                              _pageController.animateToPage(index,
-                                                  duration: Duration(milliseconds: 300),
-                                                  curve: Curves.bounceOut),
-                                        ),
-                                      ),
-                                    ],
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      top: 560,
+                      left: 250,
+                      child: Container(
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: 81,
+                              width: 81,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white.withOpacity(1.0),
+                                // color: Colors.red.withOpacity(1.0),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    color: Color(0xffE9EAFE),
+                                    offset: Offset(
+                                      0.0,
+                                      2.0,
+                                    ),
+                                    blurRadius: 10.0,
+                                    spreadRadius: 0.0,
                                   ),
                                 ],
                               ),
-                            ),
-                          ),
-
-                        ],
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                    top: 560,
-                    left: 250,
-                    child: Container(
-                      child: Stack(
-                        children: [
-                          Container(
-                            height: 81,
-                            width: 81,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white.withOpacity(1.0),
-                              // color: Colors.red.withOpacity(1.0),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color(0xffE9EAFE),
-                                  offset: Offset(
-                                    0.0,
-                                    2.0,
+                              child: Padding(
+                                padding: const EdgeInsets.all(13.0),
+                                child: Container(
+                                  decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: RadialGradient(
+                                      center: Alignment.center,
+                                      colors: [
+                                        Color(0xffE80000),
+                                        Color(0xff382424),
+                                      ],
+                                      radius: 1.0,
+                                      focal: Alignment.bottomRight,
+                                      // focalRadius: 1.0,
+                                    ),
                                   ),
-                                  blurRadius: 10.0,
-                                  spreadRadius: 0.0,
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(13.0),
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient: RadialGradient(
-                                    center: Alignment.center,
-                                    colors: [
-                                      Color(0xffE80000),
-                                      Color(0xff382424),
-                                    ],
-                                    radius: 1.0,
-                                    focal: Alignment.bottomRight,
-                                    // focalRadius: 1.0,
+                                  child: RawMaterialButton(
+                                    elevation: 2,
+
+                                    // fillColor: Colors.redAccent,
+                                    child: const ImageIcon(
+                                      AssetImage('assets/images/RIGHT_ARROW.png'),
+                                      color: Colors.white,
+                                      size: 12,
+                                    ),
+                                    shape: CircleBorder(),
+                                    onPressed: () {
+                                      print("languageID: ${languageId}");
+                                      personalDetailsBloc.fetchPersonalDetails(
+                                        request: PersonalDetailsRequest(
+                                          userId: "0",
+                                          userEmail: args.email,
+                                          userFullName: args.fullName,
+                                          userPassword: args.password,
+                                          userDob: dobController.text,
+                                          userSelectedLanguageId: languageId,
+                                          userGender: genderSelectedMale ? "1" : "0",
+                                          userMaritialStatus: maritalStatusMarried ? "1" : "0",
+                                          userGoalPrayFive: isPrayerChecked ? "1" : "0",
+                                          userGoalReadTwentyAyaDaily: isReadAyahChecked ? "1" : "0",
+                                          userGoalSayThreeDua: isSayDuaChecked ? "1" : "0",
+                                          userGoalPrayWitrNight: isPrayWitrChecked ? "1" : "0",
+                                          userGoalGiveCharity: isGiveCharityChecked ? "1" : "0",
+                                          userFavPrayerTime: isFavPrayerTimeChecked ? "1" : "0",
+                                          userFavQbila: isFavQiblaChecked ? "1" : "0",
+                                          userFavNarMosque: isFavNearMosqueChecked ? "1" : "0",
+                                          userFavQuran: isFavQuranChecked ? "1" : "0",
+                                          userFavDua: isFavDuaChecked ? "1" : "0",
+                                          userZakah: isFavZakahChecked ? "1" : "0",),);
+                                      print("language selected:${languageId}");
+
+                                      setState(() {
+                                        loading = true;
+
+                                        // Navigator.pushNamed(
+                                        //     context, HomeScreen.id,arguments: HomeScreenArguments(userId: args.userId));
+                                      });
+
+                                        // arguments: LatLang(longitude: position.longitude, latitude: position!.latitude
+
+                                    },
                                   ),
-                                ),
-                                child: RawMaterialButton(
-                                  elevation: 2,
-
-                                  // fillColor: Colors.redAccent,
-                                  child: const ImageIcon(
-                                    AssetImage('assets/images/RIGHT_ARROW.png'),
-                                    color: Colors.white,
-                                    size: 12,
-                                  ),
-                                  shape: CircleBorder(),
-                                  onPressed: () {
-                                    print("languageID: ${languageId}");
-                                    personalDetailsBloc.fetchPersonalDetails(
-                                      request: PersonalDetailsRequest(
-                                        userId: "0",
-                                        userEmail: args.email,
-                                        userFullName: args.fullName,
-                                        userPassword: args.password,
-                                        userDob: dobController.text,
-                                        userSelectedLanguageId: languageId,
-                                        userGender: genderSelectedMale ? "1" : "0",
-                                        userMaritialStatus: maritalStatusMarried ? "1" : "0",
-                                        userGoalPrayFive: isPrayerChecked ? "1" : "0",
-                                        userGoalReadTwentyAyaDaily: isReadAyahChecked ? "1" : "0",
-                                        userGoalSayThreeDua: isSayDuaChecked ? "1" : "0",
-                                        userGoalPrayWitrNight: isPrayWitrChecked ? "1" : "0",
-                                        userGoalGiveCharity: isGiveCharityChecked ? "1" : "0",
-                                        userFavPrayerTime: isFavPrayerTimeChecked ? "1" : "0",
-                                        userFavQbila: isFavQiblaChecked ? "1" : "0",
-                                        userFavNarMosque: isFavNearMosqueChecked ? "1" : "0",
-                                        userFavQuran: isFavQuranChecked ? "1" : "0",
-                                        userFavDua: isFavDuaChecked ? "1" : "0",
-                                        userZakah: isFavZakahChecked ? "1" : "0",),);
-                                    print("language selected:${languageId}");
-
-                                    setState(() {
-                                      loading = true;
-
-                                      // Navigator.pushNamed(
-                                      //     context, HomeScreen.id,arguments: HomeScreenArguments(userId: args.userId));
-                                    });
-
-                                      // arguments: LatLang(longitude: position.longitude, latitude: position!.latitude
-
-                                  },
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -514,12 +518,13 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
             keyboardType: TextInputType.name,
           ),
           SizedBox(height: 18),
-          PersonalDetailTextFieldWidget(
-            labelText: 'Date of Birth(optional)',
-            isObscured: false,
-            textEditingController: dobController,
-            keyboardType: TextInputType.numberWithOptions(),
-          ),
+          buildDobSelector(labelText: 'Date of Birth(optional)', textEditingController: dobController, dropDownName: dobDropdown),
+          // PersonalDetailTextFieldWidget(
+          //   labelText: 'Date of Birth(optional)',
+          //   isObscured: false,
+          //   textEditingController: dobController,
+          //   keyboardType: TextInputType.numberWithOptions(),
+          // ),
           SizedBox(height: 18),
           buildLanguageSelectionField(dropDownName: languageId, textEditingController: languageController, labelText: 'Select Language'),
           SizedBox(height: 18),
@@ -886,6 +891,72 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
       ],
     );
   }
+
+  Widget buildDobSelector({
+  required TextEditingController textEditingController,
+    required String labelText,
+    required String dropDownName,
+}){
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      child: GestureDetector(
+        onTapDown: (TapDownDetails details){
+          FocusManager.instance.primaryFocus?.unfocus();
+          if (dropDownName == dobDropdown) {
+            DatePicker.showDatePicker(context,
+                showTitleActions: true,
+                minTime: DateTime(1900, 1, 1),
+                maxTime: DateTime.now(),
+                theme: DatePickerTheme(
+                    // headerColor: AppColors.buttonColor,
+                    backgroundColor: Colors.white,
+                    itemStyle: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                    doneStyle: TextStyle(color: Colors.black87, fontSize: 16)),
+                onChanged: (date) {}, onConfirm: (date) {
+                  setState(() {
+                    dobController.text = DateFormat('yyyy-MM-dd').format(date);
+                    // _dobController.text = date.toString();
+                  });
+                }, currentTime: DateTime.now(), );
+          }
+        },
+        child: Container(
+          height: 55,
+          decoration: BoxDecoration(
+              border: Border.all(
+                color: mainRedShadeForText,
+                width: 0.4,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 9,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: TextField(
+                    style: TextStyle(color: Colors.black),
+                    // readOnly:  isReadOnly,
+                    controller: textEditingController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(5),
+                        border: InputBorder.none, label: Text(labelText)),
+                  ),
+                ),
+              ),
+              Flexible(child: Icon(Icons.arrow_drop_down))
+            ],
+          ),
+
+        ),
+      ),
+    );
+  }
+
   Widget buildLanguageSelectionField(
       {required TextEditingController textEditingController,
         required String labelText,
@@ -896,9 +967,6 @@ class _PersonalDetailsScreenState extends State<PersonalDetailsScreen> {
       child: GestureDetector(
         onTapDown: (TapDownDetails details) {
           FocusManager.instance.primaryFocus?.unfocus();
-
-
-
             // _showPopupMenuNameTitle(details.globalPosition);
             if (dropDownName == languageId) {
             _showPopupMenuLocalBodyType(details.globalPosition);

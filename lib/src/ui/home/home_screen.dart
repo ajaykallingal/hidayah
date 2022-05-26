@@ -42,11 +42,12 @@ import 'components/round_container_without_tick_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String id = 'home_screen';
+  static const snackBarDuration = Duration(seconds: 3);
   // final LatLong latLong;
 
 
 
-  const HomeScreen({Key? key}) : super(key: key);
+   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -108,9 +109,30 @@ class _HomeScreenState extends State<HomeScreen> {
   String timeToNextPrayer = "please wait..";
 
   DateFormat formatDate = DateFormat("HH:mm");
+  DateTime? backButtonPressTime;
 
   late LatLong latLong;
   final personalDetailsBloc = PersonalDetailsBloc();
+  final snackBar = const SnackBar(
+    content: Text('Press back again to leave'),
+    duration: HomeScreen.snackBarDuration,
+  );
+
+
+  Future<bool> handleWillPop(BuildContext context) async {
+    final now = DateTime.now();
+    final backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
+        backButtonPressTime == null ||
+            now.difference(backButtonPressTime!) > HomeScreen.snackBarDuration;
+
+    if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
+      backButtonPressTime = now;
+      Scaffold.of(context).showSnackBar(snackBar);
+      return false;
+    }
+
+    return true;
+  }
 
 
 
@@ -142,8 +164,8 @@ class _HomeScreenState extends State<HomeScreen> {
         prayerTime = event.times!;
         findPrayerTime(event.times!);
         loading = false;
-        latLong = LatLong(latitude: position!.latitude, longitude: position!.longitude);
-        print(latLong.longitude);
+        // latLong = LatLong(latitude: position!.latitude, longitude: position!.longitude);
+        // print(latLong.longitude);
 
 
       });
@@ -307,166 +329,173 @@ class _HomeScreenState extends State<HomeScreen> {
     // ),
   }
 
-  Container buildHomeScreenBody(BuildContext context) {
-    return Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: const BoxDecoration(
-            gradient: RadialGradient(
-              center: Alignment.center,
-              colors: [
-                Color(0xffE80000),
-                Color(0xff382424),
-              ],
-              radius: 1.7,
-              focal: Alignment.center,
-              // focalRadius: 1.0,
-            ),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/images/bg_pattern.png'),
-            ),
-          ),
-          child: Stack(
-            children: [
-              SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15,right: 15,top: 10),
-                  child: Container(
-                    height: 150,
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 8,top: 0),
-                              child:
-                              GlassMorphicContainer(
-                                child: IconButton(
-
-                                    onPressed: () {
-                                  buildLogoutPopUp(context);
-                                }, icon: Image.asset("assets/images/logout.png",color: Colors.white,)),
-                              ),
-                            ),
-                            // GlassMorphicContainer(
-                            //   icon: AssetImage(
-                            //       'assets/images/NOTIFICATION.png'),
-                            // ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-// color: Colors.green,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Builder buildHomeScreenBody(BuildContext context) {
+    return Builder(
+      builder: (context) {
+        return WillPopScope(
+          onWillPop: () => handleWillPop(context),
+          child: Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                decoration: const BoxDecoration(
+                  gradient: RadialGradient(
+                    center: Alignment.center,
+                    colors: [
+                      Color(0xffE80000),
+                      Color(0xff382424),
+                    ],
+                    radius: 1.7,
+                    focal: Alignment.center,
+                    // focalRadius: 1.0,
+                  ),
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage('assets/images/bg_pattern.png'),
+                  ),
+                ),
+                child: Stack(
+                  children: [
+                    SafeArea(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15,right: 15,top: 10),
+                        child: Container(
+                          height: 150,
+                          width: MediaQuery.of(context).size.width,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+
                                 children: [
-                                  Row(
-                                    children: [
-                                      ImageIcon(
-                                        const AssetImage(
-                                            'assets/images/LOCATION.png'),
-                                        color: Colors.white.withOpacity(1.0),
-                                        size: 17,
-                                      ),
-                                        SizedBox(width: 3,),
-// SizedBox(width: 5),
-                                      Text(
-                                        Address,
-                                        style: kTopLeftCornerTextStyle,
-                                        softWrap: true,
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 7),
-                                  // Text(
-                                  //   '21 Jamadi-ul-Thani 1442 AH',
-                                  //   style: kTopLeftCornerTextStyle,
-                                  // ),
-                                  const SizedBox(height: 4),
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 20),
-                                    child: Text(
-                                      DateFormat.MMMMEEEEd().format(DateTime.now()),
-                                      style: kTopLeftCornerTextStyle,
+                                    padding: EdgeInsets.only(left: 8,top: 0),
+                                    child:
+                                    GlassMorphicContainer(
+                                      child: IconButton(
+
+                                          onPressed: () {
+                                        buildLogoutPopUp(context);
+                                      }, icon: Image.asset("assets/images/logout.png",color: Colors.white,)),
                                     ),
                                   ),
+                                  // GlassMorphicContainer(
+                                  //   icon: AssetImage(
+                                  //       'assets/images/NOTIFICATION.png'),
+                                  // ),
                                 ],
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    upcomingPrayerName,
-                                    style: kTopRightCornerTextStyle1,
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    upcomingPrayerTime,
-                                    style: kTopRightCornerTextStyle2,
-                                  ),
-                                  const SizedBox(height: 1),
-                                  Text(
-                                    timeToNextPrayer,
-                                    style: kTopRightCornerTextStyle3,
-                                  ),
-                                ],
+                              const SizedBox(height: 8),
+                              Container(
+// color: Colors.green,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            ImageIcon(
+                                              const AssetImage(
+                                                  'assets/images/LOCATION.png'),
+                                              color: Colors.white.withOpacity(1.0),
+                                              size: 17,
+                                            ),
+                                              SizedBox(width: 3,),
+// SizedBox(width: 5),
+                                            Text(
+                                              Address,
+                                              style: kTopLeftCornerTextStyle,
+                                              softWrap: true,
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 7),
+                                        // Text(
+                                        //   '21 Jamadi-ul-Thani 1442 AH',
+                                        //   style: kTopLeftCornerTextStyle,
+                                        // ),
+                                        const SizedBox(height: 4),
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 20),
+                                          child: Text(
+                                            DateFormat.MMMMEEEEd().format(DateTime.now()),
+                                            style: kTopLeftCornerTextStyle,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          upcomingPrayerName,
+                                          style: kTopRightCornerTextStyle1,
+                                        ),
+                                        const SizedBox(height: 2),
+                                        Text(
+                                          upcomingPrayerTime,
+                                          style: kTopRightCornerTextStyle2,
+                                        ),
+                                        const SizedBox(height: 1),
+                                        Text(
+                                          timeToNextPrayer,
+                                          style: kTopRightCornerTextStyle3,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height / 1.25,
-                      child: SingleChildScrollView(
-                        padding: const EdgeInsets.only(left: 14,right: 14),
-                        physics: const BouncingScrollPhysics(),
-                        child: Column(
-                          children: [
-                            SizedBox(height: 10),
-                            buildHomePagecard1(),
-                            const SizedBox(height: 10),
-                            buildHomePageCard2(),
-                            const SizedBox(height: 10),
-                            buildHomePageCard3(),
-                            const SizedBox(height: 10),
-                            buildHomePageCard4(),
-                            const SizedBox(height: 10),
-                            buildHomePageCard5(),
-                            const SizedBox(height: 10),
-                            buildHomePageCard6(),
-                            const SizedBox(height: 10),
-                            buildHomePageCard7(),
-                            const SizedBox(height: 10),
-                            buildHomePageCard8(),
-                            const SizedBox(height: 70),
-
-                          ],
-                        ),
                       ),
                     ),
-                  ),
-                ],
+                    Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            height: MediaQuery.of(context).size.height / 1.25,
+                            child: SingleChildScrollView(
+                              padding: const EdgeInsets.only(left: 14,right: 14),
+                              physics: const BouncingScrollPhysics(),
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 10),
+                                  buildHomePagecard1(),
+                                  const SizedBox(height: 10),
+                                  buildHomePageCard2(),
+                                  const SizedBox(height: 10),
+                                  buildHomePageCard3(),
+                                  const SizedBox(height: 10),
+                                  buildHomePageCard4(),
+                                  const SizedBox(height: 10),
+                                  buildHomePageCard5(),
+                                  const SizedBox(height: 10),
+                                  buildHomePageCard6(),
+                                  const SizedBox(height: 10),
+                                  buildHomePageCard7(),
+                                  const SizedBox(height: 10),
+                                  buildHomePageCard8(),
+                                  const SizedBox(height: 70),
+
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
         );
+      }
+    );
   }
 
   ClipRRect buildBottomNavBar() {

@@ -93,10 +93,10 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
       vsync: this,
       duration: (Duration(seconds: 5)),
     );
-    animation = CurvedAnimation(parent: animationController, curve: Curves.easeInExpo );
+    animation = CurvedAnimation(parent: animationController, curve: Curves.easeIn );
     animation.addListener(() => this.setState(() {}));
     animationController.forward();
-    animation1 = CurvedAnimation(parent: animationController, curve: Curves.linearToEaseOut);
+    animation1 = CurvedAnimation(parent: animationController, curve: Curves.easeIn);
     animation1.addListener(() => this.setState(() {}));
 
   }
