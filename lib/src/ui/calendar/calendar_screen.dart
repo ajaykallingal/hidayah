@@ -184,11 +184,15 @@ class _CalendarScreenState extends State<CalendarScreen>
           child: Material(
             type: MaterialType.transparency,
             child: CustomScrollView(
+
+              controller: ScrollController(),
               shrinkWrap: true,
               anchor: 0.0,
               physics: BouncingScrollPhysics(),
               slivers: <Widget>[
                 SliverAppBar(
+                  // elevation: 0.0,
+                  // toolbarHeight: 50,
                   leadingWidth: 0,
                   leading: Container(),
                   backgroundColor: Colors.transparent,
@@ -203,40 +207,41 @@ class _CalendarScreenState extends State<CalendarScreen>
                   ),
                   pinned: true,
                   floating: true,
-                  expandedHeight: 110,
+                  expandedHeight: 140,
                   flexibleSpace: FlexibleSpaceBar(
+
                     expandedTitleScale: 1.0,
-                    titlePadding: EdgeInsets.only(right: 4),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            // fixedSize: Size(60, 10),
-                              primary: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              )),
-                          onPressed: () {
-                            addEventDialogBox();
-                          },
-                          label: Text(
-                            "Add Event",
-                            style: TextStyle(color: mainRedShadeForTitle),
-                          ),
-                          icon: Icon(
-                            Icons.add,
-                            color: mainRedShadeForTitle,
-                          ),
+                    titlePadding: EdgeInsets.only(right: 8),
+                    title: Align(
+                      alignment: Alignment.bottomRight,
+                      child: ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          // fixedSize: Size(60, 10),
+                            primary: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            )),
+                        onPressed: () {
+                          addEventDialogBox();
+                        },
+                        label: Text(
+                          "Add Event",
+                          style: TextStyle(color: mainRedShadeForTitle),
                         ),
-                      ],
+                        icon: Icon(
+                          Icons.add,
+                          color: mainRedShadeForTitle,
+                        ),
+                      ),
                     ),
 
                   ),
 
 
                 ),
+
                 SliverList(
+
                   delegate: SliverChildListDelegate(
                     [
                       Visibility(

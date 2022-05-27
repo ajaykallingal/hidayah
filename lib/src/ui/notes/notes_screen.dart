@@ -11,6 +11,7 @@ import 'package:hidayah/src/ui/home/home_screen.dart';
 import 'package:hidayah/src/ui/notes/add_new_notes.dart';
 import 'package:hidayah/src/ui/notes/edit_note.dart';
 import 'package:hidayah/src/ui/notes/edit_note_arguments.dart';
+import 'package:hidayah/src/ui/notes/note_view_screen.dart';
 
 import '../Quran/components/textStyle.dart';
 import '../prayer_times/text_style.dart';
@@ -236,7 +237,7 @@ class _NotesScreenState extends State<NotesScreen> {
                                                                   Navigator
                                                                       .pushReplacementNamed(
                                                                     context,
-                                                                    EditNote.id,
+                                                                    NoteViewScreen.id,
                                                                     arguments:
                                                                         EditNoteArguments(
                                                                       noteText: snapshot
@@ -257,16 +258,41 @@ class _NotesScreenState extends State<NotesScreen> {
                                                                               .getUserId()
                                                                               .toString())));
                                                                 },
-                                                                child: Text(
-                                                                  snapshot
-                                                                      .data!
-                                                                      .responseOfNotes![
-                                                                          index]
-                                                                      .notes,
-                                                                  softWrap:
-                                                                      true,
-                                                                  style:
-                                                                      kQuranPageTabContentTitleStyle,
+                                                                child: Container(
+                                                                  padding: const EdgeInsets.all(10),
+                                                                  height: 65,
+                                                                  decoration: BoxDecoration(
+                                                                    // image: widget.favImageWidget,
+                                                                    color: Colors.white.withOpacity(1.0),
+                                                                    borderRadius: BorderRadius.all(
+                                                                      Radius.circular(10),
+                                                                    ),
+                                                                    boxShadow: [
+                                                                      BoxShadow(
+                                                                        color: Colors.grey[350]!,
+                                                                        offset: Offset(4.0, 4.0),
+                                                                        blurRadius: 15.0,
+                                                                        spreadRadius: 1.0,
+                                                                      ),
+                                                                      BoxShadow(
+                                                                        color: Colors.white,
+                                                                        offset: Offset(-4.0, -4.0),
+                                                                        blurRadius: 15.0,
+                                                                        spreadRadius: 1.0,
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  child: Text(
+                                                                    snapshot
+                                                                        .data!
+                                                                        .responseOfNotes![
+                                                                            index]
+                                                                        .notes,
+                                                                    softWrap:
+                                                                        true,
+                                                                    style:
+                                                                        kQuranPageTabContentTitleStyle,
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),

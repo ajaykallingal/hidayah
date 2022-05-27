@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:hidayah/src/constants/text_style.dart';
 import 'package:flutter_beep/flutter_beep.dart';
 import 'package:hidayah/src/shared_pref/object_factory.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home/textStyle/text_style.dart';
@@ -25,11 +26,13 @@ class _DhikrScreenState extends State<DhikrScreen> {
   bool toggleSwitch = false;
   // int count = 0;
   String prefedCount = "0";
+  late final AudioPlayer player ;
+
 
   void _incrementCounter() {
 
     setState(() {
-      SystemSound.play(SystemSoundType.click);
+      // SystemSound.play(SystemSoundType.click);
 ObjectFactory().prefs.setUserDhikrCount(userDhikrCount: _counter.toString());
       _counter++;
 
@@ -58,6 +61,7 @@ ObjectFactory().prefs.setUserDhikrCount(userDhikrCount: _counter.toString());
 
     super.initState();
     // count = _counter.toInt();
+    player = AudioPlayer();
     if(ObjectFactory().prefs.getUserDhikrCount() == null){
       _counter = 0;
     }else{
@@ -66,6 +70,12 @@ ObjectFactory().prefs.setUserDhikrCount(userDhikrCount: _counter.toString());
 
 
 
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    player.dispose();
+    super.dispose();
   }
 
   @override
@@ -222,12 +232,16 @@ ObjectFactory().prefs.setUserDhikrCount(userDhikrCount: _counter.toString());
                           enableFeedback: true,
                             splashColor: mainRedShadeForText,
                             iconSize: 70,
-                            onPressed: () {
+                            onPressed: () async {
+                             await player.setAsset("assets/audio/touch.wav");
+
+                             await player.play();
+                            _incrementCounter();
+
                               // FlutterBeep.playSysSound(iOSSoundIDs.AudioToneBusy);
-                              Feedback.forTap(context);
-                              _incrementCounter();
-                              Clipboard.setData(const ClipboardData());
-                              HapticFeedback.heavyImpact();
+                              // Feedback.forTap(context);
+                              // Clipboard.setData(const ClipboardData());
+                              // HapticFeedback.heavyImpact();
                               // ObjectFactory().prefs.setUserDhikrCount();
                               // ObjectFactory().prefs.setUserDhikrCount(userDhikrCount: count.toString());
 

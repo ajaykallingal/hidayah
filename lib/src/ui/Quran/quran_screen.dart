@@ -109,6 +109,8 @@ class _QuranScreenState extends State<QuranScreen>
     // TODO: implement didChangeDependencies
     quranRequestBloc.quranFetchSCStreamListener.listen((event) {
       setState(() {
+        ObjectFactory().prefs.getLastReadSurah();
+        ObjectFactory().prefs.getLastReadSurahTranslation();
         loading = false;
         displayWholeQuranFiltered = event.displayWholeQuranFiltered;
       });
@@ -366,7 +368,9 @@ class _QuranScreenState extends State<QuranScreen>
                                                                             index]
                                                                         .transliteration,
                                                                 totalVerse: surahList[index].totalVerses ),
-                                                          );
+                                                          ).then((value) {
+
+                                                    });
                                                   },
                                                 );
                                               },

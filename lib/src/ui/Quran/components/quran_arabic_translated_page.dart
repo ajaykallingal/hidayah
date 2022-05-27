@@ -26,6 +26,8 @@ import '../../../data/models/surah/surah_response.dart';
 import '../../../data/models/surat_model.dart';
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 
+import '../../../shared_pref/object_factory.dart';
+
 class QuranArabicTranslatedPage extends StatefulWidget {
   static const String id = 'quran_arabic_screen';
 
@@ -94,7 +96,8 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
     // TODO: implement initState
     super.initState();
     _pageManager = PageManager();
-///audioplayers package
+
+    ///audioplayers package
     // audioPlayer = AudioPlayer(mode: PlayerMode.MEDIA_PLAYER);
     // audioCache.loadedFiles;
     // audioPlayer.setReleaseMode(ReleaseMode.STOP);
@@ -141,6 +144,9 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
     // TODO: implement didChangeDependencies
     quranRequestBloc.quranFetchSCStreamListener.listen((event) {
       setState(() {
+        // ObjectFactory().prefs.setLastReadSurah(lastReadSurah: surahList[index].transliteration);
+        // ObjectFactory().prefs.setLastReadSurahTranslation(lastReadSurahTranslation: surahList[index].translation);
+        // ObjectFactory().prefs.setLastReadSurahVerses(lastReadSurahVerses: surahList[index].totalVerses);
         loading = false;
         callOneTime = false;
         displayWholeQuranFiltered = event.displayWholeQuranFiltered;
@@ -155,7 +161,6 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
     _tabController.dispose();
     _pageManager.dispose();
     super.dispose();
-
   }
 
   @override
@@ -255,7 +260,6 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
 
                       expandedHeight: 250,
                       flexibleSpace: FlexibleSpaceBar(
-
                         background: Column(
                           children: [
                             ListTile(
@@ -283,16 +287,20 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                                 ),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.only(left: 15.0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(arguments.surahName,style: kQuranPageBoxTitleStyle1,),
+                                    Text(
+                                      arguments.surahName,
+                                      style: kQuranPageBoxTitleStyle1,
+                                    ),
                                     SizedBox(height: 10),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 27),
-                                      child: Text(arguments.totalVerse,style: kQuranPageBoxSubTitleStyle1,textAlign: TextAlign.center,),
+                                    Text(
+                                      "${arguments.totalVerse} verses.",
+                                      style: kQuranPageBoxSubTitleStyle1,
+                                      textAlign: TextAlign.center,
                                     ),
                                   ],
                                 ),
@@ -325,20 +333,23 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                                       controller: _tabController,
                                       indicator: BubbleTabIndicator(
                                         // padding: EdgeInsets.all(10),
-                                        indicatorColor: Colors.white.withOpacity(1),
+                                        indicatorColor:
+                                            Colors.white.withOpacity(1),
 
                                         indicatorHeight: 35,
 
                                         // insets: EdgeInsets.all(2),
                                         indicatorRadius: 50,
-                                        tabBarIndicatorSize: TabBarIndicatorSize.tab,
+                                        tabBarIndicatorSize:
+                                            TabBarIndicatorSize.tab,
                                       ),
                                       indicatorColor: Colors.transparent,
                                       indicatorSize: TabBarIndicatorSize.tab,
                                       labelColor: mainRedShadeForTitle,
                                       unselectedLabelColor:
                                           Colors.white.withOpacity(1),
-                                      unselectedLabelStyle: kQuranPageTabHeaderStyle,
+                                      unselectedLabelStyle:
+                                          kQuranPageTabHeaderStyle,
                                       onTap: (index) {
                                         setState(() {
                                           selectedTabIndex = index;
@@ -410,7 +421,8 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                                     : SingleChildScrollView(
                                         physics: BouncingScrollPhysics(),
                                         child: Padding(
-                                          padding: const EdgeInsets.only(left: 10,right: 10),
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
                                           child: Column(
                                             children: [
                                               Container(
@@ -732,17 +744,17 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                       children: [
                         Flexible(
                           child: GestureDetector(
-                            onTap:(){
-                              _pageManager.setUrl(displayWholeQuranFiltered![index].fileName);
+                            onTap: () {
+                              _pageManager.setUrl(
+                                  displayWholeQuranFiltered![index].fileName);
                               setState(() {
                                 showAudioPlayer = true;
                               });
 
-                              _pageManager.play(displayWholeQuranFiltered![index].fileName);
-
+                              _pageManager.play(
+                                  displayWholeQuranFiltered![index].fileName);
                             },
                             child: Align(
-
                               child: Text(
                                 displayWholeQuranFiltered![index].ayatText,
                                 softWrap: true,
@@ -756,7 +768,6 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                         ),
                       ],
                     ),
-
                   ],
                 ),
               ),
@@ -767,7 +778,7 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
     );
   }
 
-  List<Widget> createAudioPlayer(){
+  List<Widget> createAudioPlayer() {
     return [
       Container(
         height: 70,
@@ -791,9 +802,9 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                 //     icon: const Icon(Icons.skip_previous_sharp)
                 // ),
                 ValueListenableBuilder<ButtonState>(
-                    valueListenable:  _pageManager.buttonNotifier,
-                    builder: (_,value,__) {
-                      switch (value){
+                    valueListenable: _pageManager.buttonNotifier,
+                    builder: (_, value, __) {
+                      switch (value) {
                         case ButtonState.loading:
                           return Row(
                             children: [
@@ -802,7 +813,9 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                                   margin: const EdgeInsets.all(8),
                                   width: 25.0,
                                   height: 25.0,
-                                  child: CircularProgressIndicator(color: mainRedShadeForTitle,),
+                                  child: CircularProgressIndicator(
+                                    color: mainRedShadeForTitle,
+                                  ),
                                 ),
                               ),
                             ],
@@ -811,29 +824,22 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                           return IconButton(
                             iconSize: 40,
                             color: mainRedShadeForTitle,
-                            onPressed: (){
-                              _pageManager.play(displayWholeQuranFiltered![index].fileName);
-
+                            onPressed: () {
+                              _pageManager.play(
+                                  displayWholeQuranFiltered![index].fileName);
                             },
                             icon: Icon(Icons.play_circle_fill_outlined),
                           );
                         case ButtonState.playing:
                           return IconButton(
-                            iconSize: 40,
-                            color: mainRedShadeForTitle,
-                              onPressed: (){
+                              iconSize: 40,
+                              color: mainRedShadeForTitle,
+                              onPressed: () {
                                 _pageManager.pause;
-
                               },
-                              icon: Icon(Icons.pause_circle_filled_outlined)
-                          );
-
-
-
+                              icon: Icon(Icons.pause_circle_filled_outlined));
                       }
-                    }
-
-                ),
+                    }),
                 // IconButton(
                 //   iconSize: 30,
                 //     onPressed: (){
@@ -842,18 +848,15 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                 //     icon: Icon(Icons.skip_next_sharp,)
                 // ),
               ],
-
             ),
             // SizedBox(height: 10),
             // Spacer(),
             Flexible(
               child: ValueListenableBuilder<ProgressBarState>(
                   valueListenable: _pageManager.progressNotifier,
-                  builder: (_,value,__){
+                  builder: (_, value, __) {
                     return ProgressBar(
-
                       barHeight: 3,
-
                       progressBarColor: mainRedShadeForTitle,
                       bufferedBarColor: mainRedShadeForText,
                       thumbColor: mainRedShadeForTitle,
@@ -863,17 +866,13 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
                       buffered: value.buffered,
                       onSeek: _pageManager.seek,
                       timeLabelTextStyle: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 10,
+                          color: Colors.black87,
+                          fontSize: 10,
                           fontWeight: FontWeight.w300,
-                          fontFamily: FontFamily.sfProDisplay
-                      ),
-
+                          fontFamily: FontFamily.sfProDisplay),
                     );
-                  }
-              ),
+                  }),
             ),
-
           ],
         ),
       ),
@@ -1109,7 +1108,6 @@ class _QuranArabicTranslatedPageState extends State<QuranArabicTranslatedPage>
   //     ),
   //   ];
   // }
-
 
   // Widget buildAudioPlayer() {
   //   return Container(
