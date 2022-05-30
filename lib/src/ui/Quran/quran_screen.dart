@@ -152,249 +152,652 @@ class _QuranScreenState extends State<QuranScreen>
         SafeArea(
           child: Material(
             type: MaterialType.transparency,
-            child: SingleChildScrollView(
+            child: CustomScrollView(
+              shrinkWrap: true,
+              // anchor: 0.0,
               physics: BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 2),
-                  // SearchBarWidget(),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 28, top: 5),
-                    child: Text(
-                      'Quran',
-                      style: kQuranPageHeadlineTextStyle,
+              slivers: <Widget>[
+                SliverAppBar(
+                  leading: Container(),
+                  backgroundColor: Colors.transparent,
+                  title:
+                  Text(
+                    'Quran',
+                    style: kQuranPageHeadlineTextStyle,
+                  ),
+                  pinned: true,
+                  expandedHeight: 210,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Padding(
+                      padding: const EdgeInsets.only(left: 15,right: 15),
+                      child: Container(
+                        height: 120,
+                        width: 346,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.fitWidth,
+                            image: AssetImage("assets/images/quran.png"),
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+
+                            Text(
+                                            "Last read",
+                                            style: kQuranPageBoxSubTitleStyle1,
+                                          ),
+                                          SizedBox(height: 20),
+                                          Text(
+                                            ObjectFactory().prefs.getLastReadSurah().toString(),
+
+                                            style: kQuranPageBoxTitleStyle1,
+                                          ),
+                                          Text(
+                                            ObjectFactory().prefs.getLastReadSurahTranslation().toString(),
+                                            style: kQuranPageBoxSubTitleStyle1,
+                                          ),
+                                          Divider(
+                                            color: Colors.white.withOpacity(1),
+                                            // indent: 50,
+                                            endIndent: 230,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(left: 25),
+                                            child: Text(ObjectFactory().prefs.getLastReadSurahVerses().toString() + " verses",
+                                                style: kQuranPageBoxSubTitleStyle1),
+                                          ),
+                              // Text(
+                              //   arguments.surahName,
+                              //   style: kQuranPageBoxTitleStyle1,
+                              // ),
+                              // SizedBox(height: 10),
+                              // Text(
+                              //   "${arguments.totalVerse} verses.",
+                              //   style: kQuranPageBoxSubTitleStyle1,
+                              //   textAlign: TextAlign.center,
+                              // ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                  SizedBox(height: 3),
-                  Stack(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: 120,
-                          width: 346,
-                          child: Image.asset("assets/images/quran.png"),
-                        ),
-                      ),
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 25, right: 10, top: 25),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Last read",
-                              style: kQuranPageBoxSubTitleStyle1,
-                            ),
-                            SizedBox(height: 20),
-                            Text(
-                              ObjectFactory().prefs.getLastReadSurah().toString(),
-
-                              style: kQuranPageBoxTitleStyle1,
-                            ),
-                            Text(
-                              ObjectFactory().prefs.getLastReadSurahTranslation().toString(),
-                              style: kQuranPageBoxSubTitleStyle1,
-                            ),
-                            Divider(
-                              color: Colors.white.withOpacity(1),
-                              // indent: 50,
-                              endIndent: 230,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 25),
-                              child: Text(ObjectFactory().prefs.getLastReadSurahVerses().toString() + " verses",
-                                  style: kQuranPageBoxSubTitleStyle1),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  // Container(
-                  //   height: 400,
-                  //   width: 346,
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.white,
-                  //     borderRadius: BorderRadius.all(
-                  //       Radius.circular(10),
+                  // bottom: PreferredSize(
+                  //     preferredSize: Size(MediaQuery.of(context).size.width, 38),
+                  //   child: ,
+                  // ),
+                  // bottom: PreferredSize(
+                  //   preferredSize:
+                  //   Size(MediaQuery.of(context).size.width, 38),
+                  //   child: ClipRRect(
+                  //     child: BackdropFilter(
+                  //       filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                  //       child: Container(
+                  //         width: MediaQuery.of(context).size.width,
+                  //         decoration: BoxDecoration(
+                  //           color: Colors.black.withOpacity(0.1),
+                  //           borderRadius: BorderRadius.circular(10),
+                  //         ),
+                  //         child: Row(
+                  //           children: [
+                              // TabBar(
+                              //   physics: BouncingScrollPhysics(),
+                              //   controller: _tabController,
+                              //   labelStyle: kQuranPageTabHeaderStyle,
+                              //   automaticIndicatorColorAdjustment: true,
+                              //   indicatorColor: tabBarHeaderActiveTextColor,
+                              //   labelColor: tabBarHeaderActiveTextColor,
+                              //   padding: EdgeInsets.only(left: 10, right: 10),
+                              //   unselectedLabelColor:
+                              //   tabBarHeaderInactiveTextColor,
+                              //   unselectedLabelStyle:
+                              //   kQuranPageTabHeaderStyle,
+                              //   onTap: (index) =>
+                              //       _tabController.animateTo(index),
+                              //   tabs: List<Widget>.generate(tabList.length,
+                              //           (index) {
+                              //         return Tab(
+                              //           text: tabList[index],
+                              //         );
+                              //       }),
+                              // ),
+                  //           ],
+                  //         ),
+                  //       ),
                   //     ),
                   //   ),
-                  //     ),
-                  DefaultTabController(
-                    length: tabList.length,
-                    child: Column(
-                      children: [
+                  // ),
+                ),
+                SliverList(
+
+                    delegate: SliverChildListDelegate(
+
+                      [
                         Padding(
                           padding: const EdgeInsets.only(left: 20, right: 20),
                           child: Container(
-                            // height: 350,
                             width: 346,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            child: Column(
-                              children: [
-                                TabBar(
-                                  physics: BouncingScrollPhysics(),
-                                  controller: _tabController,
-                                  labelStyle: kQuranPageTabHeaderStyle,
-                                  automaticIndicatorColorAdjustment: true,
-                                  indicatorColor: tabBarHeaderActiveTextColor,
-                                  labelColor: tabBarHeaderActiveTextColor,
-                                  padding: EdgeInsets.only(left: 10, right: 10),
-                                  unselectedLabelColor:
-                                      tabBarHeaderInactiveTextColor,
-                                  unselectedLabelStyle:
-                                      kQuranPageTabHeaderStyle,
-                                  onTap: (index) =>
-                                      _tabController.animateTo(index),
-                                  tabs: List<Widget>.generate(tabList.length,
-                                      (index) {
-                                    return Tab(
-                                      text: tabList[index],
-                                    );
-                                  }),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.all(8),
-                                  padding: EdgeInsets.all(10),
-                                  height: MediaQuery.of(context).size.height,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: TabBarView(
-                                    controller: _tabController,
-                                    children: [
-                                      loading
-                                          ? Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            )
-                                          : ListView.builder(
-                                              itemCount: surahList.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      index) {
-                                                return ListTile(
-                                                  horizontalTitleGap: 30,
 
-                                                  title: Text(
-                                                    surahList[index]
-                                                        .transliteration,
-                                                    softWrap: true,
-                                                    style:
-                                                        kQuranPageTabContentTitleStyle,
-                                                  ),
-                                                  subtitle: Text(
-                                                    surahList[index]
-                                                        .translation,
-                                                    // softWrap: true,
-                                                    style:
-                                                        kQuranPageTabContentSubTitleStyle,
-                                                  ),
-                                                  leading: Container(
-                                                    constraints: BoxConstraints(
-                                                        maxWidth: 50,
-                                                        maxHeight: 50),
-                                                    decoration: BoxDecoration(
-                                                        image: DecorationImage(
-                                                            // alignment: Alignment.centerLeft,
+    decoration: BoxDecoration(
+              color: Colors.white.withOpacity(1),
+              borderRadius:
+              BorderRadius.all(Radius.circular(10)),
+            ),
+                            child: Container(
+                              margin: EdgeInsets.all(8),
+                                        padding: EdgeInsets.all(10),
+                                        height: MediaQuery.of(context).size.height,
+                                        width: MediaQuery.of(context).size.width,
+                              child:  loading
+                                            ? Center(
+                                          child:
+                                          CircularProgressIndicator(),
+                                        )
+                                            : ListView.builder(
+                                          itemCount: surahList.length,
+                                          itemBuilder:
+                                              (BuildContext context,
+                                              index) {
+                                            return ListTile(
+                                              horizontalTitleGap: 30,
 
-                                                            fit: BoxFit.contain,
-                                                            image: AssetImage(
-                                                                "assets/images/list_tile_leading.png"))),
-                                                    child: Stack(
-                                                      children: [
-                                                        Align(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Text("SURAH"),
-                                                              Text(
-                                                                surahList[index]
-                                                                    .id,
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        20),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
+                                              title: Text(
+                                                surahList[index]
+                                                    .transliteration,
+                                                softWrap: true,
+                                                style:
+                                                kQuranPageTabContentTitleStyle,
+                                              ),
+                                              subtitle: Text(
+                                                surahList[index]
+                                                    .translation,
+                                                // softWrap: true,
+                                                style:
+                                                kQuranPageTabContentSubTitleStyle,
+                                              ),
+                                              leading: Container(
+                                                constraints: BoxConstraints(
+                                                    maxWidth: 50,
+                                                    maxHeight: 50),
+                                                decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      // alignment: Alignment.centerLeft,
 
-                                                  // color: mainRedShadeForTitle,
-
-                                                  // ImageIcon(
-                                                  //   AssetImage(
-                                                  //     "assets/images/HEART_STROKE.png",
-                                                  //   ),
-                                                  //   color: _isFavSelectedIndex != null && _isFavSelectedIndex == suratId
-                                                  //       ? mainRedShadeForTitle : lightGreyShadeForText,
-                                                  // ),
-                                                  onTap: () {
-                                                    ObjectFactory().prefs.setLastReadSurah(lastReadSurah: surahList[index].transliteration);
-                                                    ObjectFactory().prefs.setLastReadSurahTranslation(lastReadSurahTranslation: surahList[index].translation);
-                                                    ObjectFactory().prefs.setLastReadSurahVerses(lastReadSurahVerses: surahList[index].totalVerses);
-                                                    print(index);
-                                                    loading
-                                                        ? Center(
-                                                            child:
-                                                                CircularProgressIndicator(
-                                                              color:
-                                                                  mainRedShadeForTitle,
-                                                            ),
-                                                          )
-                                                        : Navigator.pushNamed(
-                                                            context,
-                                                            QuranArabicTranslatedPage
+                                                        fit: BoxFit.contain,
+                                                        image: AssetImage(
+                                                            "assets/images/list_tile_leading.png"))),
+                                                child: Stack(
+                                                  children: [
+                                                    Align(
+                                                      alignment:
+                                                      Alignment.center,
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                        children: [
+                                                          Text("SURAH"),
+                                                          Text(
+                                                            surahList[index]
                                                                 .id,
-                                                            arguments: QuranTranslatedPageArguments(
-                                                                surathId:
-                                                                    surahList[
-                                                                            index]
-                                                                        .id,
-                                                                languageId:
-                                                                    languageId,
-                                                                surahName:
-                                                                    surahList[
-                                                                            index]
-                                                                        .transliteration,
-                                                                totalVerse: surahList[index].totalVerses ),
-                                                          ).then((value) {
+                                                            style: TextStyle(
+                                                                fontSize:
+                                                                20),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
 
-                                                    });
-                                                  },
-                                                );
+                                              // color: mainRedShadeForTitle,
+
+                                              // ImageIcon(
+                                              //   AssetImage(
+                                              //     "assets/images/HEART_STROKE.png",
+                                              //   ),
+                                              //   color: _isFavSelectedIndex != null && _isFavSelectedIndex == suratId
+                                              //       ? mainRedShadeForTitle : lightGreyShadeForText,
+                                              // ),
+                                              onTap: () {
+                                                ObjectFactory().prefs.setLastReadSurah(lastReadSurah: surahList[index].transliteration);
+                                                ObjectFactory().prefs.setLastReadSurahTranslation(lastReadSurahTranslation: surahList[index].translation);
+                                                ObjectFactory().prefs.setLastReadSurahVerses(lastReadSurahVerses: surahList[index].totalVerses);
+                                                print(index);
+                                                loading
+                                                    ? Center(
+                                                  child:
+                                                  CircularProgressIndicator(
+                                                    color:
+                                                    mainRedShadeForTitle,
+                                                  ),
+                                                )
+                                                    : Navigator.pushNamed(
+                                                  context,
+                                                  QuranArabicTranslatedPage
+                                                      .id,
+                                                  arguments: QuranTranslatedPageArguments(
+                                                      surathId:
+                                                      surahList[
+                                                      index]
+                                                          .id,
+                                                      languageId:
+                                                      languageId,
+                                                      surahName:
+                                                      surahList[
+                                                      index]
+                                                          .transliteration,
+                                                      totalVerse: surahList[index].totalVerses ),
+                                                ).then((value) {
+
+                                                });
                                               },
-                                              scrollDirection: Axis.vertical,
-                                              controller: _scrollController,
-                                              physics: BouncingScrollPhysics(),
-                                            ),
-                                    ],
+                                            );
+                                          },
+                                          scrollDirection: Axis.vertical,
+                                          controller: _scrollController,
+                                          physics: BouncingScrollPhysics(),
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ),
+
+
+                        // Column(
+                        //   children: [
+                        //     Padding(
+                        //       padding: const EdgeInsets.only(left: 20, right: 20),
+                        //       child: Container(
+                        //         // height: 350,
+                        //         width: 346,
+                        //         decoration: BoxDecoration(
+                        //           color: Colors.white,
+                        //           borderRadius:
+                        //           BorderRadius.all(Radius.circular(10)),
+                        //         ),
+                        //         child: Container(
+                        //           margin: EdgeInsets.all(8),
+                        //           padding: EdgeInsets.all(10),
+                        //           height: MediaQuery.of(context).size.height,
+                        //           width: MediaQuery.of(context).size.width,
+                        //           child:
+                        //           loading
+                        //               ? Center(
+                        //             child:
+                        //             CircularProgressIndicator(),
+                        //           )
+                        //               : ListView.builder(
+                        //             itemCount: surahList.length,
+                        //             itemBuilder:
+                        //                 (BuildContext context,
+                        //                 index) {
+                        //               return ListTile(
+                        //                 horizontalTitleGap: 30,
+                        //
+                        //                 title: Text(
+                        //                   surahList[index]
+                        //                       .transliteration,
+                        //                   softWrap: true,
+                        //                   style:
+                        //                   kQuranPageTabContentTitleStyle,
+                        //                 ),
+                        //                 subtitle: Text(
+                        //                   surahList[index]
+                        //                       .translation,
+                        //                   // softWrap: true,
+                        //                   style:
+                        //                   kQuranPageTabContentSubTitleStyle,
+                        //                 ),
+                        //                 leading: Container(
+                        //                   constraints: BoxConstraints(
+                        //                       maxWidth: 50,
+                        //                       maxHeight: 50),
+                        //                   decoration: BoxDecoration(
+                        //                       image: DecorationImage(
+                        //                         // alignment: Alignment.centerLeft,
+                        //
+                        //                           fit: BoxFit.contain,
+                        //                           image: AssetImage(
+                        //                               "assets/images/list_tile_leading.png"))),
+                        //                   child: Stack(
+                        //                     children: [
+                        //                       Align(
+                        //                         alignment:
+                        //                         Alignment.center,
+                        //                         child: Column(
+                        //                           mainAxisAlignment:
+                        //                           MainAxisAlignment
+                        //                               .center,
+                        //                           children: [
+                        //                             Text("SURAH"),
+                        //                             Text(
+                        //                               surahList[index]
+                        //                                   .id,
+                        //                               style: TextStyle(
+                        //                                   fontSize:
+                        //                                   20),
+                        //                             )
+                        //                           ],
+                        //                         ),
+                        //                       ),
+                        //                     ],
+                        //                   ),
+                        //                 ),
+                        //
+                        //                 // color: mainRedShadeForTitle,
+                        //
+                        //                 // ImageIcon(
+                        //                 //   AssetImage(
+                        //                 //     "assets/images/HEART_STROKE.png",
+                        //                 //   ),
+                        //                 //   color: _isFavSelectedIndex != null && _isFavSelectedIndex == suratId
+                        //                 //       ? mainRedShadeForTitle : lightGreyShadeForText,
+                        //                 // ),
+                        //                 onTap: () {
+                        //                   ObjectFactory().prefs.setLastReadSurah(lastReadSurah: surahList[index].transliteration);
+                        //                   ObjectFactory().prefs.setLastReadSurahTranslation(lastReadSurahTranslation: surahList[index].translation);
+                        //                   ObjectFactory().prefs.setLastReadSurahVerses(lastReadSurahVerses: surahList[index].totalVerses);
+                        //                   print(index);
+                        //                   loading
+                        //                       ? Center(
+                        //                     child:
+                        //                     CircularProgressIndicator(
+                        //                       color:
+                        //                       mainRedShadeForTitle,
+                        //                     ),
+                        //                   )
+                        //                       : Navigator.pushNamed(
+                        //                     context,
+                        //                     QuranArabicTranslatedPage
+                        //                         .id,
+                        //                     arguments: QuranTranslatedPageArguments(
+                        //                         surathId:
+                        //                         surahList[
+                        //                         index]
+                        //                             .id,
+                        //                         languageId:
+                        //                         languageId,
+                        //                         surahName:
+                        //                         surahList[
+                        //                         index]
+                        //                             .transliteration,
+                        //                         totalVerse: surahList[index].totalVerses ),
+                        //                   ).then((value) {
+                        //
+                        //                   });
+                        //                 },
+                        //               );
+                        //             },
+                        //             scrollDirection: Axis.vertical,
+                        //             controller: _scrollController,
+                        //             physics: BouncingScrollPhysics(),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
+                ),
+    ),
+    ],
     );
+
+
+
+
+
+
+
+
+              // child:
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     SizedBox(height: 2),
+              //     // SearchBarWidget(),
+              //     Padding(
+              //       padding: const EdgeInsets.only(left: 28, top: 5),
+              //       child: Text(
+              //         'Quran',
+              //         style: kQuranPageHeadlineTextStyle,
+              //       ),
+              //     ),
+              //     SizedBox(height: 3),
+              //     Stack(
+              //       children: [
+              //         Padding(
+              //           padding: const EdgeInsets.all(8.0),
+              //           child:
+              //           Container(
+              //             height: 120,
+              //             width: 346,
+              //             child: Image.asset("assets/images/quran.png"),
+              //           ),
+              //         ),
+              //         Padding(
+              //           padding:
+              //               const EdgeInsets.only(left: 25, right: 10, top: 25),
+              //           child: Column(
+              //             crossAxisAlignment: CrossAxisAlignment.start,
+              //             children: [
+              //               Text(
+              //                 "Last read",
+              //                 style: kQuranPageBoxSubTitleStyle1,
+              //               ),
+              //               SizedBox(height: 20),
+              //               Text(
+              //                 ObjectFactory().prefs.getLastReadSurah().toString(),
+              //
+              //                 style: kQuranPageBoxTitleStyle1,
+              //               ),
+              //               Text(
+              //                 ObjectFactory().prefs.getLastReadSurahTranslation().toString(),
+              //                 style: kQuranPageBoxSubTitleStyle1,
+              //               ),
+              //               Divider(
+              //                 color: Colors.white.withOpacity(1),
+              //                 // indent: 50,
+              //                 endIndent: 230,
+              //               ),
+              //               Padding(
+              //                 padding: const EdgeInsets.only(left: 25),
+              //                 child: Text(ObjectFactory().prefs.getLastReadSurahVerses().toString() + " verses",
+              //                     style: kQuranPageBoxSubTitleStyle1),
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //     // Container(
+              //     //   height: 400,
+              //     //   width: 346,
+              //     //   decoration: BoxDecoration(
+              //     //     color: Colors.white,
+              //     //     borderRadius: BorderRadius.all(
+              //     //       Radius.circular(10),
+              //     //     ),
+              //     //   ),
+              //     //     ),
+              //     DefaultTabController(
+              //       length: tabList.length,
+              //       child: Column(
+              //         children: [
+              //           Padding(
+              //             padding: const EdgeInsets.only(left: 20, right: 20),
+              //             child: Container(
+              //               // height: 350,
+              //               width: 346,
+              //               decoration: BoxDecoration(
+              //                 color: Colors.white,
+              //                 borderRadius:
+              //                     BorderRadius.all(Radius.circular(10)),
+              //               ),
+              //               child: Column(
+              //                 children: [
+              //                   TabBar(
+              //                     physics: BouncingScrollPhysics(),
+              //                     controller: _tabController,
+              //                     labelStyle: kQuranPageTabHeaderStyle,
+              //                     automaticIndicatorColorAdjustment: true,
+              //                     indicatorColor: tabBarHeaderActiveTextColor,
+              //                     labelColor: tabBarHeaderActiveTextColor,
+              //                     padding: EdgeInsets.only(left: 10, right: 10),
+              //                     unselectedLabelColor:
+              //                         tabBarHeaderInactiveTextColor,
+              //                     unselectedLabelStyle:
+              //                         kQuranPageTabHeaderStyle,
+              //                     onTap: (index) =>
+              //                         _tabController.animateTo(index),
+              //                     tabs: List<Widget>.generate(tabList.length,
+              //                         (index) {
+              //                       return Tab(
+              //                         text: tabList[index],
+              //                       );
+              //                     }),
+              //                   ),
+              //                   Container(
+              //                     margin: EdgeInsets.all(8),
+              //                     padding: EdgeInsets.all(10),
+              //                     height: MediaQuery.of(context).size.height,
+              //                     width: MediaQuery.of(context).size.width,
+              //                     child: TabBarView(
+              //                       controller: _tabController,
+              //                       children: [
+              //                         loading
+              //                             ? Center(
+              //                                 child:
+              //                                     CircularProgressIndicator(),
+              //                               )
+              //                             : ListView.builder(
+              //                                 itemCount: surahList.length,
+              //                                 itemBuilder:
+              //                                     (BuildContext context,
+              //                                         index) {
+              //                                   return ListTile(
+              //                                     horizontalTitleGap: 30,
+              //
+              //                                     title: Text(
+              //                                       surahList[index]
+              //                                           .transliteration,
+              //                                       softWrap: true,
+              //                                       style:
+              //                                           kQuranPageTabContentTitleStyle,
+              //                                     ),
+              //                                     subtitle: Text(
+              //                                       surahList[index]
+              //                                           .translation,
+              //                                       // softWrap: true,
+              //                                       style:
+              //                                           kQuranPageTabContentSubTitleStyle,
+              //                                     ),
+              //                                     leading: Container(
+              //                                       constraints: BoxConstraints(
+              //                                           maxWidth: 50,
+              //                                           maxHeight: 50),
+              //                                       decoration: BoxDecoration(
+              //                                           image: DecorationImage(
+              //                                               // alignment: Alignment.centerLeft,
+              //
+              //                                               fit: BoxFit.contain,
+              //                                               image: AssetImage(
+              //                                                   "assets/images/list_tile_leading.png"))),
+              //                                       child: Stack(
+              //                                         children: [
+              //                                           Align(
+              //                                             alignment:
+              //                                                 Alignment.center,
+              //                                             child: Column(
+              //                                               mainAxisAlignment:
+              //                                                   MainAxisAlignment
+              //                                                       .center,
+              //                                               children: [
+              //                                                 Text("SURAH"),
+              //                                                 Text(
+              //                                                   surahList[index]
+              //                                                       .id,
+              //                                                   style: TextStyle(
+              //                                                       fontSize:
+              //                                                           20),
+              //                                                 )
+              //                                               ],
+              //                                             ),
+              //                                           ),
+              //                                         ],
+              //                                       ),
+              //                                     ),
+              //
+              //                                     // color: mainRedShadeForTitle,
+              //
+              //                                     // ImageIcon(
+              //                                     //   AssetImage(
+              //                                     //     "assets/images/HEART_STROKE.png",
+              //                                     //   ),
+              //                                     //   color: _isFavSelectedIndex != null && _isFavSelectedIndex == suratId
+              //                                     //       ? mainRedShadeForTitle : lightGreyShadeForText,
+              //                                     // ),
+              //                                     onTap: () {
+              //                                       ObjectFactory().prefs.setLastReadSurah(lastReadSurah: surahList[index].transliteration);
+              //                                       ObjectFactory().prefs.setLastReadSurahTranslation(lastReadSurahTranslation: surahList[index].translation);
+              //                                       ObjectFactory().prefs.setLastReadSurahVerses(lastReadSurahVerses: surahList[index].totalVerses);
+              //                                       print(index);
+              //                                       loading
+              //                                           ? Center(
+              //                                               child:
+              //                                                   CircularProgressIndicator(
+              //                                                 color:
+              //                                                     mainRedShadeForTitle,
+              //                                               ),
+              //                                             )
+              //                                           : Navigator.pushNamed(
+              //                                               context,
+              //                                               QuranArabicTranslatedPage
+              //                                                   .id,
+              //                                               arguments: QuranTranslatedPageArguments(
+              //                                                   surathId:
+              //                                                       surahList[
+              //                                                               index]
+              //                                                           .id,
+              //                                                   languageId:
+              //                                                       languageId,
+              //                                                   surahName:
+              //                                                       surahList[
+              //                                                               index]
+              //                                                           .transliteration,
+              //                                                   totalVerse: surahList[index].totalVerses ),
+              //                                             ).then((value) {
+              //
+              //                                       });
+              //                                     },
+              //                                   );
+              //                                 },
+              //                                 scrollDirection: Axis.vertical,
+              //                                 controller: _scrollController,
+              //                                 physics: BouncingScrollPhysics(),
+              //                               ),
+              //                       ],
+              //                     ),
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
+
   }
 
   Widget buildQuranPageCard(int index) {

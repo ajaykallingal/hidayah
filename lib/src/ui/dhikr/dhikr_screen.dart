@@ -33,8 +33,9 @@ class _DhikrScreenState extends State<DhikrScreen> {
 
     setState(() {
       // SystemSound.play(SystemSoundType.click);
-ObjectFactory().prefs.setUserDhikrCount(userDhikrCount: _counter.toString());
       _counter++;
+      ObjectFactory().prefs.setUserDhikrCount(userDhikrCount: _counter.toString());
+
 
     });
   }
@@ -280,35 +281,36 @@ ObjectFactory().prefs.setUserDhikrCount(userDhikrCount: _counter.toString());
                         },
                         splashColor: mainRedShadeForText,
                       ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     setState(() {
-                      //       toggleSwitch = !toggleSwitch;
-                      //     });
-                      //   },
-                      //   child: ClipRRect(
-                      //     child: BackdropFilter(
-                      //       filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
-                      //       child: Container(
-                      //         height: 60,
-                      //         width: 130,
-                      //         decoration: BoxDecoration(
-                      //           color: Colors.grey.withOpacity(0.3),
-                      //           borderRadius: BorderRadius.circular(10),
-                      //         ),
-                      //         child: Center(
-                      //           child: RichText(
-                      //
-                      //               text: TextSpan(text: "Sound: ",style: TextStyle(color: mainRedShadeForText),
-                      //                   children: [
-                      //             TextSpan(text: toggleSwitch ? "ON" : "OFF",style: TextStyle(color: mainRedShadeForTitle))
-                      //           ])),
-                      //         )
-                      //
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            toggleSwitch = !toggleSwitch;
+                            // player.stop();
+                          });
+                        },
+                        child: ClipRRect(
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                            child: Container(
+                              height: 60,
+                              width: 130,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: RichText(
+
+                                    text: TextSpan(text: "Sound: ",style: TextStyle(color: mainRedShadeForText),
+                                        children: [
+                                  TextSpan(text: toggleSwitch ? "ON" : "OFF",style: TextStyle(color: mainRedShadeForTitle))
+                                ])),
+                              )
+
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

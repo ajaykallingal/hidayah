@@ -20,6 +20,7 @@ color: mainThemeWhiteColor,
 fontWeight: FontWeight.w600,
 );
 TextStyle kQuranPageTabHeaderStyle = TextStyle(
+  decoration: TextDecoration.underline,
   letterSpacing: 0,
   fontFamily: FontFamily.sfProDisplay,
   fontSize: 16,
