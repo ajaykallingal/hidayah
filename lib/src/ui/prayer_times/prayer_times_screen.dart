@@ -118,6 +118,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
       print("dataloaded");
       setState(() {
         prayerTime = event.times!;
+
         // int fajr = int.tryParse(event.times!.fajr.replaceAll(RegExp('[^0-9]'), ''))!;
         // int dhuhr = int.tryParse(event.times!.dhuhr.replaceAll(RegExp('[^0-9]'), ''))!;
         // int asr = int.tryParse(event.times!.asr.replaceAll(RegExp('[^0-9]'), ''))!;
@@ -329,7 +330,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
                                     size: 15,
                                   ),
                                   SizedBox(width: 4),
-                                  Text(Address),
+                                  Flexible(child: Text(Address,softWrap: true,)),
                                 ],
                               ),
                             ),
@@ -455,7 +456,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
                                                 alwaysUse24HourFormat: false),
                                             child: Text(
                                               prayerTime != null
-                                                  ? prayerTime!.fajr.toString()
+                                                  ? DateFormat.jm().format(DateFormat("hh:mm").parse(prayerTime!.fajr.toString()))
+
                                                   : "Afaf",
                                               style: kPrayerTimeCardTextStyle1,
                                             ),
@@ -478,7 +480,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
                                           ),
                                           Text(
                                             prayerTime != null
-                                                ? prayerTime!.dhuhr
+                                                ? DateFormat.jm().format(DateFormat("hh:mm").parse(prayerTime!.dhuhr))
+
                                                 : "Something Went Wrong!",
                                             style: kPrayerTimeCardTextStyle1,
                                           ),
@@ -500,7 +503,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
                                           ),
                                           Text(
                                             prayerTime != null
-                                                ? prayerTime!.asr
+                                                ? DateFormat.jm().format(DateFormat("hh:mm").parse(prayerTime!.asr))
+
                                                 : "Something Went Wrong!",
                                             style: kPrayerTimeCardTextStyle1,
                                           ),
@@ -522,7 +526,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
                                           ),
                                           Text(
                                             prayerTime != null
-                                                ? prayerTime!.maghrib
+                                                ? DateFormat.jm().format(DateFormat("hh:mm").parse(prayerTime!.maghrib))
+
                                                 : "Something Went Wrong!",
                                             style: kPrayerTimeCardTextStyle1,
                                           ),
@@ -544,7 +549,8 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> with SingleTicker
                                           ),
                                           Text(
                                             prayerTime != null
-                                                ? prayerTime!.isha
+                                                ? DateFormat.jm().format(DateFormat("hh:mm").parse(prayerTime!.isha))
+
                                                 : "Something Went Wrong!",
                                             style: kPrayerTimeCardTextStyle1,
                                           ),
