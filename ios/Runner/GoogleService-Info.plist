@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>813511217985-5jcefir50uvdhk6sm5vfo7dup5et2mh8.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.813511217985-5jcefir50uvdhk6sm5vfo7dup5et2mh8</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCfF2DaJR4GCXUES3Id-Ov43cWNWAWNlb0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>813511217985</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.finekube.hidayah</string>
+	<key>PROJECT_ID</key>
+	<string>hidayah-11c8b</string>
+	<key>STORAGE_BUCKET</key>
+	<string>hidayah-11c8b.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:813511217985:ios:6f9f18d49880ace9d4c7c0</string>
+</dict>
+</plist>

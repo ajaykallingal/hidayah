@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "813511217985",
+    "project_id": "hidayah-11c8b",
+    "storage_bucket": "hidayah-11c8b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813511217985:android:da3f2a067cfccdc4d4c7c0",
+        "android_client_info": {
+          "package_name": "com.finekube.hidayah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813511217985-9ujuog5iu1r77otoqk65t60jpei4b0q0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5NJ2gqb36lSpx8mII63naBPyE_mEHetk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813511217985-9ujuog5iu1r77otoqk65t60jpei4b0q0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
